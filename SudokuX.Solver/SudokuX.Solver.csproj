@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C369B350-D44F-4A14-AD66-AAC5F2723E41}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>SudokuX.Solver</RootNamespace>
+    <AssemblyName>SudokuX.Solver</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Cell.cs" />
+    <Compile Include="CellGroup.cs" />
+    <Compile Include="ChallengeCreator.cs" />
+    <Compile Include="GridCreator.cs" />
+    <Compile Include="Grids\BasicGrid.cs" />
+    <Compile Include="Grids\Grid12X12.cs" />
+    <Compile Include="Grids\Grid16X16.cs" />
+    <Compile Include="Grids\Grid4x4.cs" />
+    <Compile Include="Grids\Grid6X6.cs" />
+    <Compile Include="Grids\Grid9X9.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Grids\Grid9X9WithX.cs" />
+    <Compile Include="Grids\Irregular6.cs" />
+    <Compile Include="Grids\Irregular9.cs" />
+    <Compile Include="Grids\IrregularGrid.cs" />
+    <Compile Include="Grids\RectangularGrid.cs" />
+    <Compile Include="IRegularSudokuGrid.cs" />
+    <Compile Include="ISudokuGrid.cs" />
+    <Compile Include="GridPatterns\BaseSymmetricPattern.cs" />
+    <Compile Include="GridPatterns\DoubleMirroredPattern.cs" />
+    <Compile Include="GridPatterns\IGridPattern.cs" />
+    <Compile Include="Strategies\BasicRule.cs" />
+    <Compile Include="Support\EnumerableExtensions.cs" />
+    <Compile Include="Support\Enums.cs" />
+    <Compile Include="Support\GroupType.cs" />
+    <Compile Include="Support\PerformanceMeasurement.cs" />
+    <Compile Include="Support\Position.cs" />
+    <Compile Include="Support\PositionList.cs" />
+    <Compile Include="GridPatterns\RandomPattern.cs" />
+    <Compile Include="GridPatterns\RotationalPattern.cs" />
+    <Compile Include="GridPatterns\VerticalMirroredPattern.cs" />
+    <Compile Include="NextPositionStrategies\BaseNextPositionPattern.cs" />
+    <Compile Include="NextPositionStrategies\HighestNumberAvailable.cs" />
+    <Compile Include="Support\ProgressEventArgs.cs" />
+    <Compile Include="Support\SelectedValue.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Support\Conclusion.cs" />
+    <Compile Include="Strategies\HiddenDouble.cs" />
+    <Compile Include="Strategies\HiddenSingle.cs" />
+    <Compile Include="Strategies\ISolver.cs" />
+    <Compile Include="Strategies\LockedCandidates.cs" />
+    <Compile Include="Strategies\NakedDouble.cs" />
+    <Compile Include="Strategies\NakedSingle.cs" />
+    <Compile Include="Strategies\NakedTriple.cs" />
+    <Compile Include="Strategies\Solver.cs" />
+    <Compile Include="Support\StackExtensions.cs" />
+    <Compile Include="Support\Validity.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,27 @@
+﻿<Page x:Class="SudokuX.UI.StartPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      mc:Ignorable="d" 
+      d:DesignHeight="600" d:DesignWidth="600"
+    Title="StartPage">
+
+    <StackPanel FlowDirection="LeftToRight" Orientation="Horizontal">
+        <StackPanel Orientation="Vertical" Margin="4,0,0,0">
+            <TextBlock>Grid Size</TextBlock>
+            <RadioButton>
+                <TextBlock TextWrapping="Wrap" Text="4 × 4"/>
+            </RadioButton>
+            <RadioButton>
+                <TextBlock TextWrapping="Wrap" Text="6 × 6"/>
+            </RadioButton>
+            <RadioButton>
+                <TextBlock TextWrapping="Wrap" Text="9 × 9"/>
+            </RadioButton>
+            <RadioButton>
+                <TextBlock TextWrapping="Wrap" Text="12 × 12"/>
+            </RadioButton>
+        </StackPanel>
+    </StackPanel>
+</Page>
