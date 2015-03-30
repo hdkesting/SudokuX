@@ -63,7 +63,6 @@
     <Compile Include="Grids\RectangularGrid.cs" />
     <Compile Include="IRegularSudokuGrid.cs" />
     <Compile Include="ISudokuGrid.cs" />
-    <Compile Include="GridPatterns\BaseSymmetricPattern.cs" />
     <Compile Include="GridPatterns\DoubleMirroredPattern.cs" />
     <Compile Include="GridPatterns\IGridPattern.cs" />
     <Compile Include="Strategies\BasicRule.cs" />

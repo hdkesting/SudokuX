@@ -17,7 +17,7 @@ There are regular (rectangular) grids, but also:
 
 The challenges can have various symmetries, like:
 
-* none (mainly for for 4x4 and irregular)
+* none (mainly for 4x4 and irregular)
 * vertical (mirror) symmetry
 * both vertical and horizontal symmetry
 * rotational symmetry

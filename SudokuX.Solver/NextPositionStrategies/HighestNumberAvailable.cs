@@ -8,7 +8,7 @@ using SudokuX.Solver.Support;
 namespace SudokuX.Solver.NextPositionStrategies
 {
     /// <summary>
-    /// Selects cells with the highest amount of available values
+    /// Selects (groups of) cells with the highest amount of available values
     /// </summary>
     public class HighestNumberAvailable : BaseNextPositionPattern
     {

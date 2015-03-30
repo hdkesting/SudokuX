@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace SudokuX.Solver.Support
 {
+    /// <summary>
+    /// A list of positions.
+    /// </summary>
     public class PositionList
     {
         public PositionList()

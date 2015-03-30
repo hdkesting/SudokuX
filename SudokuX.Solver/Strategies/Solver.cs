@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -8,6 +7,9 @@ using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver.Strategies
 {
+    /// <summary>
+    /// Try and solve a grid as far as possible.
+    /// </summary>
     public class Solver
     {
         private readonly ISudokuGrid _grid;
@@ -20,20 +22,25 @@ namespace SudokuX.Solver.Strategies
             _solvers = solvers;
         }
 
+        /// <summary>
+        /// Occurs when there is progress to report.
+        /// </summary>
         public event EventHandler<ProgressEventArgs> Progress;
 
         public Dictionary<Type, PerformanceMeasurement> Measurements { get { return _measurements; } }
 
         readonly Stopwatch _swConclusion = new Stopwatch();
-        private int _conclusionSets = 0;
+        private int _conclusionSets;
 
         private IList<Conclusion> ProcessGrid(ISolver solver)
         {
             // mark start
             var sw = Stopwatch.StartNew();
             var result = solver.ProcessGrid(_grid).ToList();
-            sw.Stop();
             // mark stop
+            sw.Stop();
+
+            // update timing measurements
             if (_measurements.ContainsKey(solver.GetType()))
             {
                 var measure = _measurements[solver.GetType()];
@@ -81,7 +88,7 @@ namespace SudokuX.Solver.Strategies
                             //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
                             conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
                             conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
-                            RaiseProgress();
+                            OnProgress();
                         }
                         else
                         {
@@ -112,7 +119,7 @@ namespace SudokuX.Solver.Strategies
 
         }
 
-        private void RaiseProgress()
+        private void OnProgress()
         {
             var handler = Progress;
             if (handler != null)

@@ -9,7 +9,7 @@ namespace SudokuX.Solver.GridPatterns
     public interface IGridPattern
     {
         /// <summary>
-        /// Get a list of positions according to some pattern.
+        /// Get a list of positions according to the pattern.
         /// </summary>
         /// <param name="start">The start position.</param>
         /// <param name="gridSize">Size of the grid.</param>

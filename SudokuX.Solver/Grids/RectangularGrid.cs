@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using SudokuX.Solver.Strategies;
 using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver.Grids
 {
+    /// <summary>
+    /// Base class for grids with rectangular (or even square) blocks.
+    /// </summary>
     public abstract class RectangularGrid : BasicGrid, IRegularSudokuGrid
     {
         private readonly List<CellGroup> _blocks = new List<CellGroup>();
@@ -47,6 +49,9 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        /// <summary>
+        /// Gets all defined groups of cells.
+        /// </summary>
         public override IEnumerable<CellGroup> CellGroups
         {
             get

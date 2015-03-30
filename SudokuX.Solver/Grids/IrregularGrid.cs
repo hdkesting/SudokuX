@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver.Grids
 {
-    public class IrregularGrid : BasicGrid
+    /// <summary>
+    /// Base class for irregular-blocked grids.
+    /// </summary>
+    public abstract class IrregularGrid : BasicGrid
     {
         private readonly List<CellGroup> _blocks = new List<CellGroup>();
 
@@ -268,6 +270,7 @@ namespace SudokuX.Solver.Grids
                 {
                     yield return cellGroup;
                 }
+
                 foreach (var cellGroup in _blocks)
                 {
                     yield return cellGroup;

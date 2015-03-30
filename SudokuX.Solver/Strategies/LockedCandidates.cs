@@ -8,9 +8,12 @@ namespace SudokuX.Solver.Strategies
     /// <summary>
     /// A digit can be placed on just a limited number of cells in one group and all those cells also belong to the same other group.
     /// That digit can't occur on other cells of that other group.
+    /// This is an interaction between a block and a row, column or diagonal.
     /// </summary>
     public class LockedCandidates : ISolver
     {
+        // TODO possible enhancement: check only blocks for the first set of values, then check only non-blocks for the matching group
+
         private const int Complexity = 6;
 
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
