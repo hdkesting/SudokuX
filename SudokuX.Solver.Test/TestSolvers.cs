@@ -215,13 +215,14 @@ namespace SudokuX.Solver.Test
 
             ISolver solver = new LockedCandidates();
 
+            var sw = Stopwatch.StartNew();
             var list = solver.ProcessGrid(grid).ToList();
-
-            // value 2 in c0 r12 (b0)
-            // conclusions are c1, b0
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
+            // exclude value 8 in r1 c67 (b2) because of b0
             Assert.AreEqual(2, list.Count);
-            Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 2 }));
-            Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 2 }));
+            Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 8 }));
+            Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 8 }));
 
         }
 
