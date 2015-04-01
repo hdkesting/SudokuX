@@ -18,6 +18,27 @@
                 <GradientStop Offset="0" Color="LightGray" x:Name="GradientStart"/>
                 <GradientStop Offset="1" Color="Gray" x:Name="GradientEnd"/>
             </LinearGradientBrush>
+            
+            <DataTemplate x:Key="PencilValueTemplate">
+                <ItemsControl ItemsSource="{Binding}">
+                    <Viewbox>
+                        <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" 
+                                 FontFamily="Verdana" FontWeight="ExtraLight"
+                                 Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent"></TextBox>
+                    </Viewbox>
+                </ItemsControl>
+            </DataTemplate>
+            
+            <DataTemplate x:Key="PencilRowTemplate">
+                <ItemsControl ItemsSource ="{Binding}" ItemTemplate ="{StaticResource PencilValueTemplate}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <UniformGrid Rows ="1"/>
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+
+            </DataTemplate>
             <!-- CellTemplate -->
             <DataTemplate x:Key ="CellTemplate">
                 <Grid>
@@ -70,19 +91,29 @@
                                     <GradientStop Color ="DimGray" Offset ="1"/>
                                 </LinearGradientBrush>
                             </Border.Background>
-                            <Viewbox>
-                            <!-- gekozen of gegeven waarde -->
-                            <TextBlock x:Name ="TextBlock" Focusable ="False" HorizontalAlignment ="Center" VerticalAlignment ="Center" FontWeight ="Bold" 
-                                       Width="Auto" Text ="{Binding Path=StringValue}" FontFamily="Segoe Script">
-                                <TextBlock.Effect>
-                                    <DropShadowEffect ShadowDepth="5"
-                                          Color="Black"
-                                          Opacity="0.5"
-                                          BlurRadius="5"
-                                          />
-                                </TextBlock.Effect>
-                            </TextBlock>
-                            </Viewbox>
+                            <Grid>
+                                <Viewbox Grid.Column="0" Grid.Row="0">
+                                <!-- gekozen of gegeven waarde -->
+                                    <TextBlock x:Name ="TextBlock" Focusable ="False" HorizontalAlignment ="Center" VerticalAlignment ="Center" FontWeight ="Bold" 
+                                           Width="Auto" Text ="{Binding Path=StringValue}" FontFamily="Segoe Script">
+                                        <TextBlock.Effect>
+                                            <DropShadowEffect ShadowDepth="5"
+                                                  Color="Black"
+                                                  Opacity="0.5"
+                                                  BlurRadius="5"
+                                                  />
+                                        </TextBlock.Effect>
+                                    </TextBlock>
+                                </Viewbox>
+                                <!-- pencil marks -->
+                                <ItemsControl  Grid.Column="0" Grid.Row="0" ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" x:Name ="PencilMarks" IsHitTestVisible="False">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <UniformGrid Columns ="1" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                </ItemsControl>
+                            </Grid>
                             <!-- dropdown van te kiezen waarden -->
                             <Border.ContextMenu>
                                 <ContextMenu>
@@ -138,8 +169,12 @@
                     <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                         <Setter TargetName="Border" Property="BorderBrush" Value="Gold"></Setter>
                     </DataTrigger>
+                    <DataTrigger Binding="{Binding HasValue}" Value="True">
+                        <Setter TargetName="PencilMarks" Property="Visibility" Value="Hidden"></Setter>
+                    </DataTrigger>
                 </DataTemplate.Triggers>
             </DataTemplate>
+            <!-- Row template -->
             <DataTemplate x:Key="RowTemplate">
                 <ItemsControl ItemsSource ="{Binding}" ItemTemplate ="{StaticResource CellTemplate}">
                     <ItemsControl.ItemsPanel>

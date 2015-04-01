@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -26,6 +27,49 @@ namespace SudokuX.UI.Common
             _translator = translator;
             _maxval = _translator.MaxValue;
             _possibleValuesValue = new ObservableCollection<string>();
+
+            _pencilRows = new ObservableCollection<ObservableCollection<PencilValue>>();
+            FillPencilValues();
+        }
+
+        private void FillPencilValues()
+        {
+            int w;
+            int h;
+
+            switch (_translator.MaxValue)
+            {
+                case 3: // 4x4
+                    w = h = 2;
+                    break;
+                case 5: // 6x6
+                    w = 3;
+                    h = 2;
+                    break;
+                case 8: // 9x9
+                    w = h = 3;
+                    break;
+                case 11: // 12x12
+                    w = 4;
+                    h = 3;
+                    break;
+                case 15: // 16x16
+                    w = h = 4;
+                    break;
+                default:
+                    throw new InvalidOperationException("Unknown max value: " + _translator.MaxValue);
+            }
+
+            for (int y = 0; y < h; y++)
+            {
+                var row = new ObservableCollection<PencilValue>();
+                _pencilRows.Add(row);
+                for (int x = 0; x < w; x++)
+                {
+                    var val = new PencilValue(_translator.ToChar(y * w + x));
+                    row.Add(val);
+                }
+            }
         }
 
         public void ResetPossibleValues()
@@ -45,7 +89,6 @@ namespace SudokuX.UI.Common
                 //_possibleValuesValue.Add(_translator.ToChar(i));
                 add(_translator.ToChar(i));
             }
-
         }
 
         public bool ReadOnly
@@ -77,13 +120,31 @@ namespace SudokuX.UI.Common
                     if ((value ?? -1) < 0)
                     {
                         _valueValue = null;
+                        HasValue = false;
                     }
                     else
                     {
                         _valueValue = value;
+                        HasValue = true;
                     }
                     OnPropertyChanged();
                     OnPropertyChanged("StringValue");
+                }
+            }
+        }
+
+        private bool _hasValue;
+        private ObservableCollection<ObservableCollection<PencilValue>> _pencilRows;
+
+        public bool HasValue
+        {
+            get { return _hasValue; }
+            set
+            {
+                if (value != _hasValue)
+                {
+                    _hasValue = value;
+                    OnPropertyChanged();
                 }
             }
         }
@@ -129,6 +190,11 @@ namespace SudokuX.UI.Common
             {
                 return _possibleValuesValue;
             }
+        }
+
+        public ObservableCollection<ObservableCollection<PencilValue>> PencilRows
+        {
+            get { return _pencilRows; }
         }
 
         [NotifyPropertyChangedInvocator]
