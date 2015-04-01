@@ -21,10 +21,10 @@
             
             <DataTemplate x:Key="PencilValueTemplate">
                 <ItemsControl ItemsSource="{Binding}">
-                    <Viewbox>
+                    <Viewbox Margin="1">
                         <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" 
-                                 FontFamily="Verdana" FontWeight="ExtraLight"
-                                 Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent"></TextBox>
+                                 FontFamily="Segoe UI Semilight" 
+                                 Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8"></TextBox>
                     </Viewbox>
                 </ItemsControl>
             </DataTemplate>

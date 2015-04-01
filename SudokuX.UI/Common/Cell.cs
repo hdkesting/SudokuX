@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Media;
 using SudokuX.UI.Annotations;
 
@@ -78,15 +79,14 @@ namespace SudokuX.UI.Common
 
             Action<string> add = v =>
                 {
-                    if (!_possibleValuesValue.Contains(v))
+                    //if (!_possibleValuesValue.Contains(v))
                         _possibleValuesValue.Add(v);
                 };
 
             add(String.Empty);
-            //_possibleValuesValue.Add(String.Empty); // to clear the value
+
             for (int i = 0; i <= _maxval; i++)
             {
-                //_possibleValuesValue.Add(_translator.ToChar(i));
                 add(_translator.ToChar(i));
             }
         }
@@ -134,7 +134,7 @@ namespace SudokuX.UI.Common
         }
 
         private bool _hasValue;
-        private ObservableCollection<ObservableCollection<PencilValue>> _pencilRows;
+        private readonly ObservableCollection<ObservableCollection<PencilValue>> _pencilRows;
 
         public bool HasValue
         {
@@ -215,6 +215,20 @@ namespace SudokuX.UI.Common
                     OnPropertyChanged();
                 }
             }
+        }
+
+        public void UpdatePencilmarkStatus()
+        {
+            foreach (var row in PencilRows)
+            {
+                foreach (var value in row)
+                {
+                    value.Visibility = PossibleValues.Contains(value.Value)
+                        ? Visibility.Visible
+                        : Visibility.Hidden;
+                }
+            }
+
         }
     }
 }

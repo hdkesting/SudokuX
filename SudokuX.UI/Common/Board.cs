@@ -156,6 +156,7 @@ namespace SudokuX.UI.Common
                     {
                         localcell.PossibleValues.Remove(sibling.StringValue);
                     }
+                    localcell.UpdatePencilmarkStatus();
                 }
             }
         }
