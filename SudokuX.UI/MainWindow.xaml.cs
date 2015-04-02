@@ -25,6 +25,7 @@ namespace SudokuX.UI
         private void NewGame(object sender, RoutedEventArgs e)
         {
             NewGameButton.IsEnabled = false;
+            ShowPencilmarks.IsChecked = false;
 
             SudokuBoard board = null;
             switch (((ComboBoxItem)BoardSize.SelectedItem).Tag.ToString())
@@ -90,13 +91,20 @@ namespace SudokuX.UI
 
         private void ToggleHighlight(object sender, RoutedEventArgs e)
         {
-            var btn = (CheckBox) sender;
+            var btn = (CheckBox)sender;
 
             var val = btn.Tag.ToString();
 
             var board = (SudokuBoard)GridPlaceholder.Child;
 
             board.ToggleHighlight(val, btn.IsChecked.GetValueOrDefault());
+        }
+
+        private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
+        {
+            var board = (SudokuBoard)GridPlaceholder.Child;
+            var btn = (CheckBox)sender;
+            board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
         }
     }
 }

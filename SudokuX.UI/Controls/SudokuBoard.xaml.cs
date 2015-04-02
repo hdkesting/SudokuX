@@ -34,6 +34,12 @@ namespace SudokuX.UI.Controls
         }
 
         public ObservableCollection<ValueCount> ValueCounts { get; private set; }
+        public bool ShowPencilMarks
+        {
+            get { return _gameBoard.ShowPencilMarks; }
+            set { _gameBoard.ShowPencilMarks = value; }
+        }
+
 
         public void Create()
         {

@@ -56,7 +56,7 @@ namespace SudokuX.Solver
                     break;
 
                 case BoardSize.Board6:
-                    _pattern = new RotationalPattern();
+                    _pattern = new RandomPattern();
                     _solvers = new List<ISolver>
                         {
                             new BasicRule(),
