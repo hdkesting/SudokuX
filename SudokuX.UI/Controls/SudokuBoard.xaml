@@ -202,9 +202,15 @@
             </ItemsControl.ItemsPanel>
          </ItemsControl>
     </Grid>
-    <!--<UserControl.Triggers>
+    <!--<UserControl.Triggers>  === must be of type EventTrigger
         <DataTrigger Binding="{Binding IsFinished}" Value="True">
-            <Setter TargetName="(Grid.GradientStart)" Property="Color" Value="Red"></Setter>
+            <DataTrigger.EnterActions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation Storyboard.TargetName="TextBlock" Storyboard.TargetProperty="RenderSize" To="20" Duration="0:0:1" AutoReverse="True" ></DoubleAnimation>
+                    </Storyboard>
+                </BeginStoryboard>
+            </DataTrigger.EnterActions>
         </DataTrigger>
     </UserControl.Triggers>-->
 </UserControl>
