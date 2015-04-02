@@ -26,15 +26,18 @@ namespace SudokuX.UI
         {
             NewGameButton.IsEnabled = false;
             ShowPencilmarks.IsChecked = false;
+            ShowPencilmarks.IsEnabled = true;
 
             SudokuBoard board = null;
             switch (((ComboBoxItem)BoardSize.SelectedItem).Tag.ToString())
             {
                 case "4x4":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board4);
+                    ShowPencilmarks.IsEnabled = false;
                     break;
                 case "6x6":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board6);
+                    ShowPencilmarks.IsEnabled = false;
                     break;
                 case "9x9":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board9);
