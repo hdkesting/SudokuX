@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -10,24 +11,17 @@ namespace SudokuX.UI.Common
 {
     public class Board : INotifyPropertyChanged
     {
-        private readonly ObservableCollection<ObservableCollection<Cell>> _rows;
+        private readonly List<List<Cell>> _rows;
         private readonly ObservableCollection<ValueCount> _valueCounts;
+        private readonly GroupCollection _groups = new GroupCollection();
 
         private bool _isValidValue = true;
         private bool _isFinished;
-
-        private readonly GroupCollection _groups = new GroupCollection();
-
         private bool _filling;
+        private bool _showPencilMarks;
 
 
-        public ObservableCollection<ObservableCollection<Cell>> GridRows
-        {
-            get
-            {
-                return _rows;
-            }
-        }
+        public List<List<Cell>> GridRows { get { return _rows; } }
 
         public int GridSize { get; private set; }
 
@@ -38,6 +32,63 @@ namespace SudokuX.UI.Common
         public ObservableCollection<ValueCount> ValueCounts
         {
             get { return _valueCounts; }
+        }
+
+        public bool ShowPencilMarks
+        {
+            get { return _showPencilMarks; }
+            set
+            {
+                if (_showPencilMarks != value)
+                {
+                    _showPencilMarks = value;
+                    OnPropertyChanged();
+                    foreach (var cell in EnumerateAllCells())
+                    {
+                        cell.ShowPencilMarks = value && !cell.HasValue;
+                    }
+                }
+            }
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                return _isValidValue;
+            }
+
+            private set
+            {
+                if (_isValidValue != value)
+                {
+                    _isValidValue = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public bool IsFinished
+        {
+            get { return _isFinished; }
+            set
+            {
+                if (_isFinished != value)
+                {
+                    _isFinished = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public Cell this[int row, int col]
+        {
+            get
+            {
+                if (row < 0 || row >= GridSize) throw new ArgumentOutOfRangeException("row", row, "Invalid Row Index");
+                if (col < 0 || col >= GridSize) throw new ArgumentOutOfRangeException("col", col, "Invalid Column Index");
+                return _rows[row][col];
+            }
         }
 
         /// <summary>
@@ -51,14 +102,15 @@ namespace SudokuX.UI.Common
             var translator = new ValueTranslator(boardSize);
             GridSize = translator.MaxValue + 1;
 
-            _rows = new ObservableCollection<ObservableCollection<Cell>>();
+            _rows = new List<List<Cell>>();
             for (int row = 0; row < GridSize; row++)
             {
-                ObservableCollection<Cell> cellRow = new ObservableCollection<Cell>();
+                List<Cell> cellRow = new List<Cell>();
                 for (int col = 0; col < GridSize; col++)
                 {
                     Cell c = new Cell(translator);
                     c.PropertyChanged += CellPropertyChanged;
+                    c.Board = this;
                     cellRow.Add(c);
                 }
                 _rows.Add(cellRow);
@@ -117,46 +169,44 @@ namespace SudokuX.UI.Common
 
         private void HighlightBoard()
         {
-            for (int x = 0; x < GridSize; x++)
+            foreach (var cell in EnumerateAllCells())
             {
-                for (int y = 0; y < GridSize; y++)
-                {
-                    _rows[x][y].IsHighlighted = true;
-                }
+                cell.IsHighlighted = true;
             }
         }
 
         private bool IsBoardFinished()
         {
+            return EnumerateAllCells().All(c => c.IntValue.HasValue);
+        }
+
+        private IEnumerable<Cell> EnumerateAllCells()
+        {
             for (int x = 0; x < GridSize; x++)
             {
                 for (int y = 0; y < GridSize; y++)
                 {
-                    if (!_rows[x][y].IntValue.HasValue)
-                        return false;
+                    yield return _rows[x][y];
                 }
             }
 
-            return true;
         }
 
         private void RedoPossibleValues()
         {
             // reset empty cells to full list of possibles
-            foreach (var row in _rows)
+            foreach (var cell in EnumerateAllCells().Where(c => !c.IntValue.HasValue))
             {
-                foreach (var cell in row.Where(c => !c.IntValue.HasValue))
-                {
-                    var localcell = cell;
-                    localcell.ResetPossibleValues();
+                var localcell = cell;
+                localcell.ResetPossibleValues();
 
-                    foreach (var sibling in _groups.GetGroupsByCell(cell)
-                                                .SelectMany(g => g.ContainedCells)
-                                                .Where(c => c != localcell && c.IntValue.HasValue))
-                    {
-                        localcell.PossibleValues.Remove(sibling.StringValue);
-                    }
+                foreach (var sibling in _groups.GetGroupsByCell(cell)
+                                            .SelectMany(g => g.ContainedCells)
+                                            .Where(c => c != localcell && c.IntValue.HasValue))
+                {
+                    localcell.PossibleValues.Remove(sibling.StringValue);
                 }
+                localcell.UpdatePencilmarkStatus();
             }
         }
 
@@ -167,47 +217,14 @@ namespace SudokuX.UI.Common
                 valueCount.Count = GridSize;
             }
 
-            foreach (var row in _rows)
+            foreach (var cell in EnumerateAllCells())
             {
-                foreach (var cell in row)
+                if (cell.IntValue.HasValue)
                 {
-                    if (cell.IntValue.HasValue)
-                    {
-                        var vc = _valueCounts.Single(x => x.Value == cell.StringValue);
-                        vc.Count--;
-                    }
-
+                    var vc = _valueCounts.Single(x => x.Value == cell.StringValue);
+                    vc.Count--;
                 }
-            }
-        }
 
-        public bool IsValid
-        {
-            get
-            {
-                return _isValidValue;
-            }
-
-            private set
-            {
-                if (_isValidValue != value)
-                {
-                    _isValidValue = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        public bool IsFinished
-        {
-            get { return _isFinished; }
-            set
-            {
-                if (_isFinished != value)
-                {
-                    _isFinished = value;
-                    OnPropertyChanged();
-                }
             }
         }
 
@@ -254,17 +271,6 @@ namespace SudokuX.UI.Common
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        public Cell this[int row, int col]
-        {
-            get
-            {
-                if (row < 0 || row >= GridSize) throw new ArgumentOutOfRangeException("row", row, "Invalid Row Index");
-                if (col < 0 || col >= GridSize) throw new ArgumentOutOfRangeException("col", col, "Invalid Column Index");
-                return _rows[row][col];
-            }
-        }
-
 
         public void StartFilling()
         {

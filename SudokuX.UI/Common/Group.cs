@@ -3,6 +3,10 @@ using SudokuX.Solver.Support;
 
 namespace SudokuX.UI.Common
 {
+    /// <summary>
+    /// A row, column, block or diagonal that contains a set of cells.
+    /// All groups have the same number of cells.
+    /// </summary>
     public class Group
     {
         private readonly List<Cell> _containedCells = new List<Cell>();

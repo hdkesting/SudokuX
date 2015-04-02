@@ -54,6 +54,12 @@ namespace SudokuX.Solver.Support
         /// </value>
         public int ComplexityLevel { get; private set; }
 
+        /// <summary>
+        /// Returns a value indicating whether the to lists contain the same values, not necessarily in the same order.
+        /// </summary>
+        /// <param name="input">The input.</param>
+        /// <param name="check">The check.</param>
+        /// <returns></returns>
         private static bool ListsAreEqual(IList<int> input, IList<int> check)
         {
             if (input.Count != check.Count)
@@ -62,6 +68,13 @@ namespace SudokuX.Solver.Support
             return input.All(check.Contains);
         }
 
+        /// <summary>
+        /// Indicates whether the current object is equal to another object of the same type.
+        /// </summary>
+        /// <param name="other">An object to compare with this object.</param>
+        /// <returns>
+        /// true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.
+        /// </returns>
         public bool Equals(Conclusion other)
         {
             return TargetCell == other.TargetCell &&
@@ -69,6 +82,12 @@ namespace SudokuX.Solver.Support
                 ListsAreEqual(ExcludedValues, other.ExcludedValues);
         }
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table.
+        /// </returns>
         public override int GetHashCode()
         {
             return TargetCell.GetHashCode()

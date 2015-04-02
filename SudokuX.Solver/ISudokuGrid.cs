@@ -4,6 +4,9 @@ using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver
 {
+    /// <summary>
+    /// A sudoku grid.
+    /// </summary>
     public interface ISudokuGrid
     {
         /// <summary>

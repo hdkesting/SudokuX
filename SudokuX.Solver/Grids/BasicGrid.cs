@@ -30,6 +30,10 @@ namespace SudokuX.Solver.Grids
         /// </summary>
         public int MaxValue { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BasicGrid"/> class.
+        /// </summary>
+        /// <param name="size">The size.</param>
         protected BasicGrid(int size)
         {
             _grid = new Cell[size, size];
@@ -49,6 +53,9 @@ namespace SudokuX.Solver.Grids
             Initialize();
         }
 
+        /// <summary>
+        /// Initializes the rows and columns.
+        /// </summary>
         private void Initialize()
         {
             // create groups
@@ -76,12 +83,20 @@ namespace SudokuX.Solver.Grids
             }
         }
 
-
+        /// <summary>
+        /// Gets the cell on a particular row and column.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="column">The column.</param>
+        /// <returns></returns>
         public Cell GetCellByRowColumn(int row, int column)
         {
             return _grid[row, column];
         }
 
+        /// <summary>
+        /// Gets all defined groups of cells.
+        /// </summary>
         public virtual IEnumerable<CellGroup> CellGroups
         {
             get
@@ -160,6 +175,10 @@ namespace SudokuX.Solver.Grids
             return null;
         }
 
+        /// <summary>
+        /// Enumerates all cells.
+        /// </summary>
+        /// <returns></returns>
         public IEnumerable<Cell> AllCells()
         {
             for (int row = 0; row < GridSize; row++)

@@ -5,10 +5,16 @@ using SudokuX.Solver.Support;
 namespace SudokuX.Solver.GridPatterns
 {
     /// <summary>
-    /// Creates a pattern that's mirrored both horizontaly and verticaly.
+    /// Creates a pattern that's mirrored both horizontally and vertically.
     /// </summary>
     public class DoubleMirroredPattern : IGridPattern
     {
+        /// <summary>
+        /// Get a list of positions according to the pattern.
+        /// </summary>
+        /// <param name="start">The start position.</param>
+        /// <param name="gridSize">Size of the grid.</param>
+        /// <returns></returns>
         public IEnumerable<Position> GetSymmetricPositions(Position start, int gridSize)
         {
             var max = gridSize - 1;

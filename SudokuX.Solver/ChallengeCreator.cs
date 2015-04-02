@@ -10,6 +10,9 @@ using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver
 {
+    /// <summary>
+    /// Create a sudoku challenge.
+    /// </summary>
     public class ChallengeCreator
     {
         private readonly BoardSize _boardSize;
@@ -18,6 +21,10 @@ namespace SudokuX.Solver
         private IGridPattern _pattern;
         private List<ISolver> _solvers;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="ChallengeCreator"/> class.
+        /// </summary>
+        /// <param name="boardSize">Size of the board.</param>
         public ChallengeCreator(BoardSize boardSize)
         {
             _boardSize = boardSize;
@@ -26,6 +33,12 @@ namespace SudokuX.Solver
             Setup();
         }
 
+        /// <summary>
+        /// Gets the grid containing the challenge (when done).
+        /// </summary>
+        /// <value>
+        /// The grid.
+        /// </value>
         public ISudokuGrid Grid { get { return _grid; } }
 
         private void Setup()
@@ -43,7 +56,7 @@ namespace SudokuX.Solver
                     break;
 
                 case BoardSize.Board6:
-                    _pattern = new RotationalPattern();
+                    _pattern = new RandomPattern();
                     _solvers = new List<ISolver>
                         {
                             new BasicRule(),
@@ -140,6 +153,10 @@ namespace SudokuX.Solver
 
         public event EventHandler<ProgressEventArgs> Progress;
 
+        /// <summary>
+        /// Creates the challenge.
+        /// </summary>
+        /// <param name="rng">The RNG.</param>
         public void CreateChallenge(Random rng = null)
         {
             if (rng == null)

@@ -3,6 +3,9 @@ using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver.Grids
 {
+    /// <summary>
+    /// Creates a 9x9 grid with square blocks and diagonals.
+    /// </summary>
     public class Grid9X9WithX : Grid9X9
     {
         private CellGroup _diagonal1, _diagonal2;
@@ -15,9 +18,11 @@ namespace SudokuX.Solver.Grids
 
         private void CreateDiags()
         {
+            // add two "diagonal" groups
             _diagonal1 = new CellGroup(GridSize, 1) { Name = "Diagonal NW-SE", GroupType = GroupType.Diagonal };
             _diagonal2 = new CellGroup(GridSize, 2) { Name = "Diagonal SW-NE", GroupType = GroupType.Diagonal };
 
+            // add the existing cells to these groups
             for (int p = 0; p < GridSize; p++)
             {
                 var cell = GetCellByRowColumn(p, p);
@@ -30,6 +35,9 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        /// <summary>
+        /// Gets all defined groups of cells.
+        /// </summary>
         public override IEnumerable<CellGroup> CellGroups
         {
             get

@@ -7,6 +7,7 @@ namespace SudokuX.Solver.Strategies
 {
     /// <summary>
     /// Finds cells that are the only one within a group where some particular value can be.
+    /// That is then the value this cell <b>has</b> to be.
     /// </summary>
     public class HiddenSingle : ISolver
     {

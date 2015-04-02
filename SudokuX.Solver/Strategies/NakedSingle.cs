@@ -6,7 +6,7 @@ using SudokuX.Solver.Support;
 namespace SudokuX.Solver.Strategies
 {
     /// <summary>
-    /// Finds unfilled cells with exactly one possibility.
+    /// Finds unfilled cells with exactly one possibility. That's then the cell's value.
     /// </summary>
     public class NakedSingle : ISolver
     {
@@ -15,20 +15,6 @@ namespace SudokuX.Solver.Strategies
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking NakedSingle");
-            //var list = new List<Conclusion>();
-
-            //for (int r = 0; r < grid.GridSize; r++)
-            //{
-            //    for (int c = 0; c < grid.GridSize; c++)
-            //    {
-            //        var cell = grid.GetCellByRowColumn(r, c);
-            //        if (!cell.HasValue && cell.AvailableValues.Count() == 1)
-            //        {
-            //            Debug.WriteLine("Found naked single {0} in cell {1}", cell.AvailableValues.Single(), cell);
-            //            list.Add(new Conclusion(cell, Complexity) { ExactValue = cell.AvailableValues.Single() });
-            //        }
-            //    }
-            //}
 
             var list = grid.AllCells().ToList()
                 .Where(c => !c.HasValue && c.AvailableValues.Count() == 1)

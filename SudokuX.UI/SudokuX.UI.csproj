@@ -33,7 +33,7 @@
     <PublisherName>Hans Kesting</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
     <WebPage>publish.htm</WebPage>
-    <ApplicationRevision>5</ApplicationRevision>
+    <ApplicationRevision>6</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
     <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -102,6 +102,7 @@
     <Compile Include="Common\Cell.cs" />
     <Compile Include="Common\Group.cs" />
     <Compile Include="Common\GroupCollection.cs" />
+    <Compile Include="Common\PencilValue.cs" />
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Common\ValueCount.cs" />
     <Compile Include="Common\ValueTranslator.cs" />

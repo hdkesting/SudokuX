@@ -9,6 +9,9 @@ using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver.NextPositionStrategies
 {
+    /// <summary>
+    /// Baseclass that tries to find an optimal set of next positions for a challenge.
+    /// </summary>
     public abstract class BaseNextPositionPattern
     {
         private readonly ISudokuGrid _grid;

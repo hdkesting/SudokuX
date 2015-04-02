@@ -25,15 +25,19 @@ namespace SudokuX.UI
         private void NewGame(object sender, RoutedEventArgs e)
         {
             NewGameButton.IsEnabled = false;
+            ShowPencilmarks.IsChecked = false;
+            ShowPencilmarks.IsEnabled = true;
 
             SudokuBoard board = null;
             switch (((ComboBoxItem)BoardSize.SelectedItem).Tag.ToString())
             {
                 case "4x4":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board4);
+                    ShowPencilmarks.IsEnabled = false;
                     break;
                 case "6x6":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board6);
+                    ShowPencilmarks.IsEnabled = false;
                     break;
                 case "9x9":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board9);
@@ -90,13 +94,20 @@ namespace SudokuX.UI
 
         private void ToggleHighlight(object sender, RoutedEventArgs e)
         {
-            var btn = (CheckBox) sender;
+            var btn = (CheckBox)sender;
 
             var val = btn.Tag.ToString();
 
             var board = (SudokuBoard)GridPlaceholder.Child;
 
             board.ToggleHighlight(val, btn.IsChecked.GetValueOrDefault());
+        }
+
+        private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
+        {
+            var board = (SudokuBoard)GridPlaceholder.Child;
+            var btn = (CheckBox)sender;
+            board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
         }
     }
 }

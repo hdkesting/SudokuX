@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace SudokuX.Solver
 {
+    /// <summary>
+    /// A single cell in the sudoku grid.
+    /// </summary>
     public class Cell
     {
         public int Row { get; set; }
@@ -44,13 +47,11 @@ namespace SudokuX.Solver
         public void SetGivenValue(int value)
         {
             _givenValue = value;
-            //EraseAvailableFromGroups(value);
         }
 
         public void SetCalculatedValue(int value)
         {
             _calculatedValue = value;
-            //EraseAvailableFromGroups(value);
         }
 
         public int? GivenValue
@@ -95,16 +96,6 @@ namespace SudokuX.Solver
             {
                 AddToGroup(cellGroup);
             }
-        }
-
-        private bool EraseAvailableFromGroups(int value)
-        {
-            var done = false;
-            foreach (var cellGroup in _groups)
-            {
-                done |= cellGroup.EraseAvailable(value);
-            }
-            return done;
         }
 
         public bool EraseAvailable(int value)

@@ -1,5 +1,8 @@
 ﻿namespace SudokuX.Solver.Grids
 {
+    /// <summary>
+    /// Creates a 6x6 grid with rectangular blocks.
+    /// </summary>
     public class Grid6X6 : RectangularGrid
     {
         public Grid6X6()
@@ -7,42 +10,6 @@
         {
 
         }
-
-        //protected override int GetBlockOrdinalByRowColumn(int row, int column)
-        //{
-        //    /*
-        //     * NW | NE
-        //     * ---+---
-        //     * MW | ME
-        //     * ---+---
-        //     * SW | SE
-        //     */
-
-        //    if (row < 2)
-        //    {
-        //        if (column < 3)
-        //        {
-        //            return 0; // NW
-        //        }
-        //        return 1; // NE
-        //    }
-
-        //    if (row < 4)
-        //    {
-        //        if (column < 3)
-        //        {
-        //            return 2; // MW
-        //        }
-        //        return 3; // ME
-        //    }
-
-        //    if (column < 3)
-        //    {
-        //        return 4; // SW
-        //    }
-        //    return 5; // SE
-
-        //}
 
         public static Grid6X6 LoadFromString(string challenge)
         {

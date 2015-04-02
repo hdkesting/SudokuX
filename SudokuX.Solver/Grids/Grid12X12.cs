@@ -1,7 +1,8 @@
-﻿using System;
-
-namespace SudokuX.Solver.Grids
+﻿namespace SudokuX.Solver.Grids
 {
+    /// <summary>
+    /// Creates a 12x12 grid with rectangular blocks.
+    /// </summary>
     public class Grid12X12 : RectangularGrid
     {
         public Grid12X12()
@@ -10,45 +11,9 @@ namespace SudokuX.Solver.Grids
 
         }
 
-        //protected override int GetBlockOrdinalByRowColumn(int row, int column)
-        //{
-        //    // 0 1 2
-        //    // 3 4 5
-        //    // 6 7 8
-        //    // 9 A B
-        //    if (row < 3)
-        //    {
-        //        if (column < 4)
-        //            return 0;
-        //        if (column < 8)
-        //            return 1;
-        //        return 2;
-        //    }
-
-        //    if (row < 6)
-        //    {
-        //        if (column < 4)
-        //            return 3;
-        //        if (column < 8)
-        //            return 4;
-        //        return 5;
-
-        //    }
-
-        //    if (row < 9)
-        //    {
-        //        if (column < 4)
-        //            return 6;
-        //        if (column < 8)
-        //            return 7;
-        //        return 8;
-        //    }
-
-        //    if (column < 4)
-        //        return 9;
-        //    if (column < 8)
-        //        return 10;
-        //    return 11;
-        //}
+        // 0 1 2
+        // 3 4 5
+        // 6 7 8
+        // 9 A B
     }
 }

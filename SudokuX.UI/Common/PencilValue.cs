@@ -1,35 +1,35 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using SudokuX.UI.Annotations;
 
 namespace SudokuX.UI.Common
 {
     /// <summary>
-    /// A <see cref="Count"/> of the number of cells yet to fill with this <see cref="Value"/>.
+    /// A "possible value" to show on screen.
     /// </summary>
-    public class ValueCount : INotifyPropertyChanged
+    public class PencilValue : INotifyPropertyChanged
     {
-        private int _count;
-
+        private Visibility _visibility;
         public string Value { get; private set; }
 
-        public int Count
+        public Visibility Visibility
         {
-            get { return _count; }
+            get { return _visibility; }
             set
             {
-                if (value != _count)
+                if (value != _visibility)
                 {
-                    _count = value;
+                    _visibility = value;
                     OnPropertyChanged();
                 }
-
             }
         }
 
-        public ValueCount(string value)
+        public PencilValue(string value)
         {
             Value = value;
+            Visibility = Visibility.Visible;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

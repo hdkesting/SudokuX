@@ -4,6 +4,9 @@ using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver
 {
+    /// <summary>
+    /// A full group of cells: a row, column, block (rectangular or not)  or diagonal.
+    /// </summary>
     public class CellGroup
     {
         private readonly List<Cell> _containedCells;

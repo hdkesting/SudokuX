@@ -4,8 +4,17 @@ using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver
 {
+    /// <summary>
+    /// Creates empty grids.
+    /// </summary>
     public static class GridCreator
     {
+        /// <summary>
+        /// Creates a grid of the specified size.
+        /// </summary>
+        /// <param name="size">The size.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ComponentModel.InvalidEnumArgumentException">size</exception>
         public static ISudokuGrid Create(BoardSize size)
         {
             switch (size)
@@ -16,7 +25,7 @@ namespace SudokuX.Solver
                 case BoardSize.Board6:
                     return new Grid6X6();
 
-                    case BoardSize.Board6Irregular:
+                case BoardSize.Board6Irregular:
                     return new Irregular6();
 
                 case BoardSize.Board9:
