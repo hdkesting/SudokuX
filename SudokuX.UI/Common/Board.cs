@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -10,7 +11,7 @@ namespace SudokuX.UI.Common
 {
     public class Board : INotifyPropertyChanged
     {
-        private readonly ObservableCollection<ObservableCollection<Cell>> _rows;
+        private readonly List<List<Cell>> _rows;
         private readonly ObservableCollection<ValueCount> _valueCounts;
 
         private bool _isValidValue = true;
@@ -19,9 +20,10 @@ namespace SudokuX.UI.Common
         private readonly GroupCollection _groups = new GroupCollection();
 
         private bool _filling;
+        private bool _showPencilMarks;
 
 
-        public ObservableCollection<ObservableCollection<Cell>> GridRows
+        public List<List<Cell>> GridRows
         {
             get
             {
@@ -40,6 +42,23 @@ namespace SudokuX.UI.Common
             get { return _valueCounts; }
         }
 
+        public bool ShowPencilMarks
+        {
+            get { return _showPencilMarks; }
+            set
+            {
+                if (_showPencilMarks != value)
+                {
+                    _showPencilMarks = value;
+                    OnPropertyChanged();
+                    foreach (var cell in EnumerateAllCells())
+                    {
+                        cell.ShowPencilMarks = value && !cell.HasValue;
+                    }
+                }
+            }
+        }
+
         /// <summary>
         /// Initializes a new instance of the <see cref="Board" /> class.
         /// </summary>
@@ -51,14 +70,15 @@ namespace SudokuX.UI.Common
             var translator = new ValueTranslator(boardSize);
             GridSize = translator.MaxValue + 1;
 
-            _rows = new ObservableCollection<ObservableCollection<Cell>>();
+            _rows = new List<List<Cell>>();
             for (int row = 0; row < GridSize; row++)
             {
-                ObservableCollection<Cell> cellRow = new ObservableCollection<Cell>();
+                List<Cell> cellRow = new List<Cell>();
                 for (int col = 0; col < GridSize; col++)
                 {
                     Cell c = new Cell(translator);
                     c.PropertyChanged += CellPropertyChanged;
+                    c.Board = this;
                     cellRow.Add(c);
                 }
                 _rows.Add(cellRow);
@@ -117,27 +137,27 @@ namespace SudokuX.UI.Common
 
         private void HighlightBoard()
         {
-            for (int x = 0; x < GridSize; x++)
+            foreach (var cell in EnumerateAllCells())
             {
-                for (int y = 0; y < GridSize; y++)
-                {
-                    _rows[x][y].IsHighlighted = true;
-                }
+                cell.IsHighlighted = true;
             }
         }
 
         private bool IsBoardFinished()
         {
+            return EnumerateAllCells().All(c => c.IntValue.HasValue);
+        }
+
+        private IEnumerable<Cell> EnumerateAllCells()
+        {
             for (int x = 0; x < GridSize; x++)
             {
                 for (int y = 0; y < GridSize; y++)
                 {
-                    if (!_rows[x][y].IntValue.HasValue)
-                        return false;
+                    yield return _rows[x][y];
                 }
             }
 
-            return true;
         }
 
         private void RedoPossibleValues()

@@ -21,10 +21,11 @@
             
             <DataTemplate x:Key="PencilValueTemplate">
                 <ItemsControl ItemsSource="{Binding}">
-                    <Viewbox Margin="1">
-                        <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" 
-                                 FontFamily="Segoe UI Semilight" 
-                                 Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8"></TextBox>
+                    <Viewbox VerticalAlignment="Stretch">
+                            <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" Width="Auto"
+                                 FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Center" VerticalAlignment="Stretch"
+                                 Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8"
+                                 ></TextBox>
                     </Viewbox>
                 </ItemsControl>
             </DataTemplate>
@@ -106,7 +107,8 @@
                                     </TextBlock>
                                 </Viewbox>
                                 <!-- pencil marks -->
-                                <ItemsControl  Grid.Column="0" Grid.Row="0" ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" x:Name ="PencilMarks" IsHitTestVisible="False">
+                                <ItemsControl  Grid.Column="0" Grid.Row="0" ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" 
+                                               x:Name ="PencilMarks" IsHitTestVisible="False" Visibility="Hidden">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <UniformGrid Columns ="1" />
@@ -170,6 +172,12 @@
                         <Setter TargetName="Border" Property="BorderBrush" Value="Gold"></Setter>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding HasValue}" Value="True">
+                        <Setter TargetName="PencilMarks" Property="Visibility" Value="Hidden"></Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ShowPencilMarks}" Value="True">
+                        <Setter TargetName="PencilMarks" Property="Visibility" Value="Visible"></Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding ShowPencilMarks}" Value="False">
                         <Setter TargetName="PencilMarks" Property="Visibility" Value="Hidden"></Setter>
                     </DataTrigger>
                 </DataTemplate.Triggers>

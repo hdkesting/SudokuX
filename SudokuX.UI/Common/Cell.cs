@@ -12,14 +12,18 @@ namespace SudokuX.UI.Common
     public class Cell : INotifyPropertyChanged
     {
         private readonly int _maxval;
+        private readonly ValueTranslator _translator;
+        private readonly List<List<PencilValue>> _pencilRows;
         public event PropertyChangedEventHandler PropertyChanged;
 
         bool _readOnlyValue;
         int? _valueValue;
         bool _isValidValue = true;
         private bool _isHighlightd;
-        private Color _backColor = Colors.DarkOliveGreen;
-        private readonly ValueTranslator _translator;
+        private Color _backColor = Colors.Transparent;
+        private bool _showPencilMarks;
+        private bool _hasValue;
+
 
         readonly ObservableCollection<string> _possibleValuesValue;
 
@@ -29,7 +33,7 @@ namespace SudokuX.UI.Common
             _maxval = _translator.MaxValue;
             _possibleValuesValue = new ObservableCollection<string>();
 
-            _pencilRows = new ObservableCollection<ObservableCollection<PencilValue>>();
+            _pencilRows = new List<List<PencilValue>>();
             FillPencilValues();
         }
 
@@ -63,7 +67,7 @@ namespace SudokuX.UI.Common
 
             for (int y = 0; y < h; y++)
             {
-                var row = new ObservableCollection<PencilValue>();
+                var row = new List<PencilValue>();
                 _pencilRows.Add(row);
                 for (int x = 0; x < w; x++)
                 {
@@ -80,7 +84,7 @@ namespace SudokuX.UI.Common
             Action<string> add = v =>
                 {
                     //if (!_possibleValuesValue.Contains(v))
-                        _possibleValuesValue.Add(v);
+                    _possibleValuesValue.Add(v);
                 };
 
             add(String.Empty);
@@ -133,9 +137,6 @@ namespace SudokuX.UI.Common
             }
         }
 
-        private bool _hasValue;
-        private readonly ObservableCollection<ObservableCollection<PencilValue>> _pencilRows;
-
         public bool HasValue
         {
             get { return _hasValue; }
@@ -145,6 +146,10 @@ namespace SudokuX.UI.Common
                 {
                     _hasValue = value;
                     OnPropertyChanged();
+                    if (_hasValue)
+                    {
+                        ShowPencilMarks = false;
+                    }
                 }
             }
         }
@@ -192,7 +197,7 @@ namespace SudokuX.UI.Common
             }
         }
 
-        public ObservableCollection<ObservableCollection<PencilValue>> PencilRows
+        public List<List<PencilValue>> PencilRows
         {
             get { return _pencilRows; }
         }
@@ -212,6 +217,21 @@ namespace SudokuX.UI.Common
                 if (_backColor != value)
                 {
                     _backColor = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public Board Board { get; set; }
+
+        public bool ShowPencilMarks
+        {
+            get { return _showPencilMarks; }
+            set
+            {
+                if (value != _showPencilMarks)
+                {
+                    _showPencilMarks = value;
                     OnPropertyChanged();
                 }
             }

@@ -36,7 +36,7 @@
             <Expander IsExpanded ="True" Header ="New Game Settings">
                 <Border Margin="5" Padding="10" Background="#18FFFFFF">
                     <StackPanel>
-                        <TextBlock>Board Size:</TextBlock>
+                        <TextBlock Foreground="Black">Board Size:</TextBlock>
 
                         <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
                             <ComboBoxItem Tag="4x4">4×4</ComboBoxItem>
@@ -48,6 +48,9 @@
                             <ComboBoxItem Tag="12x12">12×12</ComboBoxItem>
                             <ComboBoxItem Tag="16x16">16×16</ComboBoxItem>
                         </ComboBox>
+                        
+                        <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
+                                 Margin="3" VerticalAlignment="Center">Show pencilmarks</CheckBox>
                     </StackPanel>
                 </Border>
             </Expander>
