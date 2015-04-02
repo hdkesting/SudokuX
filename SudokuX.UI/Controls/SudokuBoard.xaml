@@ -23,7 +23,7 @@
                 <ItemsControl ItemsSource="{Binding}">
                     <Viewbox VerticalAlignment="Stretch">
                             <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" Width="Auto"
-                                 FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Center" VerticalAlignment="Stretch"
+                                 FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
                                  Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8"
                                  ></TextBox>
                     </Viewbox>
@@ -111,7 +111,7 @@
                                                x:Name ="PencilMarks" IsHitTestVisible="False" Visibility="Hidden">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
-                                            <UniformGrid Columns ="1" />
+                                            <UniformGrid Columns="1" />
                                         </ItemsPanelTemplate>
                                     </ItemsControl.ItemsPanel>
                                 </ItemsControl>

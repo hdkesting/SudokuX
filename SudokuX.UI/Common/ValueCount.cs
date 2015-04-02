@@ -4,6 +4,9 @@ using SudokuX.UI.Annotations;
 
 namespace SudokuX.UI.Common
 {
+    /// <summary>
+    /// A <see cref="Count"/> of the number of cells yet to fill with this <see cref="Value"/>.
+    /// </summary>
     public class ValueCount : INotifyPropertyChanged
     {
         private int _count;

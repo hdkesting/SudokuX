@@ -5,6 +5,9 @@ using SudokuX.UI.Annotations;
 
 namespace SudokuX.UI.Common
 {
+    /// <summary>
+    /// A "possible value" to show on screen.
+    /// </summary>
     public class PencilValue : INotifyPropertyChanged
     {
         private Visibility _visibility;

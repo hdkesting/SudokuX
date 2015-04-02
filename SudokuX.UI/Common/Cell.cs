@@ -80,18 +80,11 @@ namespace SudokuX.UI.Common
         public void ResetPossibleValues()
         {
             _possibleValuesValue.Clear();
-
-            Action<string> add = v =>
-                {
-                    //if (!_possibleValuesValue.Contains(v))
-                    _possibleValuesValue.Add(v);
-                };
-
-            add(String.Empty);
+            _possibleValuesValue.Add(String.Empty);
 
             for (int i = 0; i <= _maxval; i++)
             {
-                add(_translator.ToChar(i));
+                _possibleValuesValue.Add(_translator.ToChar(i));
             }
         }
 
