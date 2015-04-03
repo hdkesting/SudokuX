@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -7,6 +6,7 @@ using System.Linq;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using SudokuX.Solver;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
@@ -40,6 +40,7 @@ namespace SudokuX.UI.Controls
             set { _gameBoard.ShowPencilMarks = value; }
         }
 
+        public BoardSize BoardSize { get { return _boardSize; } }
 
         public void Create()
         {
@@ -53,13 +54,21 @@ namespace SudokuX.UI.Controls
             _boardCreator.RunWorkerAsync();
             MainList.DataContext = _gameBoard;
             ValueCounts = _gameBoard.ValueCounts;
+
+            _gameBoard.BoardIsFinished += _gameBoard_BoardIsFinished;
+        }
+
+        void _gameBoard_BoardIsFinished(object sender, EventArgs e)
+        {
+            var sb = (Storyboard)this.FindResource("FinishAnimation");
+            sb.Begin();
         }
 
         public event EventHandler<ProgressChangedEventArgs> Progress;
 
-        public event EventHandler<EventArgs> Done;
+        public event EventHandler<EventArgs> DoneCreating;
 
-        void _boardCreator_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        private void _boardCreator_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             Debug.WriteLine("=========================== {0}% ===========================", e.ProgressPercentage);
             var progress = Progress;
@@ -81,7 +90,7 @@ namespace SudokuX.UI.Controls
 
             Cursor = Cursors.Arrow;
 
-            var done = Done;
+            var done = DoneCreating;
             if (done != null)
             {
                 done(sender, new EventArgs());
@@ -182,6 +191,10 @@ namespace SudokuX.UI.Controls
                     if (cell.StringValue == val)
                     {
                         cell.IsHighlighted = highlight;
+                    }
+                    else if (!cell.HasValue)
+                    {
+                        cell.IsHighlighted = false;
                     }
                 }
             }

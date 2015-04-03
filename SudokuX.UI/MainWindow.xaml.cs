@@ -1,7 +1,8 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
-using SudokuX.UI.Common;
 using SudokuX.UI.Controls;
 
 namespace SudokuX.UI
@@ -15,6 +16,8 @@ namespace SudokuX.UI
         {
             InitializeComponent();
             NewGame(null, null);
+
+            SetLanguageDictionary();
         }
 
         void QuitClicked(object sender, RoutedEventArgs e)
@@ -33,11 +36,11 @@ namespace SudokuX.UI
             {
                 case "4x4":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board4);
-                    ShowPencilmarks.IsEnabled = false;
+                    //ShowPencilmarks.IsEnabled = false;
                     break;
                 case "6x6":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board6);
-                    ShowPencilmarks.IsEnabled = false;
+                    //ShowPencilmarks.IsEnabled = false;
                     break;
                 case "9x9":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board9);
@@ -62,8 +65,8 @@ namespace SudokuX.UI
             if (board != null)
             {
                 GridPlaceholder.Child = board;
-                //board.Progress += board_Progress;
-                board.Done += board_Done;
+
+                board.DoneCreating += board_Done;
                 CreationProgress.Visibility = Visibility.Visible;
                 CreationProgress.IsIndeterminate = true;
                 board.Create();
@@ -71,26 +74,12 @@ namespace SudokuX.UI
             }
         }
 
-        void board_Done(object sender, System.EventArgs e)
+        void board_Done(object sender, EventArgs e)
         {
             CreationProgress.IsIndeterminate = true;
             CreationProgress.Visibility = Visibility.Hidden;
             NewGameButton.IsEnabled = true;
         }
-
-        //void board_Progress(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        //{
-        //    if (CreationProgress.Value > e.ProgressPercentage)
-        //    {
-        //        CreationProgress.IsIndeterminate = true;
-        //        CreationProgress.Value -= 0.1;
-        //    }
-        //    else
-        //    {
-        //        CreationProgress.IsIndeterminate = false;
-        //        CreationProgress.Value = e.ProgressPercentage;
-        //    }
-        //}
 
         private void ToggleHighlight(object sender, RoutedEventArgs e)
         {
@@ -106,8 +95,36 @@ namespace SudokuX.UI
         private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
         {
             var board = (SudokuBoard)GridPlaceholder.Child;
+
+            if (board.BoardSize == Solver.Support.Enums.BoardSize.Board4 ||
+                board.BoardSize == Solver.Support.Enums.BoardSize.Board6)
+            {
+                string msg = dict["ShowPencil-TooEasy"].ToString();
+                MessageBox.Show(msg);
+                return;
+            }
+
             var btn = (CheckBox)sender;
             board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
+        }
+
+        private ResourceDictionary dict;
+        private void SetLanguageDictionary()
+        {
+            // http://www.codeproject.com/Articles/123460/Simplest-Way-to-Implement-Multilingual-WPF-Applica
+            dict = new ResourceDictionary();
+
+            var cult = Thread.CurrentThread.CurrentCulture.ToString();
+            if (cult.StartsWith("nl"))
+            {
+                dict.Source = new Uri(@"Resources/StringResources.nl.xaml", UriKind.Relative);
+            }
+            else
+            {
+                dict.Source = new Uri(@"Resources/StringResources.xaml", UriKind.Relative);
+            }
+
+            Resources.MergedDictionaries.Add(dict);
         }
     }
 }

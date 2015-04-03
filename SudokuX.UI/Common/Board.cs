@@ -20,6 +20,7 @@ namespace SudokuX.UI.Common
         private bool _filling;
         private bool _showPencilMarks;
 
+        public event EventHandler<EventArgs> BoardIsFinished;
 
         public List<List<Cell>> GridRows { get { return _rows; } }
 
@@ -140,6 +141,11 @@ namespace SudokuX.UI.Common
             ResetInvalid();
             bool valid = true;
 
+            RecalculateCounts();
+
+            // redo all "PossibleValues" for entire grid (maybe the value was reset, maybe it was changed - in both cases you need to get rid of the old values)
+            RedoPossibleValues();
+
             foreach (var grp in Groups.AllGroups)
             {
                 if (!GroupIsValid(grp))
@@ -152,18 +158,20 @@ namespace SudokuX.UI.Common
                 }
             }
 
-            RecalculateCounts();
-
-            // redo all "PossibleValues" for entire grid (maybe the value was reset, maybe it was changed - in both cases you need to get rid of the old values)
-            RedoPossibleValues();
-
             IsValid = valid;
 
             IsFinished = IsValid && IsBoardFinished();
 
             if (IsFinished)
             {
-                HighlightBoard();
+                // HighlightBoard();
+
+                var done = BoardIsFinished;
+                if (done != null)
+                {
+                    done(this, new EventArgs());
+                }
+
             }
         }
 
@@ -230,13 +238,11 @@ namespace SudokuX.UI.Common
 
         private void ResetInvalid()
         {
-            foreach (var row in _rows)
+            foreach (var cell in EnumerateAllCells())
             {
-                foreach (var cell in row)
-                {
-                    cell.IsValid = true;
-                }
+                cell.IsValid = true;
             }
+
             _isValidValue = true;
         }
 
@@ -254,6 +260,13 @@ namespace SudokuX.UI.Common
                     }
 
                     used[cell.IntValue.Value] = true;
+                }
+                else
+                {
+                    if (cell.PossibleValues.Count == 0)
+                    {
+                        return false;
+                    }
                 }
             }
 
