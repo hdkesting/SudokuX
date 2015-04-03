@@ -12,7 +12,7 @@
         VerticalContentAlignment ="Stretch"
         Foreground="White"
         >
-    <Grid Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" >
+    <Grid Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" x:Name="MainGrid" >
         <Grid.Resources>
             <LinearGradientBrush x:Key="BoardBackground" StartPoint="0,0" EndPoint="1,0">
                 <GradientStop Offset="0" Color="LightGray" x:Name="GradientStart"/>
@@ -193,6 +193,7 @@
                 </ItemsControl>
 
             </DataTemplate>
+            
         </Grid.Resources>
         <ItemsControl  ItemTemplate ="{StaticResource RowTemplate}" ItemsSource ="{Binding Path=GridRows}" x:Name ="MainList">
             <ItemsControl.ItemsPanel>
@@ -202,9 +203,9 @@
             </ItemsControl.ItemsPanel>
          </ItemsControl>
     </Grid>
-    <!--<UserControl.Triggers>
-        <DataTrigger Binding="{Binding IsFinished}" Value="True">
-            <Setter TargetName="(Grid.GradientStart)" Property="Color" Value="Red"></Setter>
-        </DataTrigger>
-    </UserControl.Triggers>-->
+    <UserControl.Resources>
+        <Storyboard x:Key="FinishAnimation" RepeatBehavior="2x">
+            <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0.1" Duration="0:0:1" AutoReverse="True"></DoubleAnimation>
+        </Storyboard>
+    </UserControl.Resources>
 </UserControl>

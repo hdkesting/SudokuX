@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
-using SudokuX.UI.Common;
 using SudokuX.UI.Controls;
 
 namespace SudokuX.UI
@@ -62,8 +61,8 @@ namespace SudokuX.UI
             if (board != null)
             {
                 GridPlaceholder.Child = board;
-                //board.Progress += board_Progress;
-                board.Done += board_Done;
+
+                board.DoneCreating += board_Done;
                 CreationProgress.Visibility = Visibility.Visible;
                 CreationProgress.IsIndeterminate = true;
                 board.Create();
@@ -71,26 +70,12 @@ namespace SudokuX.UI
             }
         }
 
-        void board_Done(object sender, System.EventArgs e)
+        void board_Done(object sender, EventArgs e)
         {
             CreationProgress.IsIndeterminate = true;
             CreationProgress.Visibility = Visibility.Hidden;
             NewGameButton.IsEnabled = true;
         }
-
-        //void board_Progress(object sender, System.ComponentModel.ProgressChangedEventArgs e)
-        //{
-        //    if (CreationProgress.Value > e.ProgressPercentage)
-        //    {
-        //        CreationProgress.IsIndeterminate = true;
-        //        CreationProgress.Value -= 0.1;
-        //    }
-        //    else
-        //    {
-        //        CreationProgress.IsIndeterminate = false;
-        //        CreationProgress.Value = e.ProgressPercentage;
-        //    }
-        //}
 
         private void ToggleHighlight(object sender, RoutedEventArgs e)
         {
