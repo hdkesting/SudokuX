@@ -32,11 +32,11 @@ namespace SudokuX.UI
             {
                 case "4x4":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board4);
-                    ShowPencilmarks.IsEnabled = false;
+                    //ShowPencilmarks.IsEnabled = false;
                     break;
                 case "6x6":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board6);
-                    ShowPencilmarks.IsEnabled = false;
+                    //ShowPencilmarks.IsEnabled = false;
                     break;
                 case "9x9":
                     board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board9);
@@ -91,6 +91,14 @@ namespace SudokuX.UI
         private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
         {
             var board = (SudokuBoard)GridPlaceholder.Child;
+
+            if (board.BoardSize == Solver.Support.Enums.BoardSize.Board4 ||
+                board.BoardSize == Solver.Support.Enums.BoardSize.Board6)
+            {
+                MessageBox.Show("This board is too easy. I will not show the pencilmarks.");
+                return;
+            }
+
             var btn = (CheckBox)sender;
             board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
         }

@@ -40,6 +40,7 @@ namespace SudokuX.UI.Controls
             set { _gameBoard.ShowPencilMarks = value; }
         }
 
+        public BoardSize BoardSize { get { return _boardSize; } }
 
         public void Create()
         {
