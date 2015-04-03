@@ -1,0 +1,11 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:system="clr-namespace:System;assembly=mscorlib">
+    <system:String x:Key="ShowPencil-TooEasy">Dit bord is te makkelijk. Ik ga geen mogelijkheden tonen.</system:String>
+    <system:String x:Key="Main-Menu">Hoofdmenu</system:String>
+    <system:String x:Key="New-Game">Start nieuw spel</system:String>
+    <system:String x:Key="Quit">Sluit af</system:String>
+    <system:String x:Key="Board-Size">Bord afmeting:</system:String>
+    <system:String x:Key="Show-Pencilmarks">Toon mogelijkheden</system:String>
+
+</ResourceDictionary>

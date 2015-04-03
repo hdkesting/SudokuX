@@ -25,10 +25,10 @@
             <Expander IsExpanded ="True" Header ="Main Menu">
                 <Border Margin="5" Padding="10" Background="#18FFFFFF">
                     <StackPanel>
-                        <Button Click="NewGame" x:Name="NewGameButton">New Game</Button>
+                        <Button Click="NewGame" x:Name="NewGameButton" Content="{DynamicResource New-Game}"></Button>
                         <Button IsEnabled="False">Load Game</Button>
                         <Button IsEnabled="False">Save Game</Button>
-                        <Button Click="QuitClicked">Quit</Button>
+                        <Button Click="QuitClicked" Content="{DynamicResource Quit}"></Button>
                     </StackPanel>
                 </Border>
             </Expander>
@@ -36,7 +36,7 @@
             <Expander IsExpanded ="True" Header ="New Game Settings">
                 <Border Margin="5" Padding="10" Background="#18FFFFFF">
                     <StackPanel>
-                        <TextBlock Foreground="Black">Board Size:</TextBlock>
+                        <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
 
                         <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
                             <ComboBoxItem Tag="4x4">4×4</ComboBoxItem>
@@ -50,7 +50,7 @@
                         </ComboBox>
                         
                         <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
-                                 Margin="3" VerticalAlignment="Center">Show pencilmarks</CheckBox>
+                                 Margin="3" VerticalAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
                     </StackPanel>
                 </Border>
             </Expander>

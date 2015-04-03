@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using SudokuX.UI.Controls;
@@ -14,6 +16,8 @@ namespace SudokuX.UI
         {
             InitializeComponent();
             NewGame(null, null);
+
+            SetLanguageDictionary();
         }
 
         void QuitClicked(object sender, RoutedEventArgs e)
@@ -95,12 +99,32 @@ namespace SudokuX.UI
             if (board.BoardSize == Solver.Support.Enums.BoardSize.Board4 ||
                 board.BoardSize == Solver.Support.Enums.BoardSize.Board6)
             {
-                MessageBox.Show("This board is too easy. I will not show the pencilmarks.");
+                string msg = dict["ShowPencil-TooEasy"].ToString();
+                MessageBox.Show(msg);
                 return;
             }
 
             var btn = (CheckBox)sender;
             board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
+        }
+
+        private ResourceDictionary dict;
+        private void SetLanguageDictionary()
+        {
+            // http://www.codeproject.com/Articles/123460/Simplest-Way-to-Implement-Multilingual-WPF-Applica
+            dict = new ResourceDictionary();
+
+            var cult = Thread.CurrentThread.CurrentCulture.ToString();
+            if (cult.StartsWith("nl"))
+            {
+                dict.Source = new Uri(@"Resources/StringResources.nl.xaml", UriKind.Relative);
+            }
+            else
+            {
+                dict.Source = new Uri(@"Resources/StringResources.xaml", UriKind.Relative);
+            }
+
+            Resources.MergedDictionaries.Add(dict);
         }
     }
 }
