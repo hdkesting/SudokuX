@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using SudokuX.Solver.Support;
+using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.UI.Common
 {
