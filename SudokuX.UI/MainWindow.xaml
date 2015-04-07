@@ -2,7 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:SudokuX.UI.Controls"
-        Title="Sūdoku X" Height="768" Width="1024" FontSize ="26" FontFamily="Segoe UI Semilight">
+        Title="Sūdoku X" Height="768" Width="1024" FontSize ="20" FontFamily="Segoe UI Semilight">
 
     <Window.Background>
         <RadialGradientBrush GradientOrigin="0.5,0.5">
@@ -13,14 +13,14 @@
     </Window.Background>
     <DockPanel >
 
-        <!-- title -->
+        <!-- title (top) -->
         <TextBlock DockPanel.Dock ="Top" HorizontalAlignment="Center" FontSize="48" Foreground="Azure" Text="Sūdoku X">
             <TextBlock.BitmapEffect>
                 <DropShadowBitmapEffect/>
             </TextBlock.BitmapEffect>
         </TextBlock>
 
-        <!-- menu -->
+        <!-- menu (on the left) -->
         <StackPanel DockPanel.Dock ="Left">
             <Expander IsExpanded ="True" Header ="Main Menu">
                 <Border Margin="5" Padding="10" Background="#18FFFFFF">
@@ -56,7 +56,7 @@
             </Expander>
         </StackPanel>
 
-        <!-- summary -->
+        <!-- summary (now botton, to be moved to the right) -->
         <ItemsControl x:Name="SummaryPanel" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
@@ -101,12 +101,16 @@
         </ItemsControl>
 
 
-        <!-- progress bar, visible when calculating -->
+        <!-- progress bar, visible when calculating (at the bottom) -->
         <StackPanel DockPanel.Dock="Bottom">
             <ProgressBar x:Name="CreationProgress" IsIndeterminate="True" Visibility="Hidden" Minimum="0" Maximum="100" Height="10"></ProgressBar>
         </StackPanel>
 
-        <!-- placeholder for the sudoku grid -->
+        <!-- sidepanel (right) holding buttons -->
+        <StackPanel DockPanel.Dock="Right">
+            <Label >Buttons...</Label>
+        </StackPanel>
+        <!-- placeholder for the sudoku grid (center) -->
         <Border x:Name="GridPlaceholder" Margin="10px"></Border>
 
     </DockPanel>

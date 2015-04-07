@@ -98,7 +98,7 @@ namespace SudokuX.UI.Common
         /// <param name="boardSize">Size of the board.</param>
         public Board(BoardSize boardSize)
         {
-            HasDiagonals = boardSize == BoardSize.Board9X;
+            HasDiagonals = boardSize.HasDiagonals();
 
             var translator = new ValueTranslator(boardSize);
             GridSize = translator.MaxValue + 1;

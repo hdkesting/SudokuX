@@ -1,5 +1,4 @@
-﻿// ReSharper disable once CheckNamespace
-namespace SudokuX.Solver.Support.Enums
+﻿namespace SudokuX.Solver.Support.Enums
 {
     /// <summary>
     /// The size of the board.
