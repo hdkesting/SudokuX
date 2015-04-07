@@ -66,7 +66,7 @@ namespace SudokuX.UI
             {
                 GridPlaceholder.Child = board;
 
-                board.DoneCreating += board_Done;
+                board.DoneCreating += board_DoneCreating;
                 CreationProgress.Visibility = Visibility.Visible;
                 CreationProgress.IsIndeterminate = true;
                 board.Create();
@@ -74,7 +74,7 @@ namespace SudokuX.UI
             }
         }
 
-        void board_Done(object sender, EventArgs e)
+        void board_DoneCreating(object sender, EventArgs e)
         {
             CreationProgress.IsIndeterminate = true;
             CreationProgress.Visibility = Visibility.Hidden;

@@ -11,8 +11,11 @@ namespace SudokuX.UI.Common
     {
         private readonly string _chars;
         private readonly int _max;
+
         public ValueTranslator(BoardSize size)
         {
+            BoardSize = size;
+
             switch (size)
             {
                 case BoardSize.Board4:
@@ -44,6 +47,8 @@ namespace SudokuX.UI.Common
         }
 
         public int MaxValue { get { return _max; } }
+
+        public BoardSize BoardSize { get; private set; }
 
         /// <summary>
         /// Convert the 0-based value to a character.
