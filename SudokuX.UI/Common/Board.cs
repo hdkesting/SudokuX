@@ -146,6 +146,11 @@ namespace SudokuX.UI.Common
             // redo all "PossibleValues" for entire grid (maybe the value was reset, maybe it was changed - in both cases you need to get rid of the old values)
             RedoPossibleValues();
 
+            foreach (var cell in EnumerateAllCells())
+            {
+                cell.IsValid = cell.HasValue || cell.PossibleValues.Count > 1; // there's always an "empty"
+            }
+
             foreach (var grp in Groups.AllGroups)
             {
                 if (!GroupIsValid(grp))
@@ -260,13 +265,6 @@ namespace SudokuX.UI.Common
                     }
 
                     used[cell.IntValue.Value] = true;
-                }
-                else
-                {
-                    if (cell.PossibleValues.Count == 0)
-                    {
-                        return false;
-                    }
                 }
             }
 
