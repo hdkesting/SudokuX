@@ -155,7 +155,7 @@ namespace SudokuX.UI.Controls
 
                     var block = challcell.ContainingGroups.First(g => g.GroupType == GroupType.Block);
                     Color color = Utils.FromHsla(block.Ordinal * 0.15, 0.7, 0.7, 1.0);
-                    if (_boardSize == BoardSize.Board9Irregular || _boardSize == BoardSize.Board6Irregular)
+                    if (_boardSize.IsIrregular())
                     {
                         color = Utils.FromHsla(block.Ordinal * 0.22, 0.9, 0.5, 1.0);
                     }

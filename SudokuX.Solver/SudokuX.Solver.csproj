@@ -67,7 +67,8 @@
     <Compile Include="GridPatterns\IGridPattern.cs" />
     <Compile Include="Strategies\BasicRule.cs" />
     <Compile Include="Support\EnumerableExtensions.cs" />
-    <Compile Include="Support\Enums.cs" />
+    <Compile Include="Support\Enums\EnumExtensions.cs" />
+    <Compile Include="Support\Enums\Enums.cs" />
     <Compile Include="Support\GroupType.cs" />
     <Compile Include="Support\PerformanceMeasurement.cs" />
     <Compile Include="Support\Position.cs" />
