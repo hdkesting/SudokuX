@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Annotations;
 
 namespace SudokuX.UI.Common
@@ -39,31 +40,8 @@ namespace SudokuX.UI.Common
 
         private void FillPencilValues()
         {
-            int w;
-            int h;
-
-            switch (_translator.MaxValue)
-            {
-                case 3: // 4x4
-                    w = h = 2;
-                    break;
-                case 5: // 6x6
-                    w = 3;
-                    h = 2;
-                    break;
-                case 8: // 9x9
-                    w = h = 3;
-                    break;
-                case 11: // 12x12
-                    w = 4;
-                    h = 3;
-                    break;
-                case 15: // 16x16
-                    w = h = 4;
-                    break;
-                default:
-                    throw new InvalidOperationException("Unknown max value: " + _translator.MaxValue);
-            }
+            int w = _translator.BoardSize.BlockWidth();
+            int h = _translator.BoardSize.BlockHeight();
 
             for (int y = 0; y < h; y++)
             {
