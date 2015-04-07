@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using SudokuX.Solver.Support;
+using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver
 {
