@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -198,6 +199,12 @@ namespace SudokuX.UI.Controls
                     }
                 }
             }
+        }
+
+        private void CellButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("CellButton_OnClick");
+            e.Handled = true;
         }
     }
 }

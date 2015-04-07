@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Controls;
 
 namespace SudokuX.UI
@@ -70,8 +73,26 @@ namespace SudokuX.UI
                 CreationProgress.Visibility = Visibility.Visible;
                 CreationProgress.IsIndeterminate = true;
                 board.Create();
-                SummaryPanel.ItemsSource = board.ValueCounts;
+                //SummaryPanel.ItemsSource = board.ValueCounts;
+                ButtonPanel.ItemsSource = SplitInRows(board.ValueCounts, board.BoardSize);
             }
+        }
+
+        private List<List<T>> SplitInRows<T>(IList<T> list, BoardSize boardSize)
+        {
+            var result = new List<List<T>>();
+
+            var width = boardSize.BlockWidth();
+            var height = boardSize.BlockHeight();
+
+            for (int r = 0; r < height; r++)
+            {
+                var line = new List<T>();
+                line.AddRange(list.Skip(r * width).Take(width));
+                result.Add(line);
+            }
+
+            return result;
         }
 
         void board_DoneCreating(object sender, EventArgs e)
@@ -81,16 +102,16 @@ namespace SudokuX.UI
             NewGameButton.IsEnabled = true;
         }
 
-        private void ToggleHighlight(object sender, RoutedEventArgs e)
-        {
-            var btn = (CheckBox)sender;
+        //private void ToggleHighlight(object sender, RoutedEventArgs e)
+        //{
+        //    var btn = (CheckBox)sender;
 
-            var val = btn.Tag.ToString();
+        //    var val = btn.Tag.ToString();
 
-            var board = (SudokuBoard)GridPlaceholder.Child;
+        //    var board = (SudokuBoard)GridPlaceholder.Child;
 
-            board.ToggleHighlight(val, btn.IsChecked.GetValueOrDefault());
-        }
+        //    board.ToggleHighlight(val, btn.IsChecked.GetValueOrDefault());
+        //}
 
         private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
         {
@@ -125,6 +146,18 @@ namespace SudokuX.UI
             }
 
             Resources.MergedDictionaries.Add(dict);
+        }
+
+        private void GameWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
+        {
+            MessageBox.Show("GameWindow_OnMouseDown");
+            e.Handled = true;
+        }
+
+        private void SelectButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("SelectButton_OnClick");
+            e.Handled = true;
         }
     }
 }
