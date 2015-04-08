@@ -22,10 +22,10 @@
             <DataTemplate x:Key="PencilValueTemplate">
                 <ItemsControl ItemsSource="{Binding}">
                     <Viewbox VerticalAlignment="Stretch">
-                            <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" Width="Auto"
-                                 FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
-                                 Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8"
-                                 ></TextBox>
+                        <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" Width="Auto"
+                                FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
+                                Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8" 
+                                ></TextBox>
                     </Viewbox>
                 </ItemsControl>
             </DataTemplate>
@@ -42,102 +42,85 @@
             </DataTemplate>
             <!-- CellTemplate -->
             <DataTemplate x:Key ="CellTemplate">
-                <Grid>
+                <Button Click="CellButton_OnClick" Tag="{Binding Tag}">
+                    <Grid>
 
-                    <!-- mouseover effect -->
-                    <Rectangle RadiusX="7" RadiusY ="7" x:Name ="HoverMask" IsHitTestVisible ="False" Fill ="AliceBlue" Opacity ="0"/>
+                        <!-- mouseover effect -->
+                        <Rectangle RadiusX="7" RadiusY ="7" x:Name ="HoverMask" IsHitTestVisible ="False" Fill ="AliceBlue" Opacity ="0"/>
 
-                    <!-- invulling -->
-                    <Rectangle x:Name ="GlassWindow" IsHitTestVisible ="False" >
-                        <Rectangle.Fill>
-                            <DrawingBrush>
-                                <DrawingBrush.Drawing>
-                                    <DrawingGroup>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Brush>
-                                                <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
-                                                    <GradientStop Color ="Transparent" Offset ="0"/>
-                                                    <GradientStop Color ="{Binding Path=BlockColor}" Offset ="1"/>
-                                                </LinearGradientBrush>
-                                            </GeometryDrawing.Brush>
-                                            <GeometryDrawing.Geometry>
-                                                <RectangleGeometry Rect ="0,0,1,1"/>
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                        <GeometryDrawing>
-                                            <GeometryDrawing.Brush>
-                                                <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
-                                                    <GradientStop Color ="#88FFFFFF" Offset ="0"/>
-                                                    <GradientStop Color ="#33FFFFFF" Offset ="1"/>
-                                                </LinearGradientBrush>
-                                            </GeometryDrawing.Brush>
-                                            <GeometryDrawing.Geometry>
-                                                <RectangleGeometry RadiusX="0.1" RadiusY ="0.1" Rect ="0.05,0.05,0.9,0.45"/>
-                                            </GeometryDrawing.Geometry>
-                                        </GeometryDrawing>
-                                    </DrawingGroup>
-                                </DrawingBrush.Drawing>
-                            </DrawingBrush>
-                        </Rectangle.Fill>
-                    </Rectangle>
-                    <Border  BorderThickness="2" CornerRadius="2">
-                        <Border.BorderBrush>
-                            <SolidColorBrush x:Name="OuterBorderColor" Color="Transparent"></SolidColorBrush>
-                        </Border.BorderBrush>
-                        <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="4">
-                            <Border.Background>
-                                <LinearGradientBrush Opacity ="0.2" StartPoint ="0,0" EndPoint ="0,1">
-                                    <GradientStop Color ="DimGray" Offset ="0"/>
-                                    <GradientStop Color ="White" Offset ="0.5"/>
-                                    <GradientStop Color ="DimGray" Offset ="1"/>
-                                </LinearGradientBrush>
-                            </Border.Background>
-                            <Grid>
-                                <Viewbox Grid.Column="0" Grid.Row="0">
-                                <!-- gekozen of gegeven waarde -->
-                                    <TextBlock x:Name ="TextBlock" Focusable ="False" HorizontalAlignment ="Center" VerticalAlignment ="Center" FontWeight ="Bold" 
+                        <!-- invulling -->
+                        <Rectangle x:Name ="GlassWindow" IsHitTestVisible ="False" >
+                            <Rectangle.Fill>
+                                <DrawingBrush>
+                                    <DrawingBrush.Drawing>
+                                        <DrawingGroup>
+                                            <GeometryDrawing>
+                                                <GeometryDrawing.Brush>
+                                                    <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
+                                                        <GradientStop Color ="Transparent" Offset ="0"/>
+                                                        <GradientStop Color ="{Binding Path=BlockColor}" Offset ="1"/>
+                                                    </LinearGradientBrush>
+                                                </GeometryDrawing.Brush>
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect ="0,0,1,1"/>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                            <GeometryDrawing>
+                                                <GeometryDrawing.Brush>
+                                                    <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
+                                                        <GradientStop Color ="#88FFFFFF" Offset ="0"/>
+                                                        <GradientStop Color ="#33FFFFFF" Offset ="1"/>
+                                                    </LinearGradientBrush>
+                                                </GeometryDrawing.Brush>
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry RadiusX="0.1" RadiusY ="0.1" Rect ="0.05,0.05,0.9,0.45"/>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                        </DrawingGroup>
+                                    </DrawingBrush.Drawing>
+                                </DrawingBrush>
+                            </Rectangle.Fill>
+                        </Rectangle>
+                        <Border  BorderThickness="2" CornerRadius="2">
+                            <Border.BorderBrush>
+                                <SolidColorBrush x:Name="OuterBorderColor" Color="Transparent"></SolidColorBrush>
+                            </Border.BorderBrush>
+                            <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="4">
+                                <Border.Background>
+                                    <LinearGradientBrush Opacity ="0.2" StartPoint ="0,0" EndPoint ="0,1">
+                                        <GradientStop Color ="DimGray" Offset ="0"/>
+                                        <GradientStop Color ="White" Offset ="0.5"/>
+                                        <GradientStop Color ="DimGray" Offset ="1"/>
+                                    </LinearGradientBrush>
+                                </Border.Background>
+                                <Grid>
+                                    <Viewbox Grid.Column="0" Grid.Row="0">
+                                        <!-- gekozen of gegeven waarde -->
+                                        <TextBlock x:Name ="TextBlock" Focusable ="False" HorizontalAlignment ="Center" VerticalAlignment ="Center" FontWeight ="Bold" 
                                            Width="Auto" Text ="{Binding Path=StringValue}" FontFamily="Segoe Script">
-                                        <TextBlock.Effect>
-                                            <DropShadowEffect ShadowDepth="5"
+                                            <TextBlock.Effect>
+                                                <DropShadowEffect ShadowDepth="3"
                                                   Color="Black"
                                                   Opacity="0.5"
                                                   BlurRadius="5"
                                                   />
-                                        </TextBlock.Effect>
-                                    </TextBlock>
-                                </Viewbox>
-                                <!-- pencil marks -->
-                                <ItemsControl  Grid.Column="0" Grid.Row="0" ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" 
+                                            </TextBlock.Effect>
+                                        </TextBlock>
+                                    </Viewbox>
+                                    <!-- pencil marks -->
+                                    <ItemsControl  Grid.Column="0" Grid.Row="0" ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" 
                                                x:Name ="PencilMarks" IsHitTestVisible="False" Visibility="Hidden">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <UniformGrid Columns="1" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                </ItemsControl>
-                            </Grid>
-                            <!-- dropdown van te kiezen waarden -->
-                            <Border.ContextMenu>
-                                <ContextMenu>
-                                    <ContextMenu.ItemContainerStyle>
-                                        <Style TargetType ="{x:Type MenuItem}">
-                                            <Setter Property ="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType ="{x:Type MenuItem}">
-                                                        <ContentPresenter x:Name="Header" ContentSource="Header" RecognizesAccessKey="True" />
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ContextMenu.ItemContainerStyle>
-                                    <ListBox BorderThickness="0" Width ="35" Margin ="0" SelectedItem ="{Binding Path=StringValue,Mode=TwoWay}" 
-                                             HorizontalAlignment ="Stretch" VerticalAlignment ="Stretch" FontSize="20"
-                                         DataContext ="{Binding RelativeSource={RelativeSource TemplatedParent},Path=DataContext}" ItemsSource="{Binding Path=PossibleValues}"/>
-                                </ContextMenu>
-                            </Border.ContextMenu>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <UniformGrid Columns="1" />
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
+                                    </ItemsControl>
+                                </Grid>
+                             </Border>
                         </Border>
-                    </Border>
-                </Grid>
+                    </Grid>
+                </Button>
                 <DataTemplate.Triggers>
                     <EventTrigger SourceName ="Border" RoutedEvent ="Control.MouseEnter">
                         <EventTrigger.Actions>
@@ -159,17 +142,21 @@
                             </BeginStoryboard>
                         </EventTrigger.Actions>
                     </EventTrigger>
-                    <DataTrigger Binding ="{Binding ReadOnly}" Value ="True">
+                    <DataTrigger Binding ="{Binding IsReadOnly}" Value ="True">
                         <Setter TargetName ="TextBlock" Property ="Foreground" Value="DarkGreen"/>
-                        <Setter TargetName ="TextBlock" Property ="Effect" Value="{x:Null}"/>
-                        <Setter TargetName ="Border" Property="ContextMenu" Value ="{x:Null}"/>
                         <Setter TargetName ="HoverMask" Property ="Visibility" Value ="Hidden"/>
+                    </DataTrigger>
+                    <DataTrigger Binding ="{Binding IsReadOnly}" Value ="False">
+                        <Setter TargetName ="TextBlock" Property ="Effect" Value="{x:Null}"/>
                     </DataTrigger>
                     <DataTrigger Binding ="{Binding IsValid}" Value ="False">
                         <Setter TargetName ="Border" Property ="BorderBrush" Value="Brown"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                         <Setter TargetName="Border" Property="BorderBrush" Value="Gold"></Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                        <Setter TargetName="Border" Property="Background" Value="Gold"></Setter>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding HasValue}" Value="True">
                         <Setter TargetName="PencilMarks" Property="Visibility" Value="Hidden"></Setter>
@@ -205,7 +192,7 @@
     </Grid>
     <UserControl.Resources>
         <Storyboard x:Key="FinishAnimation" RepeatBehavior="2x">
-            <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0.1" Duration="0:0:1" AutoReverse="True"></DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:2" AutoReverse="True"></DoubleAnimation>
         </Storyboard>
     </UserControl.Resources>
 </UserControl>

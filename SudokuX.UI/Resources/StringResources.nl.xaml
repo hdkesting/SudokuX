@@ -7,5 +7,14 @@
     <system:String x:Key="Quit">Sluit af</system:String>
     <system:String x:Key="Board-Size">Bord afmeting:</system:String>
     <system:String x:Key="Show-Pencilmarks">Toon mogelijkheden</system:String>
+    <system:String x:Key="Grid-4X4">4 × 4</system:String>
+    <system:String x:Key="Grid-6X6">6 × 6</system:String>
+    <system:String x:Key="Grid-Irr6">6×6 Onregelmatig</system:String>
+    <system:String x:Key="Grid-9X9">9 × 9</system:String>
+    <system:String x:Key="Grid-9Diag">9×9 + Diagonaal</system:String>
+    <system:String x:Key="Grid-Irr9">9×9 Onregelmatig</system:String>
+    <system:String x:Key="Grid-12X12">12 × 12</system:String>
+    <system:String x:Key="Grid-16X16">16 × 16</system:String>
+    <system:String x:Key="Congratulations">😎 Gefeliciteerd 🎆</system:String>
 
 </ResourceDictionary>

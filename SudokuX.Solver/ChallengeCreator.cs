@@ -41,6 +41,10 @@ namespace SudokuX.Solver
         /// </value>
         public ISudokuGrid Grid { get { return _grid; } }
 
+        /// <summary>
+        /// Sets up the symmetry pattern and the solvers used (and thus the complexity level).
+        /// </summary>
+        /// <exception cref="System.InvalidOperationException">Unsupported board size.</exception>
         private void Setup()
         {
             switch (_boardSize)
@@ -112,8 +116,8 @@ namespace SudokuX.Solver
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
-                            //new NakedDouble(),
-                            //new HiddenDouble()
+                            new NakedDouble(),
+                            new HiddenDouble()
                         };
                     break;
 

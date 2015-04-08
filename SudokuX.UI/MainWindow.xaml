@@ -2,7 +2,8 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:SudokuX.UI.Controls"
-        Title="Sūdoku X" Height="768" Width="1024" FontSize ="26" FontFamily="Segoe UI Semilight">
+        Title="Sūdoku X" Height="600" Width="1024" FontSize ="20" FontFamily="Segoe UI Semilight"
+        MouseLeftButtonDown="GameWindow_OnMouseDown">
 
     <Window.Background>
         <RadialGradientBrush GradientOrigin="0.5,0.5">
@@ -11,16 +12,16 @@
         </RadialGradientBrush>
 
     </Window.Background>
-    <DockPanel >
+    <DockPanel>
 
-        <!-- title -->
+        <!-- title (top) -->
         <TextBlock DockPanel.Dock ="Top" HorizontalAlignment="Center" FontSize="48" Foreground="Azure" Text="Sūdoku X">
             <TextBlock.BitmapEffect>
                 <DropShadowBitmapEffect/>
             </TextBlock.BitmapEffect>
         </TextBlock>
 
-        <!-- menu -->
+        <!-- menu (on the left) -->
         <StackPanel DockPanel.Dock ="Left">
             <Expander IsExpanded ="True" Header ="Main Menu">
                 <Border Margin="5" Padding="10" Background="#18FFFFFF">
@@ -39,14 +40,14 @@
                         <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
 
                         <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
-                            <ComboBoxItem Tag="4x4">4×4</ComboBoxItem>
-                            <ComboBoxItem Tag="6x6" IsSelected ="True">6×6</ComboBoxItem>
-                            <ComboBoxItem Tag="Irr6">6×6 Irregular</ComboBoxItem>
-                            <ComboBoxItem Tag="9x9">9×9</ComboBoxItem>
-                            <ComboBoxItem Tag="9X">9×9 Cross</ComboBoxItem>
-                            <ComboBoxItem Tag="Irr9">9×9 Irregular</ComboBoxItem>
-                            <ComboBoxItem Tag="12x12">12×12</ComboBoxItem>
-                            <ComboBoxItem Tag="16x16">16×16</ComboBoxItem>
+                            <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}"></ComboBoxItem>
+                            <ComboBoxItem Tag="6x6" Content="{DynamicResource Grid-6X6}" IsSelected="True"></ComboBoxItem>
+                            <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"></ComboBoxItem>
+                            <ComboBoxItem Tag="9x9" Content="{DynamicResource Grid-9X9}"></ComboBoxItem>
+                            <ComboBoxItem Tag="9Diag" Content="{DynamicResource Grid-9Diag}"></ComboBoxItem>
+                            <ComboBoxItem Tag="Irr9" Content="{DynamicResource Grid-Irr9}"></ComboBoxItem>
+                            <ComboBoxItem Tag="12x12" Content="{DynamicResource Grid-12X12}"></ComboBoxItem>
+                            <ComboBoxItem Tag="16x16" Content="{DynamicResource Grid-16X16}"></ComboBoxItem>
                         </ComboBox>
                         
                         <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
@@ -56,58 +57,82 @@
             </Expander>
         </StackPanel>
 
-        <!-- summary -->
-        <ItemsControl x:Name="SummaryPanel" DockPanel.Dock="Bottom" HorizontalAlignment="Center">
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <CheckBox Tag="{Binding Path=Value}" Click="ToggleHighlight">
-                    <Border x:Name="Border"  Height="60" Width="60" BorderBrush="White" BorderThickness="3" CornerRadius="25" Margin="5">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*"></ColumnDefinition>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock Focusable="False" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Value}" FontFamily="Segoe Script" FontSize="26" FontWeight="Bold" Grid.Column="0"></TextBlock>
-                            <Grid Grid.Column="0">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                    <ColumnDefinition Width="*"></ColumnDefinition>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RowDefinitions>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                    <RowDefinition Height="*"></RowDefinition>
-                                </Grid.RowDefinitions>
-                                <Border CornerRadius="5" Background="DarkSlateGray" Grid.Column="2" Grid.Row="2">
-                                    <TextBlock TextAlignment="Center" VerticalAlignment="Center" Focusable="False" Text="{Binding Path=Count}" FontFamily="Segoe UI" FontSize="12" Foreground="WhiteSmoke"></TextBlock>
-                                </Border>
-                            </Grid>
-                        </Grid>
-                    </Border>
-                    </CheckBox>
-                    <DataTemplate.Triggers>
-                        <DataTrigger Binding ="{Binding Count}" Value ="0">
-                            <Setter TargetName ="Border" Property ="BorderBrush" Value="Gray"/>
-                        </DataTrigger>
-                    </DataTemplate.Triggers>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
+        <!-- placeholder for the sudoku grid (center) -->
+        <Grid>
+            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="50" Padding="60" Text="{DynamicResource Congratulations}"></TextBlock>
+            <Border x:Name="GridPlaceholder" Margin="10px" Grid.Column="0" Grid.Row="0"></Border>
+        </Grid>
 
-        </ItemsControl>
-
-
-        <!-- progress bar, visible when calculating -->
+        <!-- progress bar, visible when calculating (at the bottom) -->
         <StackPanel DockPanel.Dock="Bottom">
             <ProgressBar x:Name="CreationProgress" IsIndeterminate="True" Visibility="Hidden" Minimum="0" Maximum="100" Height="10"></ProgressBar>
         </StackPanel>
 
-        <!-- placeholder for the sudoku grid -->
-        <Border x:Name="GridPlaceholder" Margin="10px"></Border>
+        <!-- sidepanel (right) holding buttons -->
+        <StackPanel DockPanel.Dock="Right">
+            <StackPanel.Resources>
+                <DataTemplate x:Key="ButtonTemplate">
+                    <ItemsControl ItemsSource="{Binding}">
+                        <Button Tag="{Binding Path=Value}" Click="SelectButton_OnClick" >
+                            <Border x:Name="Border"  BorderBrush="White" BorderThickness="3" CornerRadius="15" Margin="5" Width="40" Height="40">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Focusable="False" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Value}" 
+                                               FontFamily="Segoe Script" FontSize="16" FontWeight="Bold" Grid.Column="0"></TextBlock>
+                                    <Grid Grid.Column="0" x:Name="Counter">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                            <ColumnDefinition Width="*"></ColumnDefinition>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Border CornerRadius="5" Background="DarkSlateGray" Grid.Column="2" Grid.Row="2">
+                                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Focusable="False" Text="{Binding Path=Count}" FontFamily="Segoe UI" FontSize="10" Foreground="WhiteSmoke"></TextBlock>
+                                        </Border>
+                                    </Grid>
+                                </Grid>
+                            </Border>
+                        </Button>
+                    </ItemsControl>
+                    <DataTemplate.Triggers>
+                        <DataTrigger Binding ="{Binding Count}" Value ="0">
+                            <Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="SpringGreen"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Value}" Value=" ">
+                            <Setter TargetName="Counter" Property="Visibility" Value="Hidden"></Setter>
+                        </DataTrigger>
+                    </DataTemplate.Triggers>
+                </DataTemplate>
+
+                <DataTemplate x:Key="ButtonRowTemplate">
+                    <ItemsControl ItemsSource ="{Binding}" ItemTemplate ="{StaticResource ButtonTemplate}">
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <UniformGrid Rows ="1"/>
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+                </DataTemplate>
+            </StackPanel.Resources>
+
+            <ItemsControl x:Name="ButtonPanel" ItemTemplate="{StaticResource ButtonRowTemplate}" VerticalAlignment="Bottom">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <UniformGrid Columns="1"></UniformGrid>
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+            </ItemsControl>
+
+        </StackPanel>
 
     </DockPanel>
 </Window>

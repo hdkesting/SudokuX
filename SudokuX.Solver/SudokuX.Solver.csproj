@@ -67,8 +67,8 @@
     <Compile Include="GridPatterns\IGridPattern.cs" />
     <Compile Include="Strategies\BasicRule.cs" />
     <Compile Include="Support\EnumerableExtensions.cs" />
-    <Compile Include="Support\Enums.cs" />
-    <Compile Include="Support\GroupType.cs" />
+    <Compile Include="Support\Enums\EnumExtensions.cs" />
+    <Compile Include="Support\Enums\Enums.cs" />
     <Compile Include="Support\PerformanceMeasurement.cs" />
     <Compile Include="Support\Position.cs" />
     <Compile Include="Support\PositionList.cs" />
@@ -90,7 +90,6 @@
     <Compile Include="Strategies\NakedTriple.cs" />
     <Compile Include="Strategies\Solver.cs" />
     <Compile Include="Support\StackExtensions.cs" />
-    <Compile Include="Support\Validity.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
