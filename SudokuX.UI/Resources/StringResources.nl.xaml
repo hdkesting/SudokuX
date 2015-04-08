@@ -15,5 +15,6 @@
     <system:String x:Key="Grid-Irr9">9×9 Onregelmatig</system:String>
     <system:String x:Key="Grid-12X12">12 × 12</system:String>
     <system:String x:Key="Grid-16X16">16 × 16</system:String>
+    <system:String x:Key="Congratulations">😎 Gefeliciteerd 🎆</system:String>
 
 </ResourceDictionary>
