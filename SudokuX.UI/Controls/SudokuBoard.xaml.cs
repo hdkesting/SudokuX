@@ -25,7 +25,7 @@ namespace SudokuX.UI.Controls
 
         private readonly BackgroundWorker _boardCreator = new BackgroundWorker();
         private ISudokuGrid _creatorGrid;
-        private int _counter = 500;
+        private int _counter = 50;
 
         public SudokuBoard(BoardSize boardSize)
         {
@@ -88,7 +88,7 @@ namespace SudokuX.UI.Controls
             }
 
             _counter++;
-            if (_counter % 1000 == 0)
+            if (_counter % 70 == 0)
             {
                 FillBoard();
             }

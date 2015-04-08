@@ -88,7 +88,6 @@ namespace SudokuX.Solver.Strategies
                             //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
                             conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
                             conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
-                            OnProgress();
                         }
                         else
                         {

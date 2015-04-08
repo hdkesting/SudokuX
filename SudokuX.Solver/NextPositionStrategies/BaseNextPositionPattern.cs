@@ -28,7 +28,7 @@ namespace SudokuX.Solver.NextPositionStrategies
             _pattern = pattern;
             _rng = rng;
             _solver = new Strategies.Solver(_grid, solvers);
-            _solver.Progress += SolverProgress;
+            // _solver.Progress += SolverProgress;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -40,6 +40,22 @@ namespace SudokuX.Solver.NextPositionStrategies
             {
                 handler(sender, e);
             }
+        }
+
+        private void OnProgress()
+        {
+            var handler = Progress;
+            if (handler != null)
+            {
+                var e = new ProgressEventArgs
+                {
+                    Calculated = _grid.AllCells().Count(c => c.HasValue),
+                    Given = _grid.AllCells().Count(c => c.GivenValue.HasValue),
+                    Total = _grid.GridSize*_grid.GridSize
+                };
+                handler(this, e);
+            }
+
         }
 
         public int BackTracks { get; private set; }
@@ -108,6 +124,7 @@ namespace SudokuX.Solver.NextPositionStrategies
                         swSelect.Start();
                         SelectExtraGiven();
                         swSelect.Stop();
+                        OnProgress();
                         break;
                 }
             }
