@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Annotations;
 
 namespace SudokuX.UI.Common
@@ -19,7 +20,8 @@ namespace SudokuX.UI.Common
         bool _readOnlyValue;
         int? _valueValue;
         bool _isValidValue = true;
-        private bool _isHighlightd;
+        private bool _isHighlighted;
+        private bool _isSelected;
         private Color _backColor = Colors.Transparent;
         private bool _showPencilMarks;
         private bool _hasValue;
@@ -27,8 +29,9 @@ namespace SudokuX.UI.Common
 
         readonly ObservableCollection<string> _possibleValuesValue;
 
-        public Cell(ValueTranslator translator)
+        public Cell(ValueTranslator translator, string tag)
         {
+            Tag = tag;
             _translator = translator;
             _maxval = _translator.MaxValue;
             _possibleValuesValue = new ObservableCollection<string>();
@@ -39,31 +42,8 @@ namespace SudokuX.UI.Common
 
         private void FillPencilValues()
         {
-            int w;
-            int h;
-
-            switch (_translator.MaxValue)
-            {
-                case 3: // 4x4
-                    w = h = 2;
-                    break;
-                case 5: // 6x6
-                    w = 3;
-                    h = 2;
-                    break;
-                case 8: // 9x9
-                    w = h = 3;
-                    break;
-                case 11: // 12x12
-                    w = 4;
-                    h = 3;
-                    break;
-                case 15: // 16x16
-                    w = h = 4;
-                    break;
-                default:
-                    throw new InvalidOperationException("Unknown max value: " + _translator.MaxValue);
-            }
+            int w = _translator.BoardSize.BlockWidth();
+            int h = _translator.BoardSize.BlockHeight();
 
             for (int y = 0; y < h; y++)
             {
@@ -88,7 +68,9 @@ namespace SudokuX.UI.Common
             }
         }
 
-        public bool ReadOnly
+        public string Tag { get; set; }
+
+        public bool IsReadOnly
         {
             get
             {
@@ -171,16 +153,30 @@ namespace SudokuX.UI.Common
 
         public bool IsHighlighted
         {
-            get { return _isHighlightd; }
+            get { return _isHighlighted; }
             set
             {
-                if (_isHighlightd != value)
+                if (_isHighlighted != value)
                 {
-                    _isHighlightd = value;
+                    _isHighlighted = value;
                     OnPropertyChanged();
                 }
             }
         }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (_isSelected != value)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
 
         public ObservableCollection<string> PossibleValues
         {

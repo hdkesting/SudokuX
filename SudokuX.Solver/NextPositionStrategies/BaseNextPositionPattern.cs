@@ -6,6 +6,7 @@ using System.Linq;
 using SudokuX.Solver.GridPatterns;
 using SudokuX.Solver.Strategies;
 using SudokuX.Solver.Support;
+using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver.NextPositionStrategies
 {

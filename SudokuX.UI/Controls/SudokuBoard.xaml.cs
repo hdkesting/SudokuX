@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -33,7 +34,10 @@ namespace SudokuX.UI.Controls
             _gameBoard = new Board(boardSize);
         }
 
+        public event EventHandler<EventArgs> BoardIsFinished;
+
         public ObservableCollection<ValueCount> ValueCounts { get; private set; }
+
         public bool ShowPencilMarks
         {
             get { return _gameBoard.ShowPencilMarks; }
@@ -60,6 +64,12 @@ namespace SudokuX.UI.Controls
 
         void _gameBoard_BoardIsFinished(object sender, EventArgs e)
         {
+            var fin = BoardIsFinished;
+            if (fin != null)
+            {
+                fin(this, EventArgs.Empty);
+            }
+
             var sb = (Storyboard)this.FindResource("FinishAnimation");
             sb.Begin();
         }
@@ -126,12 +136,12 @@ namespace SudokuX.UI.Controls
                     if (challcell.GivenValue.HasValue)
                     {
                         boardcell.IntValue = challcell.GivenValue.Value - _creatorGrid.MinValue; // make 0-based
-                        boardcell.ReadOnly = true;
+                        boardcell.IsReadOnly = true;
                     }
                     else
                     {
                         boardcell.IntValue = null;
-                        boardcell.ReadOnly = false;
+                        boardcell.IsReadOnly = false;
                     }
                 }
             }
@@ -155,7 +165,7 @@ namespace SudokuX.UI.Controls
 
                     var block = challcell.ContainingGroups.First(g => g.GroupType == GroupType.Block);
                     Color color = Utils.FromHsla(block.Ordinal * 0.15, 0.7, 0.7, 1.0);
-                    if (_boardSize == BoardSize.Board9Irregular || _boardSize == BoardSize.Board6Irregular)
+                    if (_boardSize.IsIrregular())
                     {
                         color = Utils.FromHsla(block.Ordinal * 0.22, 0.9, 0.5, 1.0);
                     }
@@ -181,23 +191,45 @@ namespace SudokuX.UI.Controls
             GC.SuppressFinalize(this);
         }
 
-        public void ToggleHighlight(string val, bool highlight)
+        public event EventHandler<CellClickEventArgs> CellClicked;
+
+        private void CellButton_OnClick(object sender, RoutedEventArgs e)
         {
-            for (int row = 0; row < _creatorGrid.GridSize; row++)
+            var tag = ((Button)sender).Tag.ToString().Split('|');
+            int row = Convert.ToInt32(tag[0]);
+            int col = Convert.ToInt32(tag[1]);
+
+            var cell = _gameBoard[row, col];
+            if (!cell.IsReadOnly) // ignore for given cells
             {
-                for (int col = 0; col < _creatorGrid.GridSize; col++)
+                var evt = CellClicked;
+                if (evt != null)
                 {
-                    var cell = _gameBoard[row, col];
-                    if (cell.StringValue == val)
-                    {
-                        cell.IsHighlighted = highlight;
-                    }
-                    else if (!cell.HasValue)
-                    {
-                        cell.IsHighlighted = false;
-                    }
+                    evt(this, new CellClickEventArgs(row, col));
                 }
             }
+
+            e.Handled = true;
+        }
+
+        public void DeselectAllCells()
+        {
+            _gameBoard.DeselectAllCells();
+        }
+
+        public void SelectCell(int row, int column)
+        {
+            _gameBoard.SelectCell(row, column);
+        }
+
+        public void HighlightValue(string value)
+        {
+            _gameBoard.HighlightValue(value);
+        }
+
+        public void SetCellToValue(int row, int column, string value)
+        {
+            _gameBoard.SetCellToValue(row, column, value);
         }
     }
 }
