@@ -109,7 +109,7 @@ namespace SudokuX.UI.Common
                 List<Cell> cellRow = new List<Cell>();
                 for (int col = 0; col < GridSize; col++)
                 {
-                    Cell c = new Cell(translator);
+                    Cell c = new Cell(translator, String.Format("{0}|{1}", row, col));
                     c.PropertyChanged += CellPropertyChanged;
                     c.Board = this;
                     cellRow.Add(c);
@@ -169,8 +169,6 @@ namespace SudokuX.UI.Common
 
             if (IsFinished)
             {
-                // HighlightBoard();
-
                 var done = BoardIsFinished;
                 if (done != null)
                 {
@@ -180,11 +178,27 @@ namespace SudokuX.UI.Common
             }
         }
 
-        private void HighlightBoard()
+        public void DeselectAllCells()
         {
             foreach (var cell in EnumerateAllCells())
             {
-                cell.IsHighlighted = true;
+                cell.IsHighlighted = false;
+                cell.IsSelected = false;
+            }
+        }
+
+        public void SelectCell(int row, int column)
+        {
+            var cell = this[row, column];
+            cell.IsSelected = true;
+
+            // highlight all cells that share a group with this one
+            foreach (var grp in _groups.Where(g => g.ContainedCells.Contains(cell)))
+            {
+                foreach (var sibling in grp.ContainedCells.Where(c => c != cell))
+                {
+                    sibling.IsHighlighted = true;
+                }
             }
         }
 
@@ -202,7 +216,6 @@ namespace SudokuX.UI.Common
                     yield return _rows[x][y];
                 }
             }
-
         }
 
         private void RedoPossibleValues()
@@ -292,6 +305,23 @@ namespace SudokuX.UI.Common
         {
             _filling = false;
             Recalculate();
+        }
+
+        public void HighlightValue(string value)
+        {
+            foreach (var cell in EnumerateAllCells().Where(c => c.HasValue && c.StringValue == value))
+            {
+                cell.IsHighlighted = true;
+            }
+        }
+
+        public void SetCellToValue(int row, int column, string value)
+        {
+            var cell = this[row, column];
+            if (!cell.IsReadOnly)
+            {
+                cell.StringValue = value;
+            }
         }
     }
 }

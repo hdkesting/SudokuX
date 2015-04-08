@@ -10,6 +10,7 @@ namespace SudokuX.UI.Common
     public class ValueCount : INotifyPropertyChanged
     {
         private int _count;
+        private bool _isSelected;
 
         public string Value { get; private set; }
 
@@ -24,6 +25,19 @@ namespace SudokuX.UI.Common
                     OnPropertyChanged();
                 }
 
+            }
+        }
+
+        public bool IsSelected
+        {
+            get { return _isSelected; }
+            set
+            {
+                if (value != _isSelected)
+                {
+                    _isSelected = value;
+                    OnPropertyChanged();
+                }
             }
         }
 
