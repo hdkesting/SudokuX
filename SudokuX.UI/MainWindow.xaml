@@ -72,13 +72,14 @@
                 <DataTemplate x:Key="ButtonTemplate">
                     <ItemsControl ItemsSource="{Binding}">
                         <Button Tag="{Binding Path=Value}" Click="SelectButton_OnClick" >
-                            <Border x:Name="Border"  BorderBrush="White" BorderThickness="3" CornerRadius="25" Margin="5" Width="60" Height="60">
+                            <Border x:Name="Border"  BorderBrush="White" BorderThickness="3" CornerRadius="15" Margin="5" Width="40" Height="40">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Focusable="False" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Value}" FontFamily="Segoe Script" FontSize="26" FontWeight="Bold" Grid.Column="0"></TextBlock>
-                                    <Grid Grid.Column="0">
+                                    <TextBlock Focusable="False" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Value}" 
+                                               FontFamily="Segoe Script" FontSize="16" FontWeight="Bold" Grid.Column="0"></TextBlock>
+                                    <Grid Grid.Column="0" x:Name="Counter">
                                         <Grid.ColumnDefinitions>
                                             <ColumnDefinition Width="*"></ColumnDefinition>
                                             <ColumnDefinition Width="*"></ColumnDefinition>
@@ -90,7 +91,7 @@
                                             <RowDefinition Height="*"></RowDefinition>
                                         </Grid.RowDefinitions>
                                         <Border CornerRadius="5" Background="DarkSlateGray" Grid.Column="2" Grid.Row="2">
-                                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Focusable="False" Text="{Binding Path=Count}" FontFamily="Segoe UI" FontSize="12" Foreground="WhiteSmoke"></TextBlock>
+                                            <TextBlock TextAlignment="Center" VerticalAlignment="Center" Focusable="False" Text="{Binding Path=Count}" FontFamily="Segoe UI" FontSize="10" Foreground="WhiteSmoke"></TextBlock>
                                         </Border>
                                     </Grid>
                                 </Grid>
@@ -99,7 +100,13 @@
                     </ItemsControl>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding ="{Binding Count}" Value ="0">
-                            <Setter TargetName ="Border" Property ="BorderBrush" Value="Gray"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                            <Setter TargetName="Border" Property="Background" Value="SpringGreen"></Setter>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding Value}" Value=" ">
+                            <Setter TargetName="Counter" Property="Visibility" Value="Hidden"></Setter>
                         </DataTrigger>
                     </DataTemplate.Triggers>
                 </DataTemplate>
@@ -122,6 +129,7 @@
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
+
         </StackPanel>
 
     </DockPanel>

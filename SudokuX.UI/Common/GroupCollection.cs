@@ -1,11 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.UI.Common
 {
-    public class GroupCollection
+    public class GroupCollection : IEnumerable<Group>
     {
         private readonly List<Group> _groups = new List<Group>();
 
@@ -27,6 +28,16 @@ namespace SudokuX.UI.Common
         public IEnumerable<Group> GetGroupsByCell(Cell cell)
         {
             return _groups.Where(g => g.ContainedCells.Any(c => c == cell));
+        }
+
+        public IEnumerator<Group> GetEnumerator()
+        {
+            return _groups.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return ((IEnumerable)_groups).GetEnumerator();
         }
     }
 }

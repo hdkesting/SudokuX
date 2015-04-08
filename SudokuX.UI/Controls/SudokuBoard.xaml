@@ -24,7 +24,7 @@
                     <Viewbox VerticalAlignment="Stretch">
                         <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" Width="Auto"
                                 FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
-                                Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8"
+                                Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8" 
                                 ></TextBox>
                     </Viewbox>
                 </ItemsControl>
@@ -42,7 +42,7 @@
             </DataTemplate>
             <!-- CellTemplate -->
             <DataTemplate x:Key ="CellTemplate">
-                <Button Click="CellButton_OnClick">
+                <Button Click="CellButton_OnClick" Tag="{Binding Tag}">
                     <Grid>
 
                         <!-- mouseover effect -->
@@ -99,7 +99,7 @@
                                         <TextBlock x:Name ="TextBlock" Focusable ="False" HorizontalAlignment ="Center" VerticalAlignment ="Center" FontWeight ="Bold" 
                                            Width="Auto" Text ="{Binding Path=StringValue}" FontFamily="Segoe Script">
                                             <TextBlock.Effect>
-                                                <DropShadowEffect ShadowDepth="5"
+                                                <DropShadowEffect ShadowDepth="3"
                                                   Color="Black"
                                                   Opacity="0.5"
                                                   BlurRadius="5"
@@ -117,26 +117,7 @@
                                         </ItemsControl.ItemsPanel>
                                     </ItemsControl>
                                 </Grid>
-                                <!-- dropdown van te kiezen waarden -->
-                                <Border.ContextMenu>
-                                    <ContextMenu>
-                                        <ContextMenu.ItemContainerStyle>
-                                            <Style TargetType ="{x:Type MenuItem}">
-                                                <Setter Property ="Template">
-                                                    <Setter.Value>
-                                                        <ControlTemplate TargetType ="{x:Type MenuItem}">
-                                                            <ContentPresenter x:Name="Header" ContentSource="Header" RecognizesAccessKey="True" />
-                                                        </ControlTemplate>
-                                                    </Setter.Value>
-                                                </Setter>
-                                            </Style>
-                                        </ContextMenu.ItemContainerStyle>
-                                        <ListBox BorderThickness="0" Width ="35" Margin ="0" SelectedItem ="{Binding Path=StringValue,Mode=TwoWay}" 
-                                             HorizontalAlignment ="Stretch" VerticalAlignment ="Stretch" FontSize="20"
-                                         DataContext ="{Binding RelativeSource={RelativeSource TemplatedParent},Path=DataContext}" ItemsSource="{Binding Path=PossibleValues}"/>
-                                    </ContextMenu>
-                                </Border.ContextMenu>
-                            </Border>
+                             </Border>
                         </Border>
                     </Grid>
                 </Button>
@@ -161,17 +142,21 @@
                             </BeginStoryboard>
                         </EventTrigger.Actions>
                     </EventTrigger>
-                    <DataTrigger Binding ="{Binding ReadOnly}" Value ="True">
+                    <DataTrigger Binding ="{Binding IsReadOnly}" Value ="True">
                         <Setter TargetName ="TextBlock" Property ="Foreground" Value="DarkGreen"/>
-                        <Setter TargetName ="TextBlock" Property ="Effect" Value="{x:Null}"/>
-                        <Setter TargetName ="Border" Property="ContextMenu" Value ="{x:Null}"/>
                         <Setter TargetName ="HoverMask" Property ="Visibility" Value ="Hidden"/>
+                    </DataTrigger>
+                    <DataTrigger Binding ="{Binding IsReadOnly}" Value ="False">
+                        <Setter TargetName ="TextBlock" Property ="Effect" Value="{x:Null}"/>
                     </DataTrigger>
                     <DataTrigger Binding ="{Binding IsValid}" Value ="False">
                         <Setter TargetName ="Border" Property ="BorderBrush" Value="Brown"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                         <Setter TargetName="Border" Property="BorderBrush" Value="Gold"></Setter>
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding IsSelected}" Value="True">
+                        <Setter TargetName="Border" Property="Background" Value="Gold"></Setter>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding HasValue}" Value="True">
                         <Setter TargetName="PencilMarks" Property="Visibility" Value="Hidden"></Setter>
