@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -59,19 +60,25 @@ namespace SudokuX.UI.Controls
             MainList.DataContext = _gameBoard;
             ValueCounts = _gameBoard.ValueCounts;
 
-            _gameBoard.BoardIsFinished += _gameBoard_BoardIsFinished;
+            //_gameBoard.BoardIsFinished += _gameBoard_BoardIsFinished;
+            _gameBoard.PropertyChanged += _gameBoard_PropertyChanged;
         }
 
-        void _gameBoard_BoardIsFinished(object sender, EventArgs e)
+        async void _gameBoard_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var fin = BoardIsFinished;
-            if (fin != null)
-            {
-                fin(this, EventArgs.Empty);
-            }
+            await Task.Yield();
 
-            var sb = (Storyboard)this.FindResource("FinishAnimation");
-            sb.Begin();
+            if (e.PropertyName == "IsFinished" && _gameBoard.IsFinished)
+            {
+                var fin = BoardIsFinished;
+                if (fin != null)
+                {
+                    fin(this, EventArgs.Empty);
+                }
+
+                var sb = (Storyboard)this.FindResource("FinishAnimation");
+                sb.Begin();
+            }
         }
 
         public event EventHandler<ProgressChangedEventArgs> Progress;
@@ -193,8 +200,10 @@ namespace SudokuX.UI.Controls
 
         public event EventHandler<CellClickEventArgs> CellClicked;
 
-        private void CellButton_OnClick(object sender, RoutedEventArgs e)
+        private async void CellButton_OnClick(object sender, RoutedEventArgs e)
         {
+            await Task.Yield();
+
             var tag = ((Button)sender).Tag.ToString().Split('|');
             int row = Convert.ToInt32(tag[0]);
             int col = Convert.ToInt32(tag[1]);

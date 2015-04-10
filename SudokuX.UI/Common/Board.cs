@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Annotations;
 
@@ -20,7 +21,7 @@ namespace SudokuX.UI.Common
         private bool _filling;
         private bool _showPencilMarks;
 
-        public event EventHandler<EventArgs> BoardIsFinished;
+        //public event EventHandler<EventArgs> BoardIsFinished;
 
         public List<List<Cell>> GridRows { get { return _rows; } }
 
@@ -125,8 +126,10 @@ namespace SudokuX.UI.Common
             }
         }
 
-        void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
+        async void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            await Task.Yield();
+
             // check op "Value" changed
             // reset invalid vlag op gehele grid
             // check dan pas rijen en kolommen - markeer hele rij/kolom invalid bij fout
@@ -167,15 +170,15 @@ namespace SudokuX.UI.Common
 
             IsFinished = IsValid && IsBoardFinished();
 
-            if (IsFinished)
-            {
-                var done = BoardIsFinished;
-                if (done != null)
-                {
-                    done(this, new EventArgs());
-                }
+            //if (IsFinished)
+            //{
+            //    var done = BoardIsFinished;
+            //    if (done != null)
+            //    {
+            //        done(this, new EventArgs());
+            //    }
 
-            }
+            //}
         }
 
         public void DeselectAllCells()
