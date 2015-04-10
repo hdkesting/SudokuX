@@ -8,6 +8,11 @@ namespace SudokuX.Solver.Strategies
     /// </summary>
     public interface ISolver
     {
+        /// <summary>
+        /// Processes the grid and returns any helpful conclusions.
+        /// </summary>
+        /// <param name="grid">The grid to process.</param>
+        /// <returns></returns>
         IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid);
     }
 }

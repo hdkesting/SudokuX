@@ -29,6 +29,7 @@ namespace SudokuX.Solver.Strategies
 
         private IEnumerable<Conclusion> FindNakedDoubles(CellGroup cellGroup)
         {
+            // find all cells in the group with exactly two options left
             var doubles = cellGroup.Cells.Where(c => !c.HasValue && c.AvailableValues.Count == 2).ToList();
 
             // if you've processed a->b, then there's no need to process b->a
@@ -37,24 +38,14 @@ namespace SudokuX.Solver.Strategies
             {
                 var localcell = doubles.First();
                 doubles.Remove(localcell);
-                if (localcell.AvailableValues.Count < 2)
-                {
-                    continue;
-                }
 
                 foreach (var possibletwin in doubles)
                 {
-                    if (possibletwin.AvailableValues.Count < 2)
-                    {
-                        continue; // one of the two values has been removed by a previous naked-double in this group
-                    }
-
                     var localtwin = possibletwin;
-                    if (!localcell.AvailableValues.Except(localtwin.AvailableValues).Any())
+                    if (localcell.AvailableValues.All(v => localtwin.AvailableValues.Contains(v)))
                     {
-
-                        // cellen hebben dezelfde twee mogelijke waarden
-                        // dus de anderen uit de groep hebben die waarden niet
+                        // these two cells share the same two possible values
+                        // so the rest in this group can't have these values
 
                         var list = GetExclusions(localcell, localtwin).ToList();
                         if (list.Any())
@@ -73,20 +64,20 @@ namespace SudokuX.Solver.Strategies
 
         private IEnumerable<Conclusion> GetExclusions(Cell cell1, Cell cell2)
         {
+            // all groups that contain these two cells:
             var commongroups = cell1.ContainingGroups.Intersect(cell2.ContainingGroups).ToList();
+
+            // the values of the double:
             var values = cell1.AvailableValues.Union(cell2.AvailableValues).ToList();
 
-            foreach (var cell in commongroups.SelectMany(g => g.Cells).Where(c => c != cell1 && c != cell2).Distinct())
-            {
-                if (!cell.HasValue)
-                {
-                    var todo = cell.AvailableValues.Intersect(values).ToList();
-                    if (todo.Any())
-                    {
-                        yield return new Conclusion(cell, Complexity, todo);
-                    }
-                }
-            }
+            // check all sibling cells for options to remove 
+            return from cell in commongroups
+                                    .SelectMany(g => g.Cells)
+                                    .Where(c => !c.HasValue && c != cell1 && c != cell2)
+                                    .Distinct()
+                   let todo = cell.AvailableValues.Intersect(values).ToList()
+                   where todo.Any()
+                   select new Conclusion(cell, Complexity, todo);
         }
     }
 }

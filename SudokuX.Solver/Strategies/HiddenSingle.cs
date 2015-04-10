@@ -20,6 +20,7 @@ namespace SudokuX.Solver.Strategies
                 .SelectMany(g => HiddenSinglesInGroup(g, grid.MinValue, grid.MaxValue))
                 .Distinct()
                 .ToList();
+            // "distinct" because it may be found in both a row and a column
 
             return list1;
         }

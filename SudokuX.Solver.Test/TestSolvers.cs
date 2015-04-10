@@ -191,6 +191,65 @@ namespace SudokuX.Solver.Test
         }
 
         [TestMethod]
+        public void TestNakedDoubles9()
+        {
+            const string gridstring = @"
+ *-----------*
+ |...|18.|6.3|
+ |..3|.5.|...|
+ |186|.43|75.|
+ |---+---+---|
+ |.1.|...|9.4|
+ |...|...|..6|
+ |6.2|...|.3.|
+ |---+---+---|
+ |.91|4.5|368|
+ |...|.61|495|
+ |465|839|...|
+ *-----------*
+";
+
+            var grid = Grid9X9.LoadFromString(gridstring);
+
+            ISolver solver = new NakedDouble();
+
+            var list = solver.ProcessGrid(grid).ToList();
+
+            // first real naked double found is r3c2/r7c2
+            // conclusions are r0c2 not 7, r4c2 not 7,8 (column)
+            Assert.AreEqual(2, list.Count);
+            Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 7 }));
+            Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 7, 8 }));
+        }
+
+        [TestMethod]
+        public void TestHiddenDoubles9()
+        {
+            const string gridstring = @"
+ *-----------*
+ |...|..9|.81|
+ |13.|5.8|...|
+ |..7|621|3..|
+ |---+---+---|
+ |...|9.4|72.|
+ |...|...|...|
+ |.46|1.7|...|
+ |---+---+---|
+ |..5|.16|4..|
+ |...|..3|.76|
+ |69.|...|...|
+ *-----------*
+";
+
+            var grid = Grid9X9.LoadFromString(gridstring);
+
+            ISolver solver = new HiddenDouble();
+
+            var list = solver.ProcessGrid(grid).ToList();
+            Assert.AreEqual(6, list.Count);
+        }
+
+        [TestMethod]
         public void TestLockedCandidates9()
         {
             const string gridstring = @"
