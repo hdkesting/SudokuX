@@ -191,8 +191,8 @@
          </ItemsControl>
     </Grid>
     <UserControl.Resources>
-        <Storyboard x:Key="FinishAnimation" RepeatBehavior="2x">
-            <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:2" AutoReverse="True"></DoubleAnimation>
+        <Storyboard x:Key="FinishAnimation" RepeatBehavior="1x">
+            <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:2" AutoReverse="False"></DoubleAnimation>
         </Storyboard>
     </UserControl.Resources>
 </UserControl>
