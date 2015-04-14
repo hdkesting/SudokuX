@@ -11,9 +11,12 @@
 
         }
 
-        // 0 1 2
-        // 3 4 5
-        // 6 7 8
-        // 9 A B
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Grid12X12();
+            CopyChallenge(grid);
+
+            return grid;
+        }
     }
 }

@@ -108,6 +108,10 @@ namespace SudokuX.Solver
             return "Cell " + Name;
         }
 
+        /// <summary>
+        /// Resets this cell.
+        /// </summary>
+        /// <param name="clearGiven">if set to <c>true</c>, also clear the given (challenge) value.</param>
         public void Reset(bool clearGiven)
         {
             if (clearGiven || !_givenValue.HasValue)

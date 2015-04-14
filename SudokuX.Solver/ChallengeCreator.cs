@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using SudokuX.Solver.GridPatterns;
@@ -40,6 +41,11 @@ namespace SudokuX.Solver
         /// The grid.
         /// </value>
         public ISudokuGrid Grid { get { return _grid; } }
+
+        public IList<ISolver> Solvers
+        {
+            get { return new ReadOnlyCollection<ISolver>(_solvers); }
+        }
 
         /// <summary>
         /// Sets up the symmetry pattern and the solvers used (and thus the complexity level).

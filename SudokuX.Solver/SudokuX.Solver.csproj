@@ -48,6 +48,7 @@
     <Compile Include="CellGroup.cs" />
     <Compile Include="ChallengeCreator.cs" />
     <Compile Include="GridCreator.cs" />
+    <Compile Include="GridSolver.cs" />
     <Compile Include="Grids\BasicGrid.cs" />
     <Compile Include="Grids\Grid12X12.cs" />
     <Compile Include="Grids\Grid16X16.cs" />
