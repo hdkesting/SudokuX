@@ -68,10 +68,12 @@ namespace SudokuX.Solver.Strategies
         /// <summary>
         /// Process all solvers for as long as they return results. The grid result may be done, undecided or false.
         /// </summary>
-        public void ProcessSolvers()
+        public int ProcessSolvers()
         {
             bool foundone = true;
             bool keepgoing = true;
+
+            int score = 0;
 
             while (foundone && keepgoing) // keep looping while there are results
             {
@@ -88,6 +90,7 @@ namespace SudokuX.Solver.Strategies
                             //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
                             conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
                             conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
+                            score += conclusion.ComplexityLevel;
                         }
                         else
                         {
@@ -95,6 +98,7 @@ namespace SudokuX.Solver.Strategies
                             {
                                 //Debug.WriteLine("Excluding value {1} from cell {0}", conclusion.TargetCell, value);
                                 foundone = conclusion.TargetCell.EraseAvailable(value) | foundone; // always erase
+                                score += conclusion.ComplexityLevel;
                             }
                             conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
 
@@ -116,6 +120,7 @@ namespace SudokuX.Solver.Strategies
                 }
             }
 
+            return score;
         }
 
         private void OnProgress()

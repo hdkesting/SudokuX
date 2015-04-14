@@ -10,8 +10,6 @@ namespace SudokuX.Solver.Strategies
     /// </summary>
     public class NakedDouble : ISolver
     {
-        private const int Complexity = 3;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking NakedDouble");
@@ -25,6 +23,11 @@ namespace SudokuX.Solver.Strategies
             }
 
             return Enumerable.Empty<Conclusion>();
+        }
+
+        public int Complexity
+        {
+            get { return 3; }
         }
 
         private IEnumerable<Conclusion> FindNakedDoubles(CellGroup cellGroup)
@@ -54,12 +57,15 @@ namespace SudokuX.Solver.Strategies
                                 localcell.AvailableValues[0], localcell.AvailableValues[1],
                                 localcell, localtwin,
                                 cellGroup);
-                            return list;
+                            foreach (var conclusion in list)
+                            {
+                                yield return conclusion;
+                            }
                         }
                     }
                 }
             }
-            return Enumerable.Empty<Conclusion>();
+            //return Enumerable.Empty<Conclusion>();
         }
 
         private IEnumerable<Conclusion> GetExclusions(Cell cell1, Cell cell2)

@@ -9,6 +9,11 @@ namespace SudokuX.Solver.Support
     /// </summary>
     public class Conclusion : IEquatable<Conclusion>
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Conclusion"/> class for a calculated value.
+        /// </summary>
+        /// <param name="targetCell">The target cell.</param>
+        /// <param name="complexityLevel">The complexity level.</param>
         public Conclusion(Cell targetCell, int complexityLevel)
         {
             TargetCell = targetCell;
@@ -16,6 +21,12 @@ namespace SudokuX.Solver.Support
             ExcludedValues = new List<int>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Conclusion"/> class for excluded values.
+        /// </summary>
+        /// <param name="targetCell">The target cell.</param>
+        /// <param name="complexityLevel">The complexity level.</param>
+        /// <param name="excludedValues">The excluded values.</param>
         public Conclusion(Cell targetCell, int complexityLevel, IEnumerable<int> excludedValues)
             : this(targetCell, complexityLevel)
         {

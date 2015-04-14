@@ -14,5 +14,13 @@ namespace SudokuX.Solver.Strategies
         /// <param name="grid">The grid to process.</param>
         /// <returns></returns>
         IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid);
+
+        /// <summary>
+        /// Gets the complexity-score of this solver.
+        /// </summary>
+        /// <value>
+        /// The complexity.
+        /// </value>
+        int Complexity { get; }
     }
 }

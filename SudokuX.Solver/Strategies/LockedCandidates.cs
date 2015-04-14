@@ -13,8 +13,6 @@ namespace SudokuX.Solver.Strategies
     /// </summary>
     public class LockedCandidates : ISolver
     {
-        private const int Complexity = 6;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking LockedCandidates");
@@ -30,7 +28,12 @@ namespace SudokuX.Solver.Strategies
             return Enumerable.Empty<Conclusion>();
         }
 
-        private static IList<Conclusion> EvaluateCandidates(int digit, ISudokuGrid grid)
+        public int Complexity
+        {
+            get { return 6; }
+        }
+
+        private IList<Conclusion> EvaluateCandidates(int digit, ISudokuGrid grid)
         {
             // check all "block" groups
             foreach (var cellGroup in grid.CellGroups.Where(g => g.GroupType == GroupType.Block))
@@ -61,7 +64,7 @@ namespace SudokuX.Solver.Strategies
             return new List<Conclusion>();
         }
 
-        private static IList<Conclusion> FindCandidates(int digit, IEnumerable<CellGroup> groups, CellGroup sourceGroup)
+        private IList<Conclusion> FindCandidates(int digit, IEnumerable<CellGroup> groups, CellGroup sourceGroup)
         {
             List<Conclusion> conclusions = new List<Conclusion>();
             foreach (Cell cell in groups.SelectMany(g => g.Cells))

@@ -66,6 +66,7 @@
     <Compile Include="GridPatterns\DoubleMirroredPattern.cs" />
     <Compile Include="GridPatterns\IGridPattern.cs" />
     <Compile Include="Strategies\BasicRule.cs" />
+    <Compile Include="Strategies\HiddenTriple.cs" />
     <Compile Include="Support\EnumerableExtensions.cs" />
     <Compile Include="Support\Enums\EnumExtensions.cs" />
     <Compile Include="Support\Enums\Enums.cs" />

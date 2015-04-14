@@ -26,10 +26,15 @@ namespace SudokuX.Solver.Strategies
                 result.AddRange(cell.ContainingGroups
                     .SelectMany(g => g.Cells)
                     .Where(c => !c.HasValue && c.AvailableValues.Contains(value))
-                    .Select(sibling => new Conclusion(sibling, 0, new[] { value })));
+                    .Select(sibling => new Conclusion(sibling, Complexity, new[] { value })));
             }
 
             return result;
+        }
+
+        public int Complexity
+        {
+            get { return 0; }
         }
     }
 }

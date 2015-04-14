@@ -10,8 +10,6 @@ namespace SudokuX.Solver.Strategies
     /// </summary>
     public class NakedTriple : ISolver
     {
-        private const int Complexity = 5;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking NakedTriple");
@@ -27,6 +25,11 @@ namespace SudokuX.Solver.Strategies
             }
 
             return Enumerable.Empty<Conclusion>();
+        }
+
+        public int Complexity
+        {
+            get { return 5; }
         }
 
         private IEnumerable<Conclusion> FindNakedTriples(CellGroup cellGroup)

@@ -104,7 +104,8 @@ namespace SudokuX.Solver
                             new HiddenSingle(),
                             new LockedCandidates(),
                             new NakedDouble(),
-                            new HiddenDouble()
+                            new HiddenDouble(),
+                            new HiddenTriple()
                         };
                     break;
 
@@ -117,7 +118,8 @@ namespace SudokuX.Solver
                             new HiddenSingle(),
                             new LockedCandidates(),
                             new NakedDouble(),
-                            new HiddenDouble()
+                            new HiddenDouble(),
+                            new HiddenTriple()
                         };
                     break;
 
@@ -131,7 +133,7 @@ namespace SudokuX.Solver
                             //new LockedCandidates(),
                             new NakedDouble(),
                             new HiddenDouble(),
-                            //new NakedTriple(),
+                            new NakedTriple(),
                         };
                     break;
 

@@ -11,8 +11,6 @@ namespace SudokuX.Solver.Strategies
     /// </summary>
     public class HiddenSingle : ISolver
     {
-        private const int Complexity = 1;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking HiddenSingle");
@@ -23,6 +21,11 @@ namespace SudokuX.Solver.Strategies
             // "distinct" because it may be found in both a row and a column
 
             return list1;
+        }
+
+        public int Complexity
+        {
+            get { return 1; }
         }
 
         private IEnumerable<Conclusion> HiddenSinglesInGroup(CellGroup group, int min, int max)

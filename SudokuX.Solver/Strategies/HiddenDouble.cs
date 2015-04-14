@@ -10,8 +10,6 @@ namespace SudokuX.Solver.Strategies
     /// </summary>
     public class HiddenDouble : ISolver
     {
-        private const int Complexity = 3;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking HiddenDouble");
@@ -20,15 +18,15 @@ namespace SudokuX.Solver.Strategies
             foreach (var group in grid.CellGroups)
             {
                 var list = FindHiddenDoubles(group, grid.MinValue, grid.MaxValue).ToList();
-                //if (list.Any())
-                //{
-                //    // use just the first batch of conclusions
-                //    return list;
-                //}
                 result.AddRange(list);
             }
-            //return Enumerable.Empty<Conclusion>();
+
             return result;
+        }
+
+        public int Complexity
+        {
+            get { return 4; }
         }
 
         private IEnumerable<Conclusion> FindHiddenDoubles(CellGroup group, int min, int max)

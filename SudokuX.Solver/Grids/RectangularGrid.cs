@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text;
 using SudokuX.Solver.Strategies;
 using SudokuX.Solver.Support.Enums;
@@ -255,6 +256,64 @@ namespace SudokuX.Solver.Grids
             }
 
             return sb.ToString();
+        }
+
+        /// <summary>
+        /// Returns the current status of the grid. 
+        /// For each position: preceded by '=': value given by challenge; preceded by '+': calculated value; else the available values. 
+        /// </summary>
+        /// <returns></returns>
+        public string ToStatusString()
+        {
+            var maxlength = AllCells().Select(c => c.HasValue ? 0 : c.AvailableValues.Count).Max();
+
+            const string chars = "0123456789ABCDEF";
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append('+');
+            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth * (maxlength + 1)).Append('+');
+            sb.AppendLine();
+            for (int br = 0; br < BlockWidth; br++)
+            {
+                for (int rr = 0; rr < BlockHeight; rr++)
+                {
+                    int row = br * BlockHeight + rr;
+                    sb.Append('|');
+                    for (int bc = 0; bc < BlockHeight; bc++)
+                    {
+                        for (int cc = 0; cc < BlockWidth; cc++)
+                        {
+                            int col = bc * BlockWidth + cc;
+                            var cell = GetCellByRowColumn(row, col);
+                            if (cell.GivenValue.HasValue)
+                            {
+                                sb.Append('=').Append(chars[cell.GivenValue.Value]).Append(' ', maxlength - 1);
+                            }
+                            else if (cell.CalculatedValue.HasValue)
+                            {
+                                sb.Append('+').Append(chars[cell.CalculatedValue.Value]).Append(' ', maxlength - 1);
+                            }
+                            else
+                            {
+                                //sb.Append('.');
+                                foreach (var value in cell.AvailableValues)
+                                {
+                                    sb.Append(chars[value]);
+                                }
+                                sb.Append(' ', maxlength - cell.AvailableValues.Count + 1);
+                            }
+                        }
+                        sb.Append('|');
+                    }
+                    sb.AppendLine();
+                }
+                sb.Append('+');
+                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth * (maxlength + 1)).Append('+');
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+
         }
 
     }

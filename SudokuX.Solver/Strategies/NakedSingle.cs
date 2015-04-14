@@ -10,8 +10,6 @@ namespace SudokuX.Solver.Strategies
     /// </summary>
     public class NakedSingle : ISolver
     {
-        private const int Complexity = 0;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking NakedSingle");
@@ -26,6 +24,11 @@ namespace SudokuX.Solver.Strategies
                 .ToList();
 
             return list;
+        }
+
+        public int Complexity
+        {
+            get { return 1; }
         }
     }
 }

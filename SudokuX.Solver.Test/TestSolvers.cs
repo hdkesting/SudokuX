@@ -250,6 +250,34 @@ namespace SudokuX.Solver.Test
         }
 
         [TestMethod]
+        public void TestHiddenTriplet()
+        {
+            const string challenge = @"
+ *-----------*
+ |.7.|6..|.3.|
+ |..4|3..|9..|
+ |32.|..7|56.|
+ |---+---+---|
+ |.4.|.1.|...|
+ |..8|...|7..|
+ |...|.3.|.2.|
+ |---+---+---|
+ |.62|8..|.19|
+ |..7|..9|6..|
+ |.8.|..3|.7.|
+ *-----------*
+";
+
+            var grid = Grid9X9.LoadFromString(challenge);
+
+            ISolver solver = new HiddenTriple();
+
+            var list = solver.ProcessGrid(grid).ToList();
+            Assert.AreEqual(2, list.Count);
+
+        }
+
+        [TestMethod]
         public void TestLockedCandidates9()
         {
             const string gridstring = @"
@@ -305,7 +333,8 @@ namespace SudokuX.Solver.Test
                 new ISolver[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            solver.ProcessSolvers();
+            int score = solver.ProcessSolvers();
+            Trace.WriteLine(score);
             DumpGrid(grid);
             Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
         }
@@ -335,7 +364,8 @@ namespace SudokuX.Solver.Test
                 new ISolver[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            solver.ProcessSolvers();
+            int score = solver.ProcessSolvers();
+            Trace.WriteLine(score);
             DumpGrid(grid);
             Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
         }
@@ -365,9 +395,48 @@ namespace SudokuX.Solver.Test
                 new ISolver[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            solver.ProcessSolvers();
+            int score = solver.ProcessSolvers();
+            Trace.WriteLine(score);
             DumpGrid(grid);
             Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+        }
+
+        [TestMethod]
+        public void TestHard9X9()
+        {
+            const string challenge = @"
+ *-----------*
+ |...|...|1.8|
+ |.4.|2..|...|
+ |...|6..|...|
+ |---+---+---|
+ |.2.|4..|.3.|
+ |7..|.1.|5..|
+ |...|...|...|
+ |---+---+---|
+ |1..|.8.|...|
+ |...|...|34.|
+ |...|...|.26|
+ *-----------*
+";
+
+            var grid = Grid9X9.LoadFromString(challenge);
+
+            var solver = new Strategies.Solver(grid,
+                new ISolver[]
+                {
+                    new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble(),
+                    new NakedTriple(), new LockedCandidates()
+                });
+            // needs an X(Y)-Wing
+            Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
+            int score = solver.ProcessSolvers();
+            Trace.WriteLine(score);
+            DumpGrid(grid);
+            var s = grid.ToStatusString();
+            Trace.WriteLine(s);
+            //Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+
         }
 
         [TestMethod]
