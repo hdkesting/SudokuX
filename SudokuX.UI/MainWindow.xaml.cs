@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -113,6 +112,7 @@ namespace SudokuX.UI
             CreationProgress.IsIndeterminate = true;
             CreationProgress.Visibility = Visibility.Hidden;
             NewGameButton.IsEnabled = true;
+            GridScoreLabel.Text = String.Format(_dict["GridScoreLabel"].ToString(), _board.GridScore);
         }
 
         private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
@@ -122,7 +122,8 @@ namespace SudokuX.UI
             if (board.BoardSize == Solver.Support.Enums.BoardSize.Board4 ||
                 board.BoardSize == Solver.Support.Enums.BoardSize.Board6)
             {
-                string msg = dict["ShowPencil-TooEasy"].ToString();
+                string msg = _dict["ShowPencil-TooEasy"].ToString();
+                ShowPencilmarks.IsChecked = null;
                 MessageBox.Show(msg);
                 return;
             }
@@ -131,28 +132,27 @@ namespace SudokuX.UI
             board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
         }
 
-        private ResourceDictionary dict;
+        private ResourceDictionary _dict;
         private void SetLanguageDictionary()
         {
             // http://www.codeproject.com/Articles/123460/Simplest-Way-to-Implement-Multilingual-WPF-Applica
-            dict = new ResourceDictionary();
+            _dict = new ResourceDictionary();
 
             var cult = Thread.CurrentThread.CurrentCulture.ToString();
             if (cult.StartsWith("nl"))
             {
-                dict.Source = new Uri(@"Resources/StringResources.nl.xaml", UriKind.Relative);
+                _dict.Source = new Uri(@"Resources/StringResources.nl.xaml", UriKind.Relative);
             }
             else
             {
-                dict.Source = new Uri(@"Resources/StringResources.xaml", UriKind.Relative);
+                _dict.Source = new Uri(@"Resources/StringResources.xaml", UriKind.Relative);
             }
 
-            Resources.MergedDictionaries.Add(dict);
+            Resources.MergedDictionaries.Add(_dict);
         }
 
         private void GameWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            // MessageBox.Show("GameWindow_OnMouseDown");
             e.Handled = true;
             _selectionMode = ValueSelectionMode.None;
 
@@ -163,7 +163,6 @@ namespace SudokuX.UI
         {
             var tag = ((Button)sender).Tag.ToString();
             e.Handled = true;
-            // MessageBox.Show("SelectButton_OnClick: " + tag);
 
             switch (_selectionMode)
             {
