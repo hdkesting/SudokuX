@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using SudokuX.Solver.Support;
@@ -211,6 +212,50 @@ namespace SudokuX.Solver.Grids
         protected static CellGroup GetByOrdinal(IEnumerable<CellGroup> group, int ordinal)
         {
             return group.First(g => g.Ordinal == ordinal);
+        }
+
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
+        public abstract ISudokuGrid CloneBoardAsChallenge();
+
+        /// <summary>
+        /// Clones the grid to create a challenge.
+        /// </summary>
+        /// <returns></returns>
+        protected void CopyChallenge(ISudokuGrid target)
+        {
+            for (int row = 0; row < GridSize; row++)
+            {
+                for (int col = 0; col < GridSize; col++)
+                {
+                    var sourcecell = GetCellByRowColumn(row, col);
+                    if (sourcecell.GivenValue.HasValue)
+                    {
+                        var targetcell = target.GetCellByRowColumn(row, col);
+                        targetcell.SetGivenValue(sourcecell.GivenValue.Value);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears all calculated values, leaving a challenge.
+        /// </summary>
+        protected void ClearConclusions()
+        {
+            foreach (var cell in AllCells())
+            {
+                if (cell.GivenValue.HasValue)
+                {
+                    cell.AvailableValues.Clear();
+                }
+                else
+                {
+                    cell.Reset(false);
+                }
+            }
         }
 
     }

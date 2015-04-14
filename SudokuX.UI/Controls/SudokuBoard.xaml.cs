@@ -47,6 +47,8 @@ namespace SudokuX.UI.Controls
 
         public BoardSize BoardSize { get { return _boardSize; } }
 
+        public int GridScore { get; set; }
+
         public void Create()
         {
             _boardCreator.DoWork += (sender, args) => CreateChallenge(_boardSize, sender, args);
@@ -127,6 +129,11 @@ namespace SudokuX.UI.Controls
             creator.Progress += progress;
 
             creator.CreateChallenge();
+
+            var testgrid = _creatorGrid.CloneBoardAsChallenge();
+            var solver = new GridSolver(creator.Solvers);
+            solver.Solve(testgrid);
+            GridScore = solver.GridScore;
 
             creator.Progress -= progress;
         }

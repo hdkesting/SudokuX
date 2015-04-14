@@ -60,5 +60,11 @@ namespace SudokuX.Solver
 
         double GetPercentageDone();
 
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
+        ISudokuGrid CloneBoardAsChallenge();
+
     }
 }

@@ -18,5 +18,13 @@
             return grid;
         }
 
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Grid9X9();
+            CopyChallenge(grid);
+
+            return grid;
+        }
+
     }
 }

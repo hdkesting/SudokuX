@@ -28,6 +28,36 @@ namespace SudokuX.Solver.Grids
             AssignBlocks();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IrregularGrid"/> class from the source, copying the block structure.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        protected IrregularGrid(IrregularGrid source)
+            : base(source.GridSize)
+        {
+            for (int i = 0; i < GridSize; i++)
+            {
+                _blocks.Add(new CellGroup(GridSize, i) { Name = "Block " + i, GroupType = GroupType.Block });
+            }
+
+            // add cells to blocks
+            for (int r = 0; r < GridSize; r++)
+            {
+                for (int c = 0; c < GridSize; c++)
+                {
+                    var sourcecell = source.GetCellByRowColumn(r, c);
+                    var blocknr = sourcecell.ContainingGroups.Single(g => g.GroupType == GroupType.Block).Ordinal;
+
+                    var block = GetByOrdinal(_blocks, blocknr);
+
+                    var cell = GetCellByRowColumn(r, c);
+                    cell.Name = String.Format("r {0}, c {1}, b {2}", r, c, block.Ordinal);
+
+                    cell.AddToGroups(block);
+                }
+            }
+        }
+
         private void AssignBlocks()
         {
             // create blockgroups

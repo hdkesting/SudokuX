@@ -9,5 +9,19 @@
             : base(3, 2)
         {
         }
+
+        private Irregular6(IrregularGrid source)
+            : base(source)
+        {
+        }
+
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Irregular6(this);
+            CopyChallenge(grid);
+
+            return grid;
+        }
+
     }
 }

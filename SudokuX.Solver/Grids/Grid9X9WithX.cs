@@ -16,6 +16,14 @@ namespace SudokuX.Solver.Grids
             CreateDiags();
         }
 
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Grid9X9WithX();
+            CopyChallenge(grid);
+
+            return grid;
+        }
+
         private void CreateDiags()
         {
             // add two "diagonal" groups

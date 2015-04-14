@@ -27,5 +27,14 @@
             grid.InitializeFromString(challenge);
             return grid;
         }
+
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Grid16X16();
+            CopyChallenge(grid);
+
+            return grid;
+        }
+
     }
 }
