@@ -97,7 +97,8 @@ namespace SudokuX.Solver
                             new LockedCandidates(),
                             new NakedDouble(),
                             new HiddenDouble(),
-                            new NakedTriple()
+                            new NakedTriple(),
+                            new XWing()
                         };
                     break;
 
