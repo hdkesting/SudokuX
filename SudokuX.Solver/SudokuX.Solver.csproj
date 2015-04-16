@@ -48,6 +48,7 @@
     <Compile Include="CellGroup.cs" />
     <Compile Include="ChallengeCreator.cs" />
     <Compile Include="GridCreator.cs" />
+    <Compile Include="GridPatterns\Rotational2Pattern.cs" />
     <Compile Include="GridSolver.cs" />
     <Compile Include="Grids\BasicGrid.cs" />
     <Compile Include="Grids\Grid12X12.cs" />
@@ -66,6 +67,7 @@
     <Compile Include="ISudokuGrid.cs" />
     <Compile Include="GridPatterns\DoubleMirroredPattern.cs" />
     <Compile Include="GridPatterns\IGridPattern.cs" />
+    <Compile Include="NextPositionStrategies\LowestNumberAvailable.cs" />
     <Compile Include="Strategies\BasicRule.cs" />
     <Compile Include="Strategies\HiddenTriple.cs" />
     <Compile Include="Strategies\XWing.cs" />
@@ -76,10 +78,11 @@
     <Compile Include="Support\Position.cs" />
     <Compile Include="Support\PositionList.cs" />
     <Compile Include="GridPatterns\RandomPattern.cs" />
-    <Compile Include="GridPatterns\RotationalPattern.cs" />
+    <Compile Include="GridPatterns\Rotational4Pattern.cs" />
     <Compile Include="GridPatterns\VerticalMirroredPattern.cs" />
     <Compile Include="NextPositionStrategies\BaseNextPositionPattern.cs" />
     <Compile Include="NextPositionStrategies\HighestNumberAvailable.cs" />
+    <Compile Include="Support\ProcessResult.cs" />
     <Compile Include="Support\ProgressEventArgs.cs" />
     <Compile Include="Support\SelectedValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

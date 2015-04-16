@@ -7,7 +7,7 @@ namespace SudokuX.Solver.GridPatterns
     /// <summary>
     /// Creates a pattern with rotational symmetry (4 x 90°).
     /// </summary>
-    public class RotationalPattern : IGridPattern
+    public class Rotational4Pattern : IGridPattern
     {
         /// <summary>
         /// Get a list of positions according to the pattern.

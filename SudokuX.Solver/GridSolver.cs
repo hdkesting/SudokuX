@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using SudokuX.Solver.Strategies;
 using SudokuX.Solver.Support.Enums;
 
@@ -15,14 +16,22 @@ namespace SudokuX.Solver
             Validity = Validity.Maybe;
         }
 
-        public Validity Solve(ISudokuGrid grid)
+        public void Solve(ISudokuGrid grid)
         {
             var solver = new Strategies.Solver(grid, _solvers);
 
-            GridScore = solver.ProcessSolvers();
+            var result = solver.ProcessSolvers();
+            GridScore = result.Score;
+            Validity = result.Validity;
 
-            return Validity = grid.IsChallengeDone();
+            var emptycount = grid.AllCells().Count(c => !c.GivenValue.HasValue);
+            if (emptycount > 0)
+            {
+                WeightedGridScore = ((double)GridScore) / emptycount;
+            }
         }
+
+        public double WeightedGridScore { get; private set; }
 
         public int GridScore { get; private set; }
 

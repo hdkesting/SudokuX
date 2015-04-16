@@ -171,7 +171,7 @@ namespace SudokuX.Solver.Grids
              */
 
             const string challengechars = "0123456789ABCDEF";
-            const string chars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
+            const string calculatedchars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
 
             StringBuilder sb = new StringBuilder();
             sb.Append('+');
@@ -192,7 +192,7 @@ namespace SudokuX.Solver.Grids
                             if (cell.GivenValue.HasValue)
                                 sb.Append(challengechars[cell.GivenValue.Value]);
                             else if (cell.CalculatedValue.HasValue)
-                                sb.Append(chars[cell.CalculatedValue.Value]);
+                                sb.Append(calculatedchars[cell.CalculatedValue.Value]);
                             else
                                 sb.Append('.');
                         }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using SudokuX.Solver.Support;
+using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver.Strategies
 {
@@ -68,49 +69,31 @@ namespace SudokuX.Solver.Strategies
         /// <summary>
         /// Process all solvers for as long as they return results. The grid result may be done, undecided or false.
         /// </summary>
-        public int ProcessSolvers()
+        public ProcessResult ProcessSolvers()
         {
             bool foundone = true;
             bool keepgoing = true;
 
             int score = 0;
+            Validity val;
 
             while (foundone && keepgoing) // keep looping while there are results
             {
+                // use the BasicRule, to make sure the validity check makes sense
+                var conclusions = ProcessGrid(new BasicRule()).ToList();
+                ProcessConclusions(conclusions, ref score, ref keepgoing);
+
+                val = _grid.IsChallengeDone();
+                if (val == Validity.Invalid)
+                {
+                    return new ProcessResult(0, val);
+                }
+
                 foundone = false;
                 foreach (var solver in _solvers) // process in supplied order (of complexity)
                 {
-                    foreach (var conclusion in ProcessGrid(solver))
-                    {
-                        _swConclusion.Start();
-                        _conclusionSets++;
-                        if (conclusion.ExactValue.HasValue)
-                        {
-                            foundone = true;
-                            //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
-                            conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
-                            conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
-                            score += conclusion.ComplexityLevel;
-                        }
-                        else
-                        {
-                            foreach (var value in conclusion.ExcludedValues)
-                            {
-                                //Debug.WriteLine("Excluding value {1} from cell {0}", conclusion.TargetCell, value);
-                                foundone = conclusion.TargetCell.EraseAvailable(value) | foundone; // always erase
-                                score += conclusion.ComplexityLevel;
-                            }
-                            conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
-
-                            if (!conclusion.TargetCell.AvailableValues.Any())
-                            {
-                                Debug.WriteLine("No availables left in targetcell {0}!", conclusion.TargetCell);
-                                DumpGrid(_grid);
-                                keepgoing = false;
-                            }
-                        }
-                        _swConclusion.Stop();
-                    }
+                    conclusions = ProcessGrid(solver).ToList();
+                    foundone = ProcessConclusions(conclusions, ref score, ref keepgoing);
 
                     if (foundone)
                     {
@@ -120,7 +103,46 @@ namespace SudokuX.Solver.Strategies
                 }
             }
 
-            return score;
+            val = _grid.IsChallengeDone();
+            return new ProcessResult(score, val);
+        }
+
+        private bool ProcessConclusions(List<Conclusion> conclusions, ref int score, ref bool keepgoing)
+        {
+            bool foundone = false;
+
+            foreach (var conclusion in conclusions)
+            {
+                _swConclusion.Start();
+                _conclusionSets++;
+                if (conclusion.ExactValue.HasValue)
+                {
+                    foundone = true;
+                    //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
+                    conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
+                    conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
+                    score += conclusion.ComplexityLevel;
+                }
+                else
+                {
+                    foreach (var value in conclusion.ExcludedValues)
+                    {
+                        //Debug.WriteLine("Excluding value {1} from cell {0}", conclusion.TargetCell, value);
+                        foundone = conclusion.TargetCell.EraseAvailable(value) | foundone; // always erase
+                        score += conclusion.ComplexityLevel;
+                    }
+                    conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
+
+                    if (!conclusion.TargetCell.AvailableValues.Any())
+                    {
+                        Debug.WriteLine("No availables left in targetcell {0}!", conclusion.TargetCell);
+                        DumpGrid(_grid);
+                        keepgoing = false;
+                    }
+                }
+                _swConclusion.Stop();
+            }
+            return foundone;
         }
 
         private void OnProgress()

@@ -15,7 +15,7 @@ namespace SudokuX.UI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         private ValueSelectionMode _selectionMode;
         private SudokuBoard _board;
@@ -112,7 +112,7 @@ namespace SudokuX.UI
             CreationProgress.IsIndeterminate = true;
             CreationProgress.Visibility = Visibility.Hidden;
             NewGameButton.IsEnabled = true;
-            GridScoreLabel.Text = String.Format(_dict["GridScoreLabel"].ToString(), _board.GridScore);
+            GridScoreLabel.Text = String.Format(_dict["GridScoreLabel"].ToString(), _board.GridScore, _board.WeightedGridScore);
         }
 
         private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
@@ -238,6 +238,24 @@ namespace SudokuX.UI
             {
                 _board.HighlightValue(value);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_board != null)
+                {
+                    _board.Dispose();
+                    _board = null;
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

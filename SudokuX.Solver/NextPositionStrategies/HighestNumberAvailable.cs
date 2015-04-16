@@ -19,7 +19,8 @@ namespace SudokuX.Solver.NextPositionStrategies
 
         protected override double CalculateScore(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Average();
+            //return positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Average();
+            return positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Max();
         }
     }
 }

@@ -49,6 +49,8 @@ namespace SudokuX.UI.Controls
 
         public int GridScore { get; set; }
 
+        public double WeightedGridScore { get; set; }
+
         public void Create()
         {
             _boardCreator.DoWork += (sender, args) => CreateChallenge(_boardSize, sender, args);
@@ -134,6 +136,7 @@ namespace SudokuX.UI.Controls
             var solver = new GridSolver(creator.Solvers);
             solver.Solve(testgrid);
             GridScore = solver.GridScore;
+            WeightedGridScore = solver.WeightedGridScore;
 
             creator.Progress -= progress;
         }
@@ -195,8 +198,14 @@ namespace SudokuX.UI.Controls
 
         private void Dispose(bool disposing)
         {
-            _boardCreator.CancelAsync(); // moet ik niet eerst checken of dit nog bezig is?
-            _boardCreator.Dispose(); // moet ik niet wachten tot de berekening klaar/gestopt is?           
+            if (disposing)
+            {
+                if (_boardCreator != null)
+                {
+                    _boardCreator.CancelAsync(); // moet ik niet eerst checken of dit nog bezig is?
+                    _boardCreator.Dispose(); // moet ik niet wachten tot de berekening klaar/gestopt is?           
+                }
+            }
         }
 
         public void Dispose()

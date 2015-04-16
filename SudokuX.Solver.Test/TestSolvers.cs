@@ -333,10 +333,10 @@ namespace SudokuX.Solver.Test
                 new ISolver[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            int score = solver.ProcessSolvers();
-            Trace.WriteLine(score);
+            var res = solver.ProcessSolvers();
+            Trace.WriteLine(res.Score);
             DumpGrid(grid);
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, res.Validity);
         }
 
         [TestMethod]
@@ -364,10 +364,10 @@ namespace SudokuX.Solver.Test
                 new ISolver[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            int score = solver.ProcessSolvers();
-            Trace.WriteLine(score);
+            var res = solver.ProcessSolvers();
+            Trace.WriteLine(res.Score);
             DumpGrid(grid);
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, res.Validity);
         }
 
         [TestMethod]
@@ -395,10 +395,10 @@ namespace SudokuX.Solver.Test
                 new ISolver[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            int score = solver.ProcessSolvers();
-            Trace.WriteLine(score);
+            var res = solver.ProcessSolvers();
+            Trace.WriteLine(res.Score);
             DumpGrid(grid);
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, res.Validity);
         }
 
         [TestMethod]
@@ -430,8 +430,8 @@ namespace SudokuX.Solver.Test
                 });
             // needs an X(Y)-Wing
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            int score = solver.ProcessSolvers();
-            Trace.WriteLine(score);
+            var res = solver.ProcessSolvers();
+            Trace.WriteLine(res.Score);
             DumpGrid(grid);
             var s = grid.ToStatusString();
             Trace.WriteLine(s);

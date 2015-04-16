@@ -59,7 +59,6 @@ namespace SudokuX.Solver
                     _pattern = new RandomPattern();
                     _solvers = new List<ISolver>
                         {
-                            new BasicRule(), 
                             new NakedSingle(), 
                             new HiddenSingle()
                         };
@@ -69,7 +68,6 @@ namespace SudokuX.Solver
                     _pattern = new RandomPattern();
                     _solvers = new List<ISolver>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new NakedDouble(),
@@ -81,17 +79,15 @@ namespace SudokuX.Solver
                     _pattern = new RandomPattern();
                     _solvers = new List<ISolver>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle()
                         };
                     break;
 
                 case BoardSize.Board9:
-                    _pattern = new RotationalPattern();
+                    _pattern = new Rotational2Pattern();
                     _solvers = new List<ISolver>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
@@ -106,7 +102,6 @@ namespace SudokuX.Solver
                     _pattern = new DoubleMirroredPattern();
                     _solvers = new List<ISolver>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
@@ -120,7 +115,6 @@ namespace SudokuX.Solver
                     _pattern = new RandomPattern();
                     _solvers = new List<ISolver>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
@@ -131,10 +125,9 @@ namespace SudokuX.Solver
                     break;
 
                 case BoardSize.Board12:
-                    _pattern = new RotationalPattern();
+                    _pattern = new Rotational4Pattern();
                     _solvers = new List<ISolver>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             //new LockedCandidates(),
@@ -145,10 +138,9 @@ namespace SudokuX.Solver
                     break;
 
                 case BoardSize.Board16:
-                    _pattern = new RotationalPattern();
+                    _pattern = new Rotational4Pattern();
                     _solvers = new List<ISolver>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
@@ -194,6 +186,7 @@ namespace SudokuX.Solver
             var sw = Stopwatch.StartNew();
 
             var strategy = new HighestNumberAvailable(grid, pattern, solvers, rng);
+            //var strategy = new LowestNumberAvailable(grid, pattern, solvers, rng);
             strategy.Progress += strategy_Progress;
             strategy.CreateGrid();
 

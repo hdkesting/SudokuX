@@ -29,7 +29,7 @@ namespace SudokuX.UI.Common
         public PencilValue(string value)
         {
             Value = value;
-            Visibility = Visibility.Visible;
+            _visibility = Visibility.Visible;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

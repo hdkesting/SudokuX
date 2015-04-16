@@ -28,7 +28,6 @@ namespace SudokuX.Solver.NextPositionStrategies
             _pattern = pattern;
             _rng = rng;
             _solver = new Strategies.Solver(_grid, solvers);
-            // _solver.Progress += SolverProgress;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -51,7 +50,7 @@ namespace SudokuX.Solver.NextPositionStrategies
                 {
                     Calculated = _grid.AllCells().Count(c => c.HasValue),
                     Given = _grid.AllCells().Count(c => c.GivenValue.HasValue),
-                    Total = _grid.GridSize*_grid.GridSize
+                    Total = _grid.GridSize * _grid.GridSize
                 };
                 handler(this, e);
             }
@@ -84,17 +83,15 @@ namespace SudokuX.Solver.NextPositionStrategies
             while (true)
             {
                 swProcess.Start();
-                _solver.ProcessSolvers();
+                var result = _solver.ProcessSolvers();
                 swProcess.Stop();
 
-                swCheck.Start();
-                Validity result = _grid.IsChallengeDone();
-                swCheck.Stop();
-
-                switch (result)
+                switch (result.Validity)
                 {
                     case Validity.Full:
+                        TestGrid();
                         CompleteSymmetry();
+                        TestGrid();
                         double total = 0.0;
                         foreach (var measureKvp in _solver.Measurements)
                         {
@@ -117,6 +114,7 @@ namespace SudokuX.Solver.NextPositionStrategies
                     case Validity.Invalid:
                         swBacktrack.Start();
                         PerformBackTrack();
+                        TestGrid();
                         swBacktrack.Stop();
                         break;
 
@@ -127,11 +125,21 @@ namespace SudokuX.Solver.NextPositionStrategies
                         OnProgress();
                         break;
                 }
+
             }
         }
 
+        [Conditional("DEBUG")]
+        private void TestGrid()
+        {
+            var testgrid = _grid.CloneBoardAsChallenge();
+            var solver = new GridSolver(new ISolver[] { new BasicRule(), new NakedSingle() });
+            solver.Solve(testgrid);
+            Trace.WriteLine(solver.Validity);
+        }
+
         /// <summary>
-        /// Add extra givens to complete the symmetry.
+        /// Add extra givens to complete the symmetry, when the challenge is complete.
         /// </summary>
         private void CompleteSymmetry()
         {
@@ -140,50 +148,35 @@ namespace SudokuX.Solver.NextPositionStrategies
                 var pos = _nextQueue.Dequeue();
 
                 var cell = _grid.GetCellByRowColumn(pos.Row, pos.Column);
+                // ReSharper disable once PossibleInvalidOperationException
                 cell.SetGivenValue(cell.CalculatedValue.Value);
             }
         }
 
         private void SelectExtraGiven()
         {
-            bool legal;
-            Cell cell;
-            int val = -1;
-            do
+            // get a position
+            var pos = GetNextPosition();
+            if (pos == null)
             {
-                legal = false;
-                // get a position
-                var pos = GetNextPosition();
-                if (pos == null)
-                {
-                    return; // of throw?
-                }
+                return; // or throw?
+            }
 
-                cell = _grid.GetCellByRowColumn(pos.Row, pos.Column);
+            var cell = _grid.GetCellByRowColumn(pos.Row, pos.Column);
 
-                // and select a value
-                do
-                {
-                    if (cell.AvailableValues.Count == 0)
-                    {
-                        // illegal situation detected
-                        PerformBackTrack();
-                        break;
-                    }
+            // and select a value, if possible (if not, then the grid is illegal)
+            if (cell.AvailableValues.Count != 0)
+            {
+                var val = cell.AvailableValues[_rng.Next(cell.AvailableValues.Count)];
+                cell.EraseAvailable(val);
+                Debug.WriteLine(">> Setting {0} to value {1}", cell, val);
+                cell.SetGivenValue(val);
+                ResetGrid(_grid);  // earlier conclusions may not be valid anymore
 
-                    val = cell.AvailableValues[_rng.Next(cell.AvailableValues.Count)];
-                    cell.EraseAvailable(val);
-                    legal = cell.GivenOrCalculatedValueIsLegal(val);
-                } while (!legal);
-            } while (!legal);
-
-            Debug.WriteLine(">> Setting {0} to value {1}", cell, val);
-            cell.SetGivenValue(val);
-            ResetGrid(_grid);  // earlier conclusions may not be valid anymore
-            _stack.Push(new SelectedValue(cell, cell.AvailableValues));
-            ValueSets++;
+                _stack.Push(new SelectedValue(cell, cell.AvailableValues));
+                ValueSets++;
+            }
         }
-
 
         private void PerformBackTrack()
         {
@@ -217,7 +210,7 @@ namespace SudokuX.Solver.NextPositionStrategies
 
         private Position GetNextPosition()
         {
-            if (_nextQueue.Count > 0)
+            if (_nextQueue.Any())
             {
                 return _nextQueue.Dequeue();
             }
