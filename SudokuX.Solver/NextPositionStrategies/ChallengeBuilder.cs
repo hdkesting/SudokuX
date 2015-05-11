@@ -13,7 +13,7 @@ namespace SudokuX.Solver.NextPositionStrategies
     /// <summary>
     /// Baseclass that tries to find an optimal set of next positions for a challenge.
     /// </summary>
-    public abstract class BaseNextPositionPattern
+    internal sealed class ChallengeBuilder
     {
         private readonly ISudokuGrid _grid;
         private readonly IGridPattern _pattern;
@@ -22,12 +22,15 @@ namespace SudokuX.Solver.NextPositionStrategies
         private readonly Queue<Position> _nextQueue = new Queue<Position>();
         private readonly Strategies.Solver _solver;
 
-        protected BaseNextPositionPattern(ISudokuGrid grid, IGridPattern pattern, IList<ISolver> solvers, Random rng)
+        public ChallengeBuilder(ISudokuGrid grid, IGridPattern pattern, IList<ISolver> solvers, Random rng)
         {
             _grid = grid;
             _pattern = pattern;
             _rng = rng;
             _solver = new Strategies.Solver(_grid, solvers);
+
+            _scoreCalculator = positions => positions.Select(p => _grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Max();
+            // _scoreCalculator =  positions => grid.GridSize - positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Average();
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -62,6 +65,16 @@ namespace SudokuX.Solver.NextPositionStrategies
         public int ValueSets { get; private set; }
 
         public int FullResets { get; private set; }
+
+
+        private readonly Func<IEnumerable<Position>, int> _scoreCalculator;
+        /// <summary>
+        /// Gets the score calculator for a position list. Higher = better.
+        /// </summary>
+        /// <value>
+        /// The score calculator.
+        /// </value>
+        private Func<IEnumerable<Position>, int> CalculateScore { get { return _scoreCalculator; } }
 
         public void CreateGrid()
         {
@@ -240,7 +253,7 @@ namespace SudokuX.Solver.NextPositionStrategies
             // calculate their relative score
             foreach (var positionList in list)
             {
-                positionList.SeverityScore = CalculateScore(_grid, positionList.Positions);
+                positionList.SeverityScore = CalculateScore(positionList.Positions);
             }
 
             // get the highest scoring one
@@ -255,8 +268,6 @@ namespace SudokuX.Solver.NextPositionStrategies
             // get one
             return _nextQueue.Dequeue();
         }
-
-        protected abstract double CalculateScore(ISudokuGrid grid, IEnumerable<Position> positions);
 
         private void Rewind()
         {

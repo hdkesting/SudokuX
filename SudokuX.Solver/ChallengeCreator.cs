@@ -185,8 +185,7 @@ namespace SudokuX.Solver
         {
             var sw = Stopwatch.StartNew();
 
-            var strategy = new HighestNumberAvailable(grid, pattern, solvers, rng);
-            //var strategy = new LowestNumberAvailable(grid, pattern, solvers, rng);
+            var strategy = new ChallengeBuilder(grid, pattern, solvers, rng);
             strategy.Progress += strategy_Progress;
             strategy.CreateGrid();
 
