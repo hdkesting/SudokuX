@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using JetBrains.Annotations;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
@@ -17,8 +18,13 @@ namespace SudokuX.Solver.Strategies
         private readonly IList<ISolver> _solvers;
         private readonly Dictionary<Type, PerformanceMeasurement> _measurements = new Dictionary<Type, PerformanceMeasurement>();
 
-        public Solver(ISudokuGrid grid, IList<ISolver> solvers)
+        public Solver([NotNull] ISudokuGrid grid, [NotNull] IList<ISolver> solvers)
         {
+            if (grid == null) throw new ArgumentNullException("grid");
+            if (solvers == null) throw new ArgumentNullException("solvers");
+            if (!solvers.Any()) throw new ArgumentException("List of solvers cannot be empty.", "solvers");
+            if (solvers.Any(s => s is BasicRule)) throw new InvalidOperationException("Do not add BasicRule as a solver, it is built-in.");
+
             _grid = grid;
             _solvers = solvers;
         }

@@ -84,6 +84,7 @@
     <Compile Include="NextPositionStrategies\HighestNumberAvailable.cs" />
     <Compile Include="Support\ProcessResult.cs" />
     <Compile Include="Support\ProgressEventArgs.cs" />
+    <Compile Include="Support\ResharperAnnotations.cs" />
     <Compile Include="Support\SelectedValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\Conclusion.cs" />

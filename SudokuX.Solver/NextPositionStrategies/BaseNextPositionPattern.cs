@@ -106,7 +106,7 @@ namespace SudokuX.Solver.NextPositionStrategies
 
                         Debug.WriteLine("Total in solvers: {0:N} ms", total);
 
-                        Debug.WriteLine("Timings: process {0:N} ms, backtrack {1:N} ms, select extra {2:N} ms, check {2:N} ms",
+                        Debug.WriteLine("Timings: process {0:N} ms, backtrack {1:N} ms, select extra {2:N} ms, check {3:N} ms",
                             swProcess.ElapsedMilliseconds, swBacktrack.ElapsedMilliseconds, swSelect.ElapsedMilliseconds, swCheck.ElapsedMilliseconds);
 
                         return; // done!

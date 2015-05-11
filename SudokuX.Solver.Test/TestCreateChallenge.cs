@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Text;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SudokuX.Solver.Strategies;
-using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver.Test
@@ -119,7 +118,7 @@ namespace SudokuX.Solver.Test
             Trace.WriteLine("Weighted board score: " + solver.WeightedGridScore.ToString("0.0")); // > 1.0, I hope ...
 
             testgrid = grid.CloneBoardAsChallenge();
-            solver = new GridSolver(new ISolver[] { new BasicRule(), new NakedSingle() });
+            solver = new GridSolver(new ISolver[] { new NakedSingle() });
             solver.Solve(testgrid);
             Assert.AreEqual(Validity.Maybe, solver.Validity, "The challenge should be more complicated than 'dead simple'");
         }
@@ -147,7 +146,7 @@ namespace SudokuX.Solver.Test
                 sb.AppendLine("Board score: " + solver.GridScore);
 
                 testgrid = grid.CloneBoardAsChallenge();
-                solver = new GridSolver(new ISolver[] { new BasicRule(), new NakedSingle() });
+                solver = new GridSolver(new ISolver[] { new NakedSingle() });
                 solver.Solve(testgrid);
                 if (solver.Validity != Validity.Full)
                     Trace.WriteLine(solver.Validity); // should be "Maybe", but isn't :-(
