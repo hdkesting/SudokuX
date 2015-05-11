@@ -143,13 +143,12 @@ namespace SudokuX.Solver.Test
                 var solver = new GridSolver(creator.Solvers);
                 solver.Solve(testgrid);
                 Assert.AreEqual(Validity.Full, solver.Validity);
-                sb.AppendLine("Board score: " + solver.GridScore);
+                sb.AppendLine("Board score: " + solver.GridScore + " - " + solver.WeightedGridScore.ToString("0.0"));
 
                 testgrid = grid.CloneBoardAsChallenge();
                 solver = new GridSolver(new ISolver[] { new NakedSingle() });
                 solver.Solve(testgrid);
-                if (solver.Validity != Validity.Full)
-                    Trace.WriteLine(solver.Validity); // should be "Maybe", but isn't :-(
+                Trace.WriteLine(solver.Validity); // should be "Maybe", but isn't :-(
             }
 
             Debug.WriteLine(sb.ToString());

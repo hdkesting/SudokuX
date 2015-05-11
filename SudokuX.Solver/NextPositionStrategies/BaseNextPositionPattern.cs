@@ -67,7 +67,7 @@ namespace SudokuX.Solver.NextPositionStrategies
         {
             // process solvers
             // if error, backtrack
-            //    top from stack (exception is empty)
+            //    top from stack 
             //    get next available, push rest back on stack
             //    no available, next from stack
             // if not done, get new position
@@ -89,9 +89,7 @@ namespace SudokuX.Solver.NextPositionStrategies
                 switch (result.Validity)
                 {
                     case Validity.Full:
-                        TestGrid();
                         CompleteSymmetry();
-                        TestGrid();
                         double total = 0.0;
                         foreach (var measureKvp in _solver.Measurements)
                         {
@@ -114,7 +112,6 @@ namespace SudokuX.Solver.NextPositionStrategies
                     case Validity.Invalid:
                         swBacktrack.Start();
                         PerformBackTrack();
-                        TestGrid();
                         swBacktrack.Stop();
                         break;
 
@@ -133,7 +130,7 @@ namespace SudokuX.Solver.NextPositionStrategies
         private void TestGrid()
         {
             var testgrid = _grid.CloneBoardAsChallenge();
-            var solver = new GridSolver(new ISolver[] { new BasicRule(), new NakedSingle() });
+            var solver = new GridSolver(new ISolver[] { new NakedSingle() });
             solver.Solve(testgrid);
             Trace.WriteLine(solver.Validity);
         }
@@ -153,6 +150,9 @@ namespace SudokuX.Solver.NextPositionStrategies
             }
         }
 
+        /// <summary>
+        /// Select a new given value for the challenge.
+        /// </summary>
         private void SelectExtraGiven()
         {
             // get a position
@@ -165,15 +165,22 @@ namespace SudokuX.Solver.NextPositionStrategies
             var cell = _grid.GetCellByRowColumn(pos.Row, pos.Column);
 
             // and select a value, if possible (if not, then the grid is illegal)
-            if (cell.AvailableValues.Count != 0)
+            SelectValueForCell(cell);
+        }
+
+        private void SelectValueForCell(Cell cell)
+        {
+            if (cell.AvailableValues.Any())
             {
+                // select a random available value
                 var val = cell.AvailableValues[_rng.Next(cell.AvailableValues.Count)];
+                // and remove it from the list
                 cell.EraseAvailable(val);
                 Debug.WriteLine(">> Setting {0} to value {1}", cell, val);
                 cell.SetGivenValue(val);
-                ResetGrid(_grid);  // earlier conclusions may not be valid anymore
-
                 _stack.Push(new SelectedValue(cell, cell.AvailableValues));
+
+                ResetGrid(_grid);  // earlier conclusions may not be valid anymore, so erase them
                 ValueSets++;
             }
         }
@@ -253,46 +260,46 @@ namespace SudokuX.Solver.NextPositionStrategies
 
         private void Rewind()
         {
-            // get top from stack
-            // clear that cell
-            if (_stack.Count == 0)
+            Cell cell;
+            while (true)
             {
-                //throw new InvalidOperationException("Stack is empty, can't backtrack further.");
-                Cleargrid(_grid);
-                return;
+                // if stack is empty, escape
+                if (_stack.Count == 0)
+                {
+                    Cleargrid(_grid);
+                    return;
+                }
+
+                // get the top one of the stack and reset it
+                var top = _stack.Pop();
+                top.Target.Reset(true);
+
+                // is it a usefull value?
+                if (top.Remaining.Any())
+                {
+                    // reset the "available" list
+                    foreach (var oldval in top.Target.AvailableValues.Except(top.Remaining).ToList())
+                    {
+                        top.Target.EraseAvailable(oldval);
+                    }
+
+                    // and exit the "while"
+                    cell = top.Target;
+                    break;
+                }
             }
 
-            var top = _stack.Peek();
-            while (!top.Remaining.Any())
-            {
-                var old = _stack.Pop();
-                old.Target.Reset(true);
-                top = _stack.Peek();
-            }
-
-            top.Target.Reset(true);
-
-            int val = top.Remaining[_rng.Next(top.Remaining.Count)];
-            top.Remaining.Remove(val);
-
-            if (top.Target.GivenValueIsLegal(val))
-            {
-                top.Target.SetGivenValue(val);
-                ResetSymmetry();
-
-                ResetGrid(_grid);
-            }
-            else
-            {
-                Rewind();
-            }
-
+            // select a new value
+            SelectValueForCell(cell);
+            ResetSymmetry();
         }
 
         private void ResetSymmetry()
         {
             _nextQueue.Clear();
 
+            // find all used positions
+            // add symmetrical positions to list
             var fields = new List<Position>();
             for (int r = 0; r < _grid.GridSize; r++)
             {
@@ -307,9 +314,8 @@ namespace SudokuX.Solver.NextPositionStrategies
                 }
             }
 
-            fields = fields.Distinct().ToList();
-
-            foreach (var position in fields)
+            // skip duplicates and cells that already have a value. Add rest (if any) to queue.
+            foreach (var position in fields.Distinct())
             {
                 var cell = _grid.GetCellByRowColumn(position.Row, position.Column);
                 if (!cell.GivenValue.HasValue)
@@ -321,7 +327,7 @@ namespace SudokuX.Solver.NextPositionStrategies
 
         private static void ResetGrid(ISudokuGrid grid)
         {
-            // 1. erase all conclusions
+            // erase all conclusions
             foreach (var cell in grid.AllCells())
             {
                 if (!cell.GivenValue.HasValue)
@@ -329,19 +335,7 @@ namespace SudokuX.Solver.NextPositionStrategies
                     cell.Reset(false);
                 }
             }
-
-            // 2. re-place all givens
-            foreach (var cell in grid.AllCells())
-            {
-                if (cell.GivenValue.HasValue)
-                {
-                    cell.SetGivenValue(cell.GivenValue.Value); // side effect: clear the obvious non-availables
-                }
-            }
-
         }
-
-
 
 
         [Conditional("DEBUG")]
