@@ -25,7 +25,7 @@ namespace SudokuX.Solver.Test
             var solver = new GridSolver(creator.Solvers);
             solver.Solve(testgrid);
             Assert.AreEqual(Validity.Full, solver.Validity);
-            Trace.WriteLine("Board score: " + solver.GridScore); // 11
+            Debug.WriteLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0"));
         }
 
         [TestMethod]
@@ -48,7 +48,7 @@ namespace SudokuX.Solver.Test
                 var solver = new GridSolver(creator.Solvers);
                 solver.Solve(testgrid);
                 Assert.AreEqual(Validity.Full, solver.Validity);
-                sb.AppendLine("Board score: " + solver.GridScore);
+                sb.AppendLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0"));
             }
             Debug.WriteLine(sb.ToString());
         }
@@ -69,7 +69,7 @@ namespace SudokuX.Solver.Test
             var solver = new GridSolver(creator.Solvers);
             solver.Solve(testgrid);
             Assert.AreEqual(Validity.Full, solver.Validity);
-            Trace.WriteLine("Board score: " + solver.GridScore); // 18
+            Debug.WriteLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0"));
         }
 
         [TestMethod]
@@ -93,7 +93,7 @@ namespace SudokuX.Solver.Test
                 var solver = new GridSolver(creator.Solvers);
                 solver.Solve(testgrid);
                 Assert.AreEqual(Validity.Full, solver.Validity);
-                sb.AppendLine("Board score: " + solver.GridScore);
+                sb.AppendLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0"));
             }
 
             Debug.WriteLine(sb.ToString());
@@ -114,8 +114,7 @@ namespace SudokuX.Solver.Test
             var solver = new GridSolver(creator.Solvers);
             solver.Solve(testgrid);
             Assert.AreEqual(Validity.Full, solver.Validity);
-            Trace.WriteLine("Board score: " + solver.GridScore); // 49
-            Trace.WriteLine("Weighted board score: " + solver.WeightedGridScore.ToString("0.0")); // > 1.0, I hope ...
+            Trace.WriteLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0"));
 
             testgrid = grid.CloneBoardAsChallenge();
             solver = new GridSolver(new ISolver[] { new NakedSingle() });
@@ -143,7 +142,7 @@ namespace SudokuX.Solver.Test
                 var solver = new GridSolver(creator.Solvers);
                 solver.Solve(testgrid);
                 Assert.AreEqual(Validity.Full, solver.Validity);
-                sb.AppendLine("Board score: " + solver.GridScore + " - " + solver.WeightedGridScore.ToString("0.0"));
+                sb.AppendLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0"));
 
                 testgrid = grid.CloneBoardAsChallenge();
                 solver = new GridSolver(new ISolver[] { new NakedSingle() });
@@ -169,7 +168,7 @@ namespace SudokuX.Solver.Test
             var solver = new GridSolver(creator.Solvers);
             solver.Solve(testgrid);
             Assert.AreEqual(Validity.Full, solver.Validity);
-            Trace.WriteLine("Board score: " + solver.GridScore); // 47
+            Trace.WriteLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0"));
         }
 
         [TestMethod]
@@ -187,6 +186,11 @@ namespace SudokuX.Solver.Test
                 Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
                 var s = ((IRegularSudokuGrid)grid).ToChallengeString();
                 sb.AppendLine(s);
+
+                var testgrid = grid.CloneBoardAsChallenge();
+                var solver = new GridSolver(creator.Solvers);
+                solver.Solve(testgrid);
+                sb.AppendLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0"));
             }
 
             Debug.WriteLine(sb.ToString());

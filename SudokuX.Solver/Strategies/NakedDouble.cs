@@ -33,7 +33,7 @@ namespace SudokuX.Solver.Strategies
         private IEnumerable<Conclusion> FindNakedDoubles(CellGroup cellGroup)
         {
             // find all cells in the group with exactly two options left
-            var doubles = cellGroup.Cells.Where(c => !c.HasValue && c.AvailableValues.Count == 2).ToList();
+            var doubles = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Count == 2).ToList();
 
             // if you've processed a->b, then there's no need to process b->a
 
@@ -74,16 +74,24 @@ namespace SudokuX.Solver.Strategies
             var commongroups = cell1.ContainingGroups.Intersect(cell2.ContainingGroups).ToList();
 
             // the values of the double:
-            var values = cell1.AvailableValues.Union(cell2.AvailableValues).ToList();
+            //var values = cell1.AvailableValues.Union(cell2.AvailableValues).ToList();
+            var values = cell1.AvailableValues; // identical to cell2.AvailableValues
 
-            // check all sibling cells for options to remove 
-            return from cell in commongroups
-                                    .SelectMany(g => g.Cells)
-                                    .Where(c => !c.HasValue && c != cell1 && c != cell2)
-                                    .Distinct()
-                   let todo = cell.AvailableValues.Intersect(values).ToList()
-                   where todo.Any()
-                   select new Conclusion(cell, Complexity, todo);
+            // check all sibling cells for options to remove: find cells that have these values as "available" - that should be removed
+            var cells = commongroups
+                    .SelectMany(g => g.Cells)
+                    .Where(c => !c.HasGivenOrCalculatedValue && c != cell1 && c != cell2)
+                    .Distinct()
+                    .ToList();
+
+            foreach (var sibling in cells)
+            {
+                var todo = sibling.AvailableValues.Intersect(values).ToList();
+                if (todo.Any())
+                {
+                    yield return new Conclusion(sibling, Complexity, todo);
+                }
+            }
         }
     }
 }

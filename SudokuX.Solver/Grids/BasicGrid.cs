@@ -120,7 +120,7 @@ namespace SudokuX.Solver.Grids
         /// <returns></returns>
         public bool IsAllKnown()
         {
-            return AllCells().All(c => c.HasValue);
+            return AllCells().All(c => c.HasGivenOrCalculatedValue);
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace SudokuX.Solver.Grids
         public Validity IsChallengeDone()
         {
             Validity result = Validity.Full;
-            if (AllCells().Any(c => !c.HasValue && !c.AvailableValues.Any()))
+            if (AllCells().Any(c => !c.HasGivenOrCalculatedValue && !c.AvailableValues.Any()))
             {
                 Debug.WriteLine("IsChallengeDone: No. No availables left in some empty cell.");
                 return Validity.Invalid;
@@ -151,7 +151,7 @@ namespace SudokuX.Solver.Grids
                     result = Validity.Maybe;
                 }
 
-                var avail = cellGroup.Cells.Where(c => !c.HasValue).SelectMany(c => c.AvailableValues).Distinct().ToList();
+                var avail = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue).SelectMany(c => c.AvailableValues).Distinct().ToList();
                 if (avail.Count() + count != GridSize)
                 {
                     Debug.WriteLine("IsChalllengeDone: No. Not enough values left to fill group {0}", cellGroup);
@@ -194,7 +194,7 @@ namespace SudokuX.Solver.Grids
 
         public double GetPercentageDone()
         {
-            int countDone = AllCells().Count(c => c.HasValue);
+            int countDone = AllCells().Count(c => c.HasGivenOrCalculatedValue);
 
             return (1.0 * countDone) / (GridSize * GridSize);
         }

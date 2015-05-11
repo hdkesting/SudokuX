@@ -265,7 +265,7 @@ namespace SudokuX.Solver.Grids
         /// <returns></returns>
         public string ToStatusString()
         {
-            var maxlength = AllCells().Select(c => c.HasValue ? 0 : c.AvailableValues.Count).Max();
+            var maxlength = AllCells().Select(c => c.HasGivenOrCalculatedValue ? 0 : c.AvailableValues.Count).Max();
 
             const string chars = "0123456789ABCDEF";
 

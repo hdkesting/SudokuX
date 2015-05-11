@@ -18,14 +18,14 @@ namespace SudokuX.Solver.Strategies
 
             var result = new List<Conclusion>();
 
-            foreach (var cell in grid.AllCells().Where(c => c.HasValue))
+            foreach (var cell in grid.AllCells().Where(c => c.HasGivenOrCalculatedValue))
             {
                 // ReSharper disable once PossibleInvalidOperationException
                 int value = cell.CalculatedValue ?? cell.GivenValue.Value;
 
                 result.AddRange(cell.ContainingGroups
                     .SelectMany(g => g.Cells)
-                    .Where(c => !c.HasValue && c.AvailableValues.Contains(value))
+                    .Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(value))
                     .Select(sibling => new Conclusion(sibling, Complexity, new[] { value })));
             }
 

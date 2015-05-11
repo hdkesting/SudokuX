@@ -34,7 +34,7 @@ namespace SudokuX.Solver.Strategies
 
         private IEnumerable<Conclusion> FindNakedTriples(CellGroup cellGroup)
         {
-            var possibletriples = cellGroup.Cells.Where(c => !c.HasValue && c.AvailableValues.Count <= 3).ToList();
+            var possibletriples = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Count <= 3).ToList();
 
             // if you've processed a->b, then there's no need to process b->a
 
@@ -104,7 +104,7 @@ namespace SudokuX.Solver.Strategies
         private IEnumerable<Conclusion> BuildConclusions(CellGroup cellGroup, Cell first, Cell second, Cell third,
             IList<int> triple)
         {
-            foreach (var cell in cellGroup.Cells.Where(c => !c.HasValue && c != first && c != second && c != third))
+            foreach (var cell in cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c != first && c != second && c != third))
             {
                 // remove triplet values from cells other than that triple
                 var toomuch = cell.AvailableValues.Intersect(triple).ToList();

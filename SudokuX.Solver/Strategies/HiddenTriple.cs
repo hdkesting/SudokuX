@@ -31,7 +31,7 @@ namespace SudokuX.Solver.Strategies
         {
             // find triplet values to ignore
             var knownvals =
-                cellGroup.Cells.Where(c => c.HasValue).Select(c => c.GivenValue ?? c.CalculatedValue).ToList();
+                cellGroup.Cells.Where(c => c.HasGivenOrCalculatedValue).Select(c => c.GivenValue ?? c.CalculatedValue).ToList();
             if (knownvals.Count >= maxValue - minValue - 2)
             {
                 // 3 open cells or less? never mind.
@@ -47,7 +47,7 @@ namespace SudokuX.Solver.Strategies
                 }
 
                 var cells =
-                    cellGroup.Cells.Where(c => !c.HasValue && c.AvailableValues.Any(v => triplet.Contains(v))).ToList();
+                    cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Any(v => triplet.Contains(v))).ToList();
                 if (cells.Count == 3)
                 {
                     // exactly 3 cells with any of the three triplet values - this is a triplet, possibly hidden

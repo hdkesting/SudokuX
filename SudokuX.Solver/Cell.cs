@@ -66,12 +66,12 @@ namespace SudokuX.Solver
 
 
         /// <summary>
-        /// Gets a value indicating whether this instance has given or calculated value.
+        /// Gets a value indicating whether this instance has a given value or a calculated value.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance has value; otherwise, <c>false</c>.
         /// </value>
-        public bool HasValue { get { return GivenValue.HasValue || CalculatedValue.HasValue; } }
+        public bool HasGivenOrCalculatedValue { get { return GivenValue.HasValue || CalculatedValue.HasValue; } }
 
         /// <summary>
         /// Gets or sets the complexity level used to calculate the value so far.

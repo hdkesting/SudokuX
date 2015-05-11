@@ -67,6 +67,7 @@
     <Compile Include="ISudokuGrid.cs" />
     <Compile Include="GridPatterns\DoubleMirroredPattern.cs" />
     <Compile Include="GridPatterns\IGridPattern.cs" />
+    <Compile Include="NextPositionStrategies\NextPositionStrategy.cs" />
     <Compile Include="Strategies\BasicRule.cs" />
     <Compile Include="Strategies\HiddenTriple.cs" />
     <Compile Include="Strategies\XWing.cs" />

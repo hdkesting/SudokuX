@@ -82,17 +82,20 @@ namespace SudokuX.Solver.Strategies
 
             int score = 0;
             Validity val;
+            int max = 0;
+
+            ISolver basic = new BasicRule();
 
             while (foundone && keepgoing) // keep looping while there are results
             {
                 // use the BasicRule, to make sure the validity check makes sense
-                var conclusions = ProcessGrid(new BasicRule()).ToList();
+                var conclusions = ProcessGrid(basic).ToList();
                 ProcessConclusions(conclusions, ref score, ref keepgoing);
 
                 val = _grid.IsChallengeDone();
                 if (val == Validity.Invalid)
                 {
-                    return new ProcessResult(0, val);
+                    return new ProcessResult(0, Validity.Invalid);
                 }
 
                 foundone = false;
@@ -103,6 +106,7 @@ namespace SudokuX.Solver.Strategies
 
                     if (foundone)
                     {
+                        max = Math.Max(solver.Complexity, max);
                         // skip other, more difficult, solvers for now; start again at the simple ones
                         break; // foreach solver
                     }
@@ -110,6 +114,7 @@ namespace SudokuX.Solver.Strategies
             }
 
             val = _grid.IsChallengeDone();
+            Trace.WriteLine(String.Format("Solvers processed, max={0}, result={1}, score={2}", max, val, score));
             return new ProcessResult(score, val);
         }
 

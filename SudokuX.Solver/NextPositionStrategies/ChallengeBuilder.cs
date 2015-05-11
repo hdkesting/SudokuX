@@ -29,9 +29,12 @@ namespace SudokuX.Solver.NextPositionStrategies
             _rng = rng;
             _solver = new Strategies.Solver(_grid, solvers);
 
-            _scoreCalculator = positions => positions.Select(p => _grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Max();
-            // _scoreCalculator =  positions => grid.GridSize - positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Average();
+            _scoreCalculator = NextPositionStrategy.MaxSum;
+
+                // _scoreCalculator =  positions => grid.GridSize - positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Average();
         }
+
+ 
 
         public event EventHandler<ProgressEventArgs> Progress;
 
@@ -51,7 +54,7 @@ namespace SudokuX.Solver.NextPositionStrategies
             {
                 var e = new ProgressEventArgs
                 {
-                    Calculated = _grid.AllCells().Count(c => c.HasValue),
+                    Calculated = _grid.AllCells().Count(c => c.HasGivenOrCalculatedValue),
                     Given = _grid.AllCells().Count(c => c.GivenValue.HasValue),
                     Total = _grid.GridSize * _grid.GridSize
                 };
@@ -67,14 +70,14 @@ namespace SudokuX.Solver.NextPositionStrategies
         public int FullResets { get; private set; }
 
 
-        private readonly Func<IEnumerable<Position>, int> _scoreCalculator;
+        private Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
         /// <summary>
         /// Gets the score calculator for a position list. Higher = better.
         /// </summary>
         /// <value>
         /// The score calculator.
         /// </value>
-        private Func<IEnumerable<Position>, int> CalculateScore { get { return _scoreCalculator; } }
+        private Func<ISudokuGrid, IEnumerable<Position>, int> CalculateScore { get { return _scoreCalculator; } }
 
         public void CreateGrid()
         {
@@ -129,6 +132,14 @@ namespace SudokuX.Solver.NextPositionStrategies
                         break;
 
                     case Validity.Maybe:
+                        if (_grid.GetPercentageDone() > 0.5)
+                        {
+                            _scoreCalculator = NextPositionStrategy.MinCount;
+                        }
+                        else
+                        {
+                            _scoreCalculator = NextPositionStrategy.MaxSum;
+                        }
                         swSelect.Start();
                         SelectExtraGiven();
                         swSelect.Stop();
@@ -253,7 +264,7 @@ namespace SudokuX.Solver.NextPositionStrategies
             // calculate their relative score
             foreach (var positionList in list)
             {
-                positionList.SeverityScore = CalculateScore(positionList.Positions);
+                positionList.SeverityScore = CalculateScore(_grid, positionList.Positions);
             }
 
             // get the highest scoring one

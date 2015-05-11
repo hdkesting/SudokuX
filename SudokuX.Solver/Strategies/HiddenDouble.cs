@@ -33,7 +33,7 @@ namespace SudokuX.Solver.Strategies
         {
             // ReSharper disable once PossibleInvalidOperationException
             var knownvalues = group.Cells
-                                .Where(c => c.HasValue)
+                                .Where(c => c.HasGivenOrCalculatedValue)
                                 .Select(c => c.GivenValue ?? c.CalculatedValue.Value)
                                 .ToList();
 
@@ -53,14 +53,14 @@ namespace SudokuX.Solver.Strategies
                     // v1 < v2
                     int[] potentialDouble = { v1, v2 };
 
-                    int count = group.Cells.Count(cell => !cell.HasValue && cell.AvailableValues.Intersect(potentialDouble).Any());
+                    int count = group.Cells.Count(cell => !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Intersect(potentialDouble).Any());
 
                     if (count == 2)
                     {
                         // exactly two cells found with this pair of numbers is a possibility - that's a double!
                         // but is it still hidden between other possibilities?
                         var pair = group.Cells
-                                        .Where(cell => !cell.HasValue && cell.AvailableValues.Intersect(potentialDouble).Any())
+                                        .Where(cell => !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Intersect(potentialDouble).Any())
                                         .ToArray();
 
                         var concl1 = new Conclusion(pair[0], Complexity, pair[0].AvailableValues.Except(potentialDouble));

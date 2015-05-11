@@ -25,7 +25,7 @@ namespace SudokuX.Solver.Strategies
 
         public int Complexity
         {
-            get { return 1; }
+            get { return 2; }
         }
 
         private IEnumerable<Conclusion> HiddenSinglesInGroup(CellGroup group, int min, int max)
@@ -43,7 +43,7 @@ namespace SudokuX.Solver.Strategies
                         break; // foreach
                     }
 
-                    if (!cell.HasValue && cell.AvailableValues.Contains(val))
+                    if (!cell.HasGivenOrCalculatedValue && cell.AvailableValues.Contains(val))
                     {
                         // found this value as available - but it might be elsewhere also
                         latest = cell;

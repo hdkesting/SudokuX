@@ -40,7 +40,7 @@ namespace SudokuX.Solver.Strategies
             {
                 // in what cells is this digit a possible value?
                 var cellswithdigit =
-                    cellGroup.Cells.Where(c => !c.HasValue && c.AvailableValues.Contains(digit)).ToList();
+                    cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(digit)).ToList();
 
                 // found more than one cell (if one, then it should have been caught as NakedSingle)
                 if (cellswithdigit.Count > 1)
@@ -72,7 +72,7 @@ namespace SudokuX.Solver.Strategies
                 // not in the original group,
                 // doesn't have a value yet
                 // and contains this as a possible value
-                if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.HasValue && cell.AvailableValues.Contains(digit))
+                if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Contains(digit))
                 {
                     conclusions.Add(new Conclusion(cell, Complexity, new[] { digit }));
                 }
