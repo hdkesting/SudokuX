@@ -123,7 +123,7 @@ namespace SudokuX.UI
                 board.BoardSize == Solver.Support.Enums.BoardSize.Board6)
             {
                 string msg = _dict["ShowPencil-TooEasy"].ToString();
-                ShowPencilmarks.IsChecked = null;
+                ShowPencilmarks.IsChecked = false;
                 MessageBox.Show(msg);
                 return;
             }

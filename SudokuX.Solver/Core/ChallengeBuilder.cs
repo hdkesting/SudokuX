@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using SudokuX.Solver.GridPatterns;
 using SudokuX.Solver.NextPositionStrategies;
 using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support;
@@ -32,10 +31,7 @@ namespace SudokuX.Solver.Core
 
             _scoreCalculator = NextPositionStrategy.MaxSum;
 
-            // _scoreCalculator =  positions => grid.GridSize - positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Average();
         }
-
-
 
         public event EventHandler<ProgressEventArgs> Progress;
 
@@ -95,7 +91,6 @@ namespace SudokuX.Solver.Core
             var swProcess = new Stopwatch();
             var swBacktrack = new Stopwatch();
             var swSelect = new Stopwatch();
-            var swCheck = new Stopwatch();
 
             while (true)
             {
@@ -121,8 +116,8 @@ namespace SudokuX.Solver.Core
 
                         Debug.WriteLine("Total in solvers: {0:N} ms", total);
 
-                        Debug.WriteLine("Timings: process {0:N} ms, backtrack {1:N} ms, select extra {2:N} ms, check {3:N} ms",
-                            swProcess.ElapsedMilliseconds, swBacktrack.ElapsedMilliseconds, swSelect.ElapsedMilliseconds, swCheck.ElapsedMilliseconds);
+                        Debug.WriteLine("Timings: process {0:N} ms, backtrack {1:N} ms, select extra {2:N} ms",
+                            swProcess.ElapsedMilliseconds, swBacktrack.ElapsedMilliseconds, swSelect.ElapsedMilliseconds);
 
                         return; // done!
 

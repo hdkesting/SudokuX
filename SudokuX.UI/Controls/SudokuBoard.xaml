@@ -24,7 +24,7 @@
                     <Viewbox VerticalAlignment="Stretch">
                         <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" Width="Auto"
                                 FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
-                                Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8" 
+                                Background="Transparent" Foreground="DarkBlue" BorderBrush="Transparent" Opacity="0.8" FontSize="8pt"
                                 ></TextBox>
                     </Viewbox>
                 </ItemsControl>
@@ -192,7 +192,7 @@
     </Grid>
     <UserControl.Resources>
         <Storyboard x:Key="FinishAnimation" RepeatBehavior="1x">
-            <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:2" AutoReverse="False"></DoubleAnimation>
+            <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:2" AutoReverse="True"></DoubleAnimation>
         </Storyboard>
     </UserControl.Resources>
 </UserControl>
