@@ -1,4 +1,6 @@
-﻿namespace SudokuX.Solver.Grids
+﻿using SudokuX.Solver.Core;
+
+namespace SudokuX.Solver.Grids
 {
     /// <summary>
     /// Creates a 4x4 grid square blocks.

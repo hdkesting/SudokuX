@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.GridPatterns;
-using SudokuX.Solver.NextPositionStrategies;
-using SudokuX.Solver.Strategies;
+using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
@@ -20,7 +20,7 @@ namespace SudokuX.Solver
         private readonly ISudokuGrid _grid;
 
         private IGridPattern _pattern;
-        private List<ISolver> _solvers;
+        private List<ISolverStrategy> _solvers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChallengeCreator"/> class.
@@ -42,9 +42,9 @@ namespace SudokuX.Solver
         /// </value>
         public ISudokuGrid Grid { get { return _grid; } }
 
-        public IList<ISolver> Solvers
+        public IList<ISolverStrategy> Solvers
         {
-            get { return new ReadOnlyCollection<ISolver>(_solvers); }
+            get { return new ReadOnlyCollection<ISolverStrategy>(_solvers); }
         }
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace SudokuX.Solver
             {
                 case BoardSize.Board4:
                     _pattern = new RandomPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
                             new NakedSingle(), 
                             new HiddenSingle()
@@ -66,7 +66,7 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board6:
                     _pattern = new RandomPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle(),
@@ -77,7 +77,7 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board6Irregular:
                     _pattern = new RandomPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle()
@@ -86,7 +86,7 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board9:
                     _pattern = new Rotational2Pattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle(),
@@ -100,7 +100,7 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board9X:
                     _pattern = new DoubleMirroredPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle(),
@@ -113,7 +113,7 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board9Irregular:
                     _pattern = new RandomPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle(),
@@ -126,7 +126,7 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board12:
                     _pattern = new Rotational4Pattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle(),
@@ -139,7 +139,7 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board16:
                     _pattern = new Rotational4Pattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle(),
@@ -181,7 +181,7 @@ namespace SudokuX.Solver
         /// <param name="pattern">A symmetry pattern (if any) for the givens.</param>
         /// <param name="solvers">A list of strategies to solve a grid.</param>
         /// <param name="rng">A random number generator</param>
-        private void CreateGrid(ISudokuGrid grid, IGridPattern pattern, IList<ISolver> solvers, Random rng)
+        private void CreateGrid(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
         {
             var sw = Stopwatch.StartNew();
 

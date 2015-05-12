@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Within a group, check for three cells with only (the same) three possibilities (or a subset): the other cells in this group can't have these three.
     /// </summary>
-    public class NakedTriple : ISolver
+    public class NakedTriple : ISolverStrategy
     {
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {

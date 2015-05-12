@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Process the One Rule: have just one of each value in each group. 
     /// So remove availables when there is a given or calculated value.
     /// </summary>
-    public class BasicRule : ISolver
+    public class BasicRule : ISolverStrategy
     {
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {

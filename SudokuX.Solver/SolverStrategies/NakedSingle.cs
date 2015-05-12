@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Finds unfilled cells with exactly one possibility. That's then the cell's value.
     /// </summary>
-    public class NakedSingle : ISolver
+    public class NakedSingle : ISolverStrategy
     {
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {

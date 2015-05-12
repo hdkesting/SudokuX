@@ -1,17 +1,18 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// A digit can be placed on just a limited number of cells in one group and all those cells also belong to the same other group.
     /// That digit can't occur on other cells of that other group.
     /// This is an interaction between a block and a row, column or diagonal.
     /// </summary>
-    public class LockedCandidates : ISolver
+    public class LockedCandidates : ISolverStrategy
     {
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {

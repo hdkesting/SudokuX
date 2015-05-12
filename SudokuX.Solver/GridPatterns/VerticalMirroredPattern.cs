@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver.GridPatterns

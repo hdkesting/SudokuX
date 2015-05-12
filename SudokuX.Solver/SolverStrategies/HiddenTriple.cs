@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Find a set of three numbers that are only in three cells within the group. The other numbers in those cells are invalid.
     /// Note that not all three values need to be in all three cells.
     /// </summary>
-    public class HiddenTriple : ISolver
+    public class HiddenTriple : ISolverStrategy
     {
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {

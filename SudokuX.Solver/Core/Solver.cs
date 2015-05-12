@@ -4,10 +4,11 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using JetBrains.Annotations;
+using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// Try and solve a grid as far as possible.
@@ -15,10 +16,10 @@ namespace SudokuX.Solver.Strategies
     public class Solver
     {
         private readonly ISudokuGrid _grid;
-        private readonly IList<ISolver> _solvers;
+        private readonly IList<ISolverStrategy> _solvers;
         private readonly Dictionary<Type, PerformanceMeasurement> _measurements = new Dictionary<Type, PerformanceMeasurement>();
 
-        public Solver([NotNull] ISudokuGrid grid, [NotNull] IList<ISolver> solvers)
+        public Solver([NotNull] ISudokuGrid grid, [NotNull] IList<ISolverStrategy> solvers)
         {
             if (grid == null) throw new ArgumentNullException("grid");
             if (solvers == null) throw new ArgumentNullException("solvers");
@@ -39,7 +40,7 @@ namespace SudokuX.Solver.Strategies
         readonly Stopwatch _swConclusion = new Stopwatch();
         private int _conclusionSets;
 
-        private IList<Conclusion> ProcessGrid(ISolver solver)
+        private IList<Conclusion> ProcessGrid(ISolverStrategy solver)
         {
             // mark start
             var sw = Stopwatch.StartNew();
@@ -84,7 +85,7 @@ namespace SudokuX.Solver.Strategies
             Validity val;
             int max = 0;
 
-            ISolver basic = new BasicRule();
+            ISolverStrategy basic = new BasicRule();
 
             while (foundone && keepgoing) // keep looping while there are results
             {

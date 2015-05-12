@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace SudokuX.Solver
+namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// A single cell in the sudoku grid.

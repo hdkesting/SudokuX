@@ -2,7 +2,7 @@
 using System.Linq;
 using SudokuX.Solver.Support.Enums;
 
-namespace SudokuX.Solver
+namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// A full group of cells: a row, column, block (rectangular or not)  or diagonal.

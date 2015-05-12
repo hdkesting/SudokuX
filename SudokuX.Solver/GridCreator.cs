@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Grids;
 using SudokuX.Solver.Support.Enums;
 

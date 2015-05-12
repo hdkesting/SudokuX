@@ -1,4 +1,4 @@
-﻿namespace SudokuX.Solver
+﻿namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// A grid with rectangular blocks.

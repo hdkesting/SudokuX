@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Within a group, check for two cells with only (the same) two possibilities: the other cells in this group can't have these two.
     /// </summary>
-    public class NakedDouble : ISolver
+    public class NakedDouble : ISolverStrategy
     {
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {

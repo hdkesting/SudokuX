@@ -1,15 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Finds cells that are the only one within a group where some particular value can be.
     /// That is then the value this cell <b>has</b> to be.
     /// </summary>
-    public class HiddenSingle : ISolver
+    public class HiddenSingle : ISolverStrategy
     {
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {

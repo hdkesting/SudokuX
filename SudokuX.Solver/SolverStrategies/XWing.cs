@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// X-Wing pattern: one digit in two different rows (or columns) at exactly two positions in the same columns (or rows).
     /// Then the other cells in that column (or row) can't have this digit.
     /// </summary>
-    public class XWing : ISolver
+    public class XWing : ISolverStrategy
     {
         public int Complexity
         {

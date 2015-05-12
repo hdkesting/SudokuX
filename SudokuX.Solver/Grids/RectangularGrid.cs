@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using SudokuX.Solver.Strategies;
+using SudokuX.Solver.Core;
+using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver.Grids

@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using SudokuX.Solver.GridPatterns;
-using SudokuX.Solver.Strategies;
+using SudokuX.Solver.NextPositionStrategies;
+using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
-namespace SudokuX.Solver.NextPositionStrategies
+namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// Baseclass that tries to find an optimal set of next positions for a challenge.
@@ -20,21 +21,21 @@ namespace SudokuX.Solver.NextPositionStrategies
         private readonly Random _rng;
         private readonly Stack<SelectedValue> _stack = new Stack<SelectedValue>();
         private readonly Queue<Position> _nextQueue = new Queue<Position>();
-        private readonly Strategies.Solver _solver;
+        private readonly Solver _solver;
 
-        public ChallengeBuilder(ISudokuGrid grid, IGridPattern pattern, IList<ISolver> solvers, Random rng)
+        public ChallengeBuilder(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
         {
             _grid = grid;
             _pattern = pattern;
             _rng = rng;
-            _solver = new Strategies.Solver(_grid, solvers);
+            _solver = new Solver(_grid, solvers);
 
             _scoreCalculator = NextPositionStrategy.MaxSum;
 
-                // _scoreCalculator =  positions => grid.GridSize - positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Average();
+            // _scoreCalculator =  positions => grid.GridSize - positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Average();
         }
 
- 
+
 
         public event EventHandler<ProgressEventArgs> Progress;
 
@@ -154,7 +155,7 @@ namespace SudokuX.Solver.NextPositionStrategies
         private void TestGrid()
         {
             var testgrid = _grid.CloneBoardAsChallenge();
-            var solver = new GridSolver(new ISolver[] { new NakedSingle() });
+            var solver = new GridSolver(new ISolverStrategy[] { new NakedSingle() });
             solver.Solve(testgrid);
             Trace.WriteLine(solver.Validity);
         }

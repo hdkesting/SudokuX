@@ -1,12 +1,12 @@
 ﻿using System.Collections.Generic;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// Interface for executing the solving strategies.
     /// </summary>
-    public interface ISolver
+    public interface ISolverStrategy
     {
         /// <summary>
         /// Processes the grid and returns any helpful conclusions.

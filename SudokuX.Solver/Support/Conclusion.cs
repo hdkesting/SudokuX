@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using SudokuX.Solver.Core;
 
 namespace SudokuX.Solver.Support
 {

@@ -1,14 +1,15 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Find a set of two numbers that are only in two cells: the other numbers in those two cells are not valid
     /// </summary>
-    public class HiddenDouble : ISolver
+    public class HiddenDouble : ISolverStrategy
     {
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {

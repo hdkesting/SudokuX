@@ -1,16 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using SudokuX.Solver.Strategies;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver
 {
     public class GridSolver
     {
-        private readonly IList<ISolver> _solvers;
+        private readonly IList<ISolverStrategy> _solvers;
 
-        public GridSolver(IList<ISolver> solvers)
+        public GridSolver(IList<ISolverStrategy> solvers)
         {
             _solvers = solvers;
             Validity = Validity.Maybe;
@@ -18,7 +17,7 @@ namespace SudokuX.Solver
 
         public void Solve(ISudokuGrid grid)
         {
-            var solver = new Strategies.Solver(grid, _solvers);
+            var solver = new Core.Solver(grid, _solvers);
 
             var result = solver.ProcessSolvers();
             GridScore = result.Score;
