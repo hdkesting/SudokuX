@@ -314,6 +314,34 @@ namespace SudokuX.Solver.Test
         }
 
         [TestMethod]
+        public void TestSolveWithColors()
+        {
+            const string gridstring = @"
+ *-----------*
+ |.7.|154|32.|
+ |.3.|782|5..|
+ |5.2|963|.87|
+ |---+---+---|
+ |...|.79|..8|
+ |.9.|541|.7.|
+ |7..|.28|9..|
+ |---+---+---|
+ |42.|8.7|..5|
+ |681|435|792|
+ |.57|2.6|84.|
+ *-----------*
+";
+            var grid = Grid9X9.LoadFromString(gridstring);
+            ISolverStrategy solver = new SolveWithColors();
+            var sw = Stopwatch.StartNew();
+            var list = solver.ProcessGrid(grid).ToList();
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
+
+            Assert.IsNotNull(list);
+        }
+
+        [TestMethod]
         public void TestSolve6X6()
         {
             const string challenge = @"
