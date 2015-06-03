@@ -63,10 +63,13 @@ namespace SudokuX.UI
                     _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board16);
                     break;
                 case "Irr9":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board9Irregular);
+                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Irregular9);
                     break;
                 case "Irr6":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board6Irregular);
+                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Irregular6);
+                    break;
+                case "Hyp9":
+                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Hyper9);
                     break;
             }
 

@@ -75,7 +75,7 @@ namespace SudokuX.Solver
                         };
                     break;
 
-                case BoardSize.Board6Irregular:
+                case BoardSize.Irregular6:
                     _pattern = new RandomPattern();
                     _solvers = new List<ISolverStrategy>
                         {
@@ -113,7 +113,7 @@ namespace SudokuX.Solver
                         };
                     break;
 
-                case BoardSize.Board9Irregular:
+                case BoardSize.Irregular9:
                     _pattern = new RandomPattern();
                     _solvers = new List<ISolverStrategy>
                         {
@@ -124,6 +124,19 @@ namespace SudokuX.Solver
                             new HiddenDouble(),
                             new HiddenTriple()
                         };
+                    break;
+
+                case BoardSize.Hyper9:
+                    _pattern = new RandomPattern();
+                    _solvers = new List<ISolverStrategy>
+                    {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble(),
+                            new HiddenDouble(),
+                            new HiddenTriple()                        
+                    };
                     break;
 
                 case BoardSize.Board12:

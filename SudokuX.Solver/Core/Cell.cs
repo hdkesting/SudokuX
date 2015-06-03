@@ -90,6 +90,10 @@ namespace SudokuX.Solver.Core
             cellGroup.Cells.Add(this);
         }
 
+        /// <summary>
+        /// Adds this cell to the specified group(s).
+        /// </summary>
+        /// <param name="groups">The groups.</param>
         public void AddToGroups(params CellGroup[] groups)
         {
             foreach (var cellGroup in groups)

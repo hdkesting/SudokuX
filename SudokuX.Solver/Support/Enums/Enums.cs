@@ -38,12 +38,17 @@
         /// <summary>
         /// An irregular 9x9 board
         /// </summary>
-        Board9Irregular,
+        Irregular9,
 
         /// <summary>
         /// An irregular 6x6 board
         /// </summary>
-        Board6Irregular
+        Irregular6,
+
+        /// <summary>
+        /// A 9x9 board with 4 extra blocks
+        /// </summary>
+        Hyper9
     }
 
     /// <summary>
@@ -72,11 +77,11 @@
     /// </summary>
     public enum GroupType
     {
-        Other,
+        Unknown,
         Row,
         Column,
         Block,
-        Diagonal
+        Special
     }
 
 }

@@ -187,7 +187,8 @@ namespace SudokuX.UI.Controls
                     {
                         color = Utils.FromHsla(block.Ordinal * 0.22, 0.9, 0.5, 1.0);
                     }
-                    else if (_gameBoard.HasDiagonals && (row == col || _creatorGrid.GridSize - 1 - row == col))
+                    //else if (_gameBoard.HasDiagonals && (row == col || _creatorGrid.GridSize - 1 - row == col))
+                    else if (challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special))
                     {
                         color = Utils.FromHsla(block.Ordinal * 0.17, 0.7, 0.3, 1.0);
                     }

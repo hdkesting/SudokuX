@@ -26,7 +26,7 @@ namespace SudokuX.Solver
                 case BoardSize.Board6:
                     return new Grid6X6();
 
-                case BoardSize.Board6Irregular:
+                case BoardSize.Irregular6:
                     return new Irregular6();
 
                 case BoardSize.Board9:
@@ -35,8 +35,11 @@ namespace SudokuX.Solver
                 case BoardSize.Board9X:
                     return new Grid9X9WithX();
 
-                case BoardSize.Board9Irregular:
+                case BoardSize.Irregular9:
                     return new Irregular9();
+
+                case BoardSize.Hyper9:
+                    return new Hyper9();
 
                 case BoardSize.Board12:
                     return new Grid12X12();

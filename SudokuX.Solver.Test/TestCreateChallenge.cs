@@ -234,7 +234,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateIrregularChallenge9()
         {
-            var creator = new ChallengeCreator(BoardSize.Board9Irregular);
+            var creator = new ChallengeCreator(BoardSize.Irregular9);
             creator.CreateChallenge(new Random(2));
             var grid = creator.Grid;
 
@@ -251,12 +251,23 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateIrregularChallenge6()
         {
-            var creator = new ChallengeCreator(BoardSize.Board6Irregular);
+            var creator = new ChallengeCreator(BoardSize.Irregular6);
             creator.CreateChallenge(new Random(2));
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
             Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+        }
+
+        [TestMethod]
+        public void CreateHyper9Challenge()
+        {
+            var creator = new ChallengeCreator(BoardSize.Hyper9);
+            creator.CreateChallenge(new Random(2));
+            var grid = creator.Grid;
+
+            Assert.IsTrue(grid.IsAllKnown());
+            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());           
         }
     }
 }

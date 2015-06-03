@@ -28,8 +28,8 @@ namespace SudokuX.Solver.Grids
         private void CreateDiags()
         {
             // add two "diagonal" groups
-            _diagonal1 = new CellGroup(GridSize, 1) { Name = "Diagonal NW-SE", GroupType = GroupType.Diagonal };
-            _diagonal2 = new CellGroup(GridSize, 2) { Name = "Diagonal SW-NE", GroupType = GroupType.Diagonal };
+            _diagonal1 = new CellGroup(GridSize, 1) { Name = "Diagonal NW-SE", GroupType = GroupType.Special };
+            _diagonal2 = new CellGroup(GridSize, 2) { Name = "Diagonal SW-NE", GroupType = GroupType.Special };
 
             // add the existing cells to these groups
             for (int p = 0; p < GridSize; p++)

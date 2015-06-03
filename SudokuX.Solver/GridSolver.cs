@@ -5,16 +5,27 @@ using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver
 {
+    /// <summary>
+    /// Try and solve a supplied grid, using a supplied list of solvers.
+    /// </summary>
     public class GridSolver
     {
         private readonly IList<ISolverStrategy> _solvers;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="GridSolver"/> class.
+        /// </summary>
+        /// <param name="solvers">The solvers.</param>
         public GridSolver(IList<ISolverStrategy> solvers)
         {
             _solvers = solvers;
             Validity = Validity.Maybe;
         }
 
+        /// <summary>
+        /// Tries to solve the specified grid.
+        /// </summary>
+        /// <param name="grid">The grid.</param>
         public void Solve(ISudokuGrid grid)
         {
             var solver = new Core.Solver(grid, _solvers);
@@ -30,10 +41,28 @@ namespace SudokuX.Solver
             }
         }
 
+        /// <summary>
+        /// Gets the weighted grid score (=<see cref="GridScore"/> / number of empty cells in challenge).
+        /// </summary>
+        /// <value>
+        /// The weighted grid score.
+        /// </value>
         public double WeightedGridScore { get; private set; }
 
+        /// <summary>
+        /// Gets the absolute score of the solved grid.
+        /// </summary>
+        /// <value>
+        /// The grid score.
+        /// </value>
         public int GridScore { get; private set; }
 
+        /// <summary>
+        /// Gets the validity of the solved grid.
+        /// </summary>
+        /// <value>
+        /// The validity.
+        /// </value>
         public Validity Validity { get; private set; }
     }
 }
