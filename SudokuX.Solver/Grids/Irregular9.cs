@@ -1,4 +1,6 @@
-﻿namespace SudokuX.Solver.Grids
+﻿using SudokuX.Solver.Core;
+
+namespace SudokuX.Solver.Grids
 {
     /// <summary>
     /// Creates a 9x9 grid with irregular blocks.
@@ -10,5 +12,19 @@
             : base(3, 3)
         {
         }
+
+        private Irregular9(IrregularGrid source)
+            : base(source)
+        {
+        }
+
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Irregular9(this);
+            CopyChallenge(grid);
+
+            return grid;
+        }
+
     }
 }

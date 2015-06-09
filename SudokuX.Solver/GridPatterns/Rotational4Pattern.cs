@@ -6,9 +6,9 @@ using SudokuX.Solver.Support;
 namespace SudokuX.Solver.GridPatterns
 {
     /// <summary>
-    /// Creates a pattern that's mirrored both horizontally and vertically.
+    /// Creates a pattern with rotational symmetry (4 x 90°).
     /// </summary>
-    public class DoubleMirroredPattern : IGridPattern
+    public class Rotational4Pattern : IGridPattern
     {
         /// <summary>
         /// Get a list of positions according to the pattern.
@@ -22,10 +22,11 @@ namespace SudokuX.Solver.GridPatterns
             return new List<Position>
             {
                 start,
-                new Position(max-start.Row, start.Column),
-                new Position(start.Row, max-start.Column),
-                new Position(max-start.Row, max-start.Column)
+                new Position(start.Column, max - start.Row),
+                new Position(max - start.Row, max - start.Column),
+                new Position(max - start.Column, start.Row)
             }.Distinct().ToList();
+
         }
     }
 }

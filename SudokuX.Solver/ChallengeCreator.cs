@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.GridPatterns;
-using SudokuX.Solver.NextPositionStrategies;
-using SudokuX.Solver.Strategies;
+using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
@@ -19,7 +20,7 @@ namespace SudokuX.Solver
         private readonly ISudokuGrid _grid;
 
         private IGridPattern _pattern;
-        private List<ISolver> _solvers;
+        private List<ISolverStrategy> _solvers;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ChallengeCreator"/> class.
@@ -41,6 +42,11 @@ namespace SudokuX.Solver
         /// </value>
         public ISudokuGrid Grid { get { return _grid; } }
 
+        public IList<ISolverStrategy> Solvers
+        {
+            get { return new ReadOnlyCollection<ISolverStrategy>(_solvers); }
+        }
+
         /// <summary>
         /// Sets up the symmetry pattern and the solvers used (and thus the complexity level).
         /// </summary>
@@ -51,9 +57,8 @@ namespace SudokuX.Solver
             {
                 case BoardSize.Board4:
                     _pattern = new RandomPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
-                            new BasicRule(), 
                             new NakedSingle(), 
                             new HiddenSingle()
                         };
@@ -61,9 +66,8 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board6:
                     _pattern = new RandomPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new NakedDouble(),
@@ -71,81 +75,95 @@ namespace SudokuX.Solver
                         };
                     break;
 
-                case BoardSize.Board6Irregular:
+                case BoardSize.Irregular6:
                     _pattern = new RandomPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle()
                         };
                     break;
 
                 case BoardSize.Board9:
-                    _pattern = new RotationalPattern();
-                    _solvers = new List<ISolver>
+                    _pattern = new Rotational2Pattern();
+                    _solvers = new List<ISolverStrategy>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
                             new NakedDouble(),
                             new HiddenDouble(),
-                            new NakedTriple()
+                            new NakedTriple(),
+                            new XWing(),
+                            new SolveWithColors()
                         };
                     break;
 
                 case BoardSize.Board9X:
                     _pattern = new DoubleMirroredPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
                             new NakedDouble(),
-                            new HiddenDouble()
+                            new HiddenDouble(),
+                            new HiddenTriple(),
+                            new SolveWithColors()
                         };
                     break;
 
-                case BoardSize.Board9Irregular:
+                case BoardSize.Irregular9:
                     _pattern = new RandomPattern();
-                    _solvers = new List<ISolver>
+                    _solvers = new List<ISolverStrategy>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
                             new NakedDouble(),
-                            new HiddenDouble()
+                            new HiddenDouble(),
+                            new HiddenTriple()
                         };
+                    break;
+
+                case BoardSize.Hyper9:
+                    _pattern = new RandomPattern();
+                    _solvers = new List<ISolverStrategy>
+                    {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble(),
+                            new HiddenDouble(),
+                            new HiddenTriple()                        
+                    };
                     break;
 
                 case BoardSize.Board12:
-                    _pattern = new RotationalPattern();
-                    _solvers = new List<ISolver>
+                    _pattern = new Rotational4Pattern();
+                    _solvers = new List<ISolverStrategy>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             //new LockedCandidates(),
                             new NakedDouble(),
                             new HiddenDouble(),
-                            //new NakedTriple(),
+                            new NakedTriple(),
+                            new SolveWithColors()
                         };
                     break;
 
                 case BoardSize.Board16:
-                    _pattern = new RotationalPattern();
-                    _solvers = new List<ISolver>
+                    _pattern = new Rotational4Pattern();
+                    _solvers = new List<ISolverStrategy>
                         {
-                            new BasicRule(),
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
                             new NakedDouble(),
                             //new HiddenDouble(), 
-                            //new NakedTriple(),                        
+                            //new NakedTriple(),
+                            new SolveWithColors()
                         };
                     break;
 
@@ -180,11 +198,11 @@ namespace SudokuX.Solver
         /// <param name="pattern">A symmetry pattern (if any) for the givens.</param>
         /// <param name="solvers">A list of strategies to solve a grid.</param>
         /// <param name="rng">A random number generator</param>
-        private void CreateGrid(ISudokuGrid grid, IGridPattern pattern, IList<ISolver> solvers, Random rng)
+        private void CreateGrid(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
         {
             var sw = Stopwatch.StartNew();
 
-            var strategy = new HighestNumberAvailable(grid, pattern, solvers, rng);
+            var strategy = new ChallengeBuilder(grid, pattern, solvers, rng);
             strategy.Progress += strategy_Progress;
             strategy.CreateGrid();
 

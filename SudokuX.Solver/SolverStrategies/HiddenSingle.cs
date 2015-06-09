@@ -1,18 +1,17 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Finds cells that are the only one within a group where some particular value can be.
     /// That is then the value this cell <b>has</b> to be.
     /// </summary>
-    public class HiddenSingle : ISolver
+    public class HiddenSingle : ISolverStrategy
     {
-        private const int Complexity = 1;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking HiddenSingle");
@@ -20,8 +19,14 @@ namespace SudokuX.Solver.Strategies
                 .SelectMany(g => HiddenSinglesInGroup(g, grid.MinValue, grid.MaxValue))
                 .Distinct()
                 .ToList();
+            // "distinct" because it may be found in both a row and a column
 
             return list1;
+        }
+
+        public int Complexity
+        {
+            get { return 2; }
         }
 
         private IEnumerable<Conclusion> HiddenSinglesInGroup(CellGroup group, int min, int max)
@@ -39,7 +44,7 @@ namespace SudokuX.Solver.Strategies
                         break; // foreach
                     }
 
-                    if (!cell.HasValue && cell.AvailableValues.Contains(val))
+                    if (!cell.HasGivenOrCalculatedValue && cell.AvailableValues.Contains(val))
                     {
                         // found this value as available - but it might be elsewhere also
                         latest = cell;

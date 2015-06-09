@@ -24,7 +24,7 @@
                     <Viewbox VerticalAlignment="Stretch">
                         <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" Width="Auto"
                                 FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
-                                Background="Transparent" Foreground="DarkOliveGreen" BorderBrush="Transparent" Opacity="0.8" 
+                                Background="Transparent" Foreground="DarkBlue" BorderBrush="Transparent" Opacity="0.8" FontSize="8pt"
                                 ></TextBox>
                     </Viewbox>
                 </ItemsControl>
@@ -56,10 +56,7 @@
                                         <DrawingGroup>
                                             <GeometryDrawing>
                                                 <GeometryDrawing.Brush>
-                                                    <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
-                                                        <GradientStop Color ="Transparent" Offset ="0"/>
-                                                        <GradientStop Color ="{Binding Path=BlockColor}" Offset ="1"/>
-                                                    </LinearGradientBrush>
+                                                    <SolidColorBrush Color="{Binding Path=BlockColor}"></SolidColorBrush>
                                                 </GeometryDrawing.Brush>
                                                 <GeometryDrawing.Geometry>
                                                     <RectangleGeometry Rect ="0,0,1,1"/>
@@ -69,7 +66,18 @@
                                                 <GeometryDrawing.Brush>
                                                     <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
                                                         <GradientStop Color ="#88FFFFFF" Offset ="0"/>
-                                                        <GradientStop Color ="#33FFFFFF" Offset ="1"/>
+                                                        <GradientStop Color ="Transparent" Offset ="1"/>
+                                                    </LinearGradientBrush>
+                                                </GeometryDrawing.Brush>
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect ="0,0,1,1"/>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                            <GeometryDrawing>
+                                                <GeometryDrawing.Brush>
+                                                    <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
+                                                        <GradientStop Color ="#33FFFFFF" Offset ="0"/>
+                                                        <GradientStop Color ="#11FFFFFF" Offset ="1"/>
                                                     </LinearGradientBrush>
                                                 </GeometryDrawing.Brush>
                                                 <GeometryDrawing.Geometry>
@@ -191,7 +199,7 @@
          </ItemsControl>
     </Grid>
     <UserControl.Resources>
-        <Storyboard x:Key="FinishAnimation" RepeatBehavior="2x">
+        <Storyboard x:Key="FinishAnimation" RepeatBehavior="1x">
             <DoubleAnimation Storyboard.TargetName="MainGrid" Storyboard.TargetProperty="Opacity" To="0.0" Duration="0:0:2" AutoReverse="True"></DoubleAnimation>
         </Storyboard>
     </UserControl.Resources>

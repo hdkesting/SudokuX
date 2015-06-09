@@ -4,8 +4,9 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Grids;
-using SudokuX.Solver.Strategies;
+using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver.Test
@@ -69,7 +70,7 @@ namespace SudokuX.Solver.Test
 
             var grid = Grid6X6.LoadFromString(gridstring);
 
-            ISolver solver = new NakedSingle();
+            ISolverStrategy solver = new NakedSingle();
 
             var list = solver.ProcessGrid(grid).ToList();
 
@@ -123,7 +124,7 @@ namespace SudokuX.Solver.Test
 
             var grid = Grid6X6.LoadFromString(gridstring);
 
-            ISolver solver = new HiddenSingle();
+            ISolverStrategy solver = new HiddenSingle();
 
             var list = solver.ProcessGrid(grid).ToList();
 
@@ -151,7 +152,7 @@ namespace SudokuX.Solver.Test
 ";
             var grid = Grid9X9.LoadFromString(challenge);
 
-            ISolver solver = new HiddenSingle();
+            ISolverStrategy solver = new HiddenSingle();
 
             var list = solver.ProcessGrid(grid).ToList();
 
@@ -178,7 +179,7 @@ namespace SudokuX.Solver.Test
 
             var grid = Grid6X6.LoadFromString(gridstring);
 
-            ISolver solver = new NakedDouble();
+            ISolverStrategy solver = new NakedDouble();
 
             var list = solver.ProcessGrid(grid).ToList();
 
@@ -187,6 +188,93 @@ namespace SudokuX.Solver.Test
             Assert.AreEqual(2, list.Count);
             Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 1, 4 }));
             Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 4 }));
+
+        }
+
+        [TestMethod]
+        public void TestNakedDoubles9()
+        {
+            const string gridstring = @"
+ *-----------*
+ |...|18.|6.3|
+ |..3|.5.|...|
+ |186|.43|75.|
+ |---+---+---|
+ |.1.|...|9.4|
+ |...|...|..6|
+ |6.2|...|.3.|
+ |---+---+---|
+ |.91|4.5|368|
+ |...|.61|495|
+ |465|839|...|
+ *-----------*
+";
+
+            var grid = Grid9X9.LoadFromString(gridstring);
+
+            ISolverStrategy solver = new NakedDouble();
+
+            var list = solver.ProcessGrid(grid).ToList();
+
+            // first real naked double found is r3c2/r7c2
+            // conclusions are r0c2 not 7, r4c2 not 7,8 (column)
+            Assert.AreEqual(2, list.Count);
+            Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 7 }));
+            Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 7, 8 }));
+        }
+
+        [TestMethod]
+        public void TestHiddenDoubles9()
+        {
+            const string gridstring = @"
+ *-----------*
+ |...|..9|.81|
+ |13.|5.8|...|
+ |..7|621|3..|
+ |---+---+---|
+ |...|9.4|72.|
+ |...|...|...|
+ |.46|1.7|...|
+ |---+---+---|
+ |..5|.16|4..|
+ |...|..3|.76|
+ |69.|...|...|
+ *-----------*
+";
+
+            var grid = Grid9X9.LoadFromString(gridstring);
+
+            ISolverStrategy solver = new HiddenDouble();
+
+            var list = solver.ProcessGrid(grid).ToList();
+            Assert.AreEqual(6, list.Count);
+        }
+
+        [TestMethod]
+        public void TestHiddenTriplet()
+        {
+            const string challenge = @"
+ *-----------*
+ |.7.|6..|.3.|
+ |..4|3..|9..|
+ |32.|..7|56.|
+ |---+---+---|
+ |.4.|.1.|...|
+ |..8|...|7..|
+ |...|.3.|.2.|
+ |---+---+---|
+ |.62|8..|.19|
+ |..7|..9|6..|
+ |.8.|..3|.7.|
+ *-----------*
+";
+
+            var grid = Grid9X9.LoadFromString(challenge);
+
+            ISolverStrategy solver = new HiddenTriple();
+
+            var list = solver.ProcessGrid(grid).ToList();
+            Assert.AreEqual(2, list.Count);
 
         }
 
@@ -212,7 +300,7 @@ namespace SudokuX.Solver.Test
 
             var grid = Grid9X9.LoadFromString(gridstring);
 
-            ISolver solver = new LockedCandidates();
+            ISolverStrategy solver = new LockedCandidates();
 
             var sw = Stopwatch.StartNew();
             var list = solver.ProcessGrid(grid).ToList();
@@ -223,6 +311,34 @@ namespace SudokuX.Solver.Test
             Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 8 }));
             Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 8 }));
 
+        }
+
+        [TestMethod]
+        public void TestSolveWithColors()
+        {
+            const string gridstring = @"
+ *-----------*
+ |.7.|154|32.|
+ |.3.|782|5..|
+ |5.2|963|.87|
+ |---+---+---|
+ |...|.79|..8|
+ |.9.|541|.7.|
+ |7..|.28|9..|
+ |---+---+---|
+ |42.|8.7|..5|
+ |681|435|792|
+ |.57|2.6|84.|
+ *-----------*
+";
+            var grid = Grid9X9.LoadFromString(gridstring);
+            ISolverStrategy solver = new SolveWithColors();
+            var sw = Stopwatch.StartNew();
+            var list = solver.ProcessGrid(grid).ToList();
+            sw.Stop();
+            Console.WriteLine(sw.ElapsedMilliseconds);
+
+            Assert.IsNotNull(list);
         }
 
         [TestMethod]
@@ -242,13 +358,14 @@ namespace SudokuX.Solver.Test
 
             var grid = Grid6X6.LoadFromString(challenge);
 
-            var solver = new Strategies.Solver(grid,
-                new ISolver[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
+            var solver = new Core.Solver(grid,
+                new ISolverStrategy[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            solver.ProcessSolvers();
+            var res = solver.ProcessSolvers();
+            Trace.WriteLine(res.Score);
             DumpGrid(grid);
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, res.Validity);
         }
 
         [TestMethod]
@@ -272,13 +389,14 @@ namespace SudokuX.Solver.Test
 
             var grid = Grid9X9.LoadFromString(challenge);
 
-            var solver = new Strategies.Solver(grid,
-                new ISolver[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
+            var solver = new Core.Solver(grid,
+                new ISolverStrategy[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            solver.ProcessSolvers();
+            var res = solver.ProcessSolvers();
+            Trace.WriteLine(res.Score);
             DumpGrid(grid);
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, res.Validity);
         }
 
         [TestMethod]
@@ -302,13 +420,52 @@ namespace SudokuX.Solver.Test
 
             var grid = Grid9X9.LoadFromString(challenge);
 
-            var solver = new Strategies.Solver(grid,
-                new ISolver[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
+            var solver = new Core.Solver(grid,
+                new ISolverStrategy[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
-            solver.ProcessSolvers();
+            var res = solver.ProcessSolvers();
+            Trace.WriteLine(res.Score);
             DumpGrid(grid);
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, res.Validity);
+        }
+
+        [TestMethod]
+        public void TestHard9X9()
+        {
+            const string challenge = @"
+ *-----------*
+ |...|...|1.8|
+ |.4.|2..|...|
+ |...|6..|...|
+ |---+---+---|
+ |.2.|4..|.3.|
+ |7..|.1.|5..|
+ |...|...|...|
+ |---+---+---|
+ |1..|.8.|...|
+ |...|...|34.|
+ |...|...|.26|
+ *-----------*
+";
+
+            var grid = Grid9X9.LoadFromString(challenge);
+
+            var solver = new Core.Solver(grid,
+                new ISolverStrategy[]
+                {
+                    new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble(),
+                    new NakedTriple(), new LockedCandidates()
+                });
+            // needs an X(Y)-Wing
+            Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
+            var res = solver.ProcessSolvers();
+            Trace.WriteLine(res.Score);
+            DumpGrid(grid);
+            var s = grid.ToStatusString();
+            Trace.WriteLine(s);
+            //Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+
         }
 
         [TestMethod]
@@ -338,8 +495,8 @@ E  .  1  8   .  3  .  .   .  .  .  A   .  .  F  .
 
             var grid = Grid16X16.LoadFromString(challenge);
 
-            var solver = new Strategies.Solver(grid,
-                new ISolver[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
+            var solver = new Core.Solver(grid,
+                new ISolverStrategy[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
             solver.ProcessSolvers();

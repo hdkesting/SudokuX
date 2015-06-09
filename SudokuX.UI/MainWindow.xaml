@@ -37,21 +37,26 @@
             <Expander IsExpanded ="True" Header ="New Game Settings">
                 <Border Margin="5" Padding="10" Background="#18FFFFFF">
                     <StackPanel>
-                        <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
+                        <StackPanel>
+                            <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
 
-                        <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
-                            <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}"></ComboBoxItem>
-                            <ComboBoxItem Tag="6x6" Content="{DynamicResource Grid-6X6}" IsSelected="True"></ComboBoxItem>
-                            <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"></ComboBoxItem>
-                            <ComboBoxItem Tag="9x9" Content="{DynamicResource Grid-9X9}"></ComboBoxItem>
-                            <ComboBoxItem Tag="9Diag" Content="{DynamicResource Grid-9Diag}"></ComboBoxItem>
-                            <ComboBoxItem Tag="Irr9" Content="{DynamicResource Grid-Irr9}"></ComboBoxItem>
-                            <ComboBoxItem Tag="12x12" Content="{DynamicResource Grid-12X12}"></ComboBoxItem>
-                            <ComboBoxItem Tag="16x16" Content="{DynamicResource Grid-16X16}"></ComboBoxItem>
-                        </ComboBox>
-                        
-                        <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
+                            <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
+                                <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}"></ComboBoxItem>
+                                <ComboBoxItem Tag="6x6" Content="{DynamicResource Grid-6X6}" IsSelected="True"></ComboBoxItem>
+                                <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"></ComboBoxItem>
+                                <ComboBoxItem Tag="9x9" Content="{DynamicResource Grid-9X9}"></ComboBoxItem>
+                                <ComboBoxItem Tag="9Diag" Content="{DynamicResource Grid-9Diag}"></ComboBoxItem>
+                                <ComboBoxItem Tag="Hyp9" Content="{DynamicResource Grid-Hyp9}"></ComboBoxItem>
+                                <ComboBoxItem Tag="Irr9" Content="{DynamicResource Grid-Irr9}"></ComboBoxItem>
+                                <ComboBoxItem Tag="12x12" Content="{DynamicResource Grid-12X12}"></ComboBoxItem>
+                                <ComboBoxItem Tag="16x16" Content="{DynamicResource Grid-16X16}"></ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel>
+                            <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
                                  Margin="3" VerticalAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
+                            <TextBlock Foreground="Blue" x:Name="GridScoreLabel">??</TextBlock>
+                        </StackPanel>
                     </StackPanel>
                 </Border>
             </Expander>

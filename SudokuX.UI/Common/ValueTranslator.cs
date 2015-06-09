@@ -23,13 +23,14 @@ namespace SudokuX.UI.Common
                     _max = 3;
                     break;
                 case BoardSize.Board6:
-                case BoardSize.Board6Irregular:
+                case BoardSize.Irregular6:
                     _chars = "123456";
                     _max = 5;
                     break;
                 case BoardSize.Board9:
-                case BoardSize.Board9Irregular:
+                case BoardSize.Irregular9:
                 case BoardSize.Board9X:
+                case BoardSize.Hyper9:
                     _chars = "123456789";
                     _max = 8;
                     break;

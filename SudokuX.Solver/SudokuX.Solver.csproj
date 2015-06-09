@@ -44,10 +44,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cell.cs" />
-    <Compile Include="CellGroup.cs" />
+    <Compile Include="Core\Cell.cs" />
+    <Compile Include="Core\CellGroup.cs" />
     <Compile Include="ChallengeCreator.cs" />
     <Compile Include="GridCreator.cs" />
+    <Compile Include="GridPatterns\Rotational2Pattern.cs" />
+    <Compile Include="GridSolver.cs" />
     <Compile Include="Grids\BasicGrid.cs" />
     <Compile Include="Grids\Grid12X12.cs" />
     <Compile Include="Grids\Grid16X16.cs" />
@@ -57,15 +59,20 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Grids\Grid9X9WithX.cs" />
+    <Compile Include="Grids\Hyper9.cs" />
     <Compile Include="Grids\Irregular6.cs" />
     <Compile Include="Grids\Irregular9.cs" />
     <Compile Include="Grids\IrregularGrid.cs" />
     <Compile Include="Grids\RectangularGrid.cs" />
-    <Compile Include="IRegularSudokuGrid.cs" />
-    <Compile Include="ISudokuGrid.cs" />
+    <Compile Include="Core\IRegularSudokuGrid.cs" />
+    <Compile Include="Core\ISudokuGrid.cs" />
     <Compile Include="GridPatterns\DoubleMirroredPattern.cs" />
-    <Compile Include="GridPatterns\IGridPattern.cs" />
-    <Compile Include="Strategies\BasicRule.cs" />
+    <Compile Include="Core\IGridPattern.cs" />
+    <Compile Include="NextPositionStrategies\NextPositionStrategy.cs" />
+    <Compile Include="SolverStrategies\BasicRule.cs" />
+    <Compile Include="SolverStrategies\SolveWithColors.cs" />
+    <Compile Include="SolverStrategies\HiddenTriple.cs" />
+    <Compile Include="SolverStrategies\XWing.cs" />
     <Compile Include="Support\EnumerableExtensions.cs" />
     <Compile Include="Support\Enums\EnumExtensions.cs" />
     <Compile Include="Support\Enums\Enums.cs" />
@@ -73,22 +80,23 @@
     <Compile Include="Support\Position.cs" />
     <Compile Include="Support\PositionList.cs" />
     <Compile Include="GridPatterns\RandomPattern.cs" />
-    <Compile Include="GridPatterns\RotationalPattern.cs" />
+    <Compile Include="GridPatterns\Rotational4Pattern.cs" />
     <Compile Include="GridPatterns\VerticalMirroredPattern.cs" />
-    <Compile Include="NextPositionStrategies\BaseNextPositionPattern.cs" />
-    <Compile Include="NextPositionStrategies\HighestNumberAvailable.cs" />
+    <Compile Include="Core\ChallengeBuilder.cs" />
+    <Compile Include="Support\ProcessResult.cs" />
     <Compile Include="Support\ProgressEventArgs.cs" />
+    <Compile Include="Support\ResharperAnnotations.cs" />
     <Compile Include="Support\SelectedValue.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Support\Conclusion.cs" />
-    <Compile Include="Strategies\HiddenDouble.cs" />
-    <Compile Include="Strategies\HiddenSingle.cs" />
-    <Compile Include="Strategies\ISolver.cs" />
-    <Compile Include="Strategies\LockedCandidates.cs" />
-    <Compile Include="Strategies\NakedDouble.cs" />
-    <Compile Include="Strategies\NakedSingle.cs" />
-    <Compile Include="Strategies\NakedTriple.cs" />
-    <Compile Include="Strategies\Solver.cs" />
+    <Compile Include="SolverStrategies\HiddenDouble.cs" />
+    <Compile Include="SolverStrategies\HiddenSingle.cs" />
+    <Compile Include="Core\ISolverStrategy.cs" />
+    <Compile Include="SolverStrategies\LockedCandidates.cs" />
+    <Compile Include="SolverStrategies\NakedDouble.cs" />
+    <Compile Include="SolverStrategies\NakedSingle.cs" />
+    <Compile Include="SolverStrategies\NakedTriple.cs" />
+    <Compile Include="Core\Solver.cs" />
     <Compile Include="Support\StackExtensions.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

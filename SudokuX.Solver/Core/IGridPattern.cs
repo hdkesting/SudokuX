@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.GridPatterns
+namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// Supplies positions for clues in a specific pattern.

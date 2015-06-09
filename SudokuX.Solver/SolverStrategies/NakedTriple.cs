@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Within a group, check for three cells with only (the same) three possibilities (or a subset): the other cells in this group can't have these three.
     /// </summary>
-    public class NakedTriple : ISolver
+    public class NakedTriple : ISolverStrategy
     {
-        private const int Complexity = 5;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking NakedTriple");
@@ -29,9 +28,14 @@ namespace SudokuX.Solver.Strategies
             return Enumerable.Empty<Conclusion>();
         }
 
+        public int Complexity
+        {
+            get { return 5; }
+        }
+
         private IEnumerable<Conclusion> FindNakedTriples(CellGroup cellGroup)
         {
-            var possibletriples = cellGroup.Cells.Where(c => !c.HasValue && c.AvailableValues.Count <= 3).ToList();
+            var possibletriples = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Count <= 3).ToList();
 
             // if you've processed a->b, then there's no need to process b->a
 
@@ -101,7 +105,7 @@ namespace SudokuX.Solver.Strategies
         private IEnumerable<Conclusion> BuildConclusions(CellGroup cellGroup, Cell first, Cell second, Cell third,
             IList<int> triple)
         {
-            foreach (var cell in cellGroup.Cells.Where(c => !c.HasValue && c != first && c != second && c != third))
+            foreach (var cell in cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c != first && c != second && c != third))
             {
                 // remove triplet values from cells other than that triple
                 var toomuch = cell.AvailableValues.Intersect(triple).ToList();

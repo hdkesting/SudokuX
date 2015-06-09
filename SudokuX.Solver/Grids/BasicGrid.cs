@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
@@ -119,7 +121,7 @@ namespace SudokuX.Solver.Grids
         /// <returns></returns>
         public bool IsAllKnown()
         {
-            return AllCells().All(c => c.HasValue);
+            return AllCells().All(c => c.HasGivenOrCalculatedValue);
         }
 
         /// <summary>
@@ -129,7 +131,7 @@ namespace SudokuX.Solver.Grids
         public Validity IsChallengeDone()
         {
             Validity result = Validity.Full;
-            if (AllCells().Any(c => !c.HasValue && !c.AvailableValues.Any()))
+            if (AllCells().Any(c => !c.HasGivenOrCalculatedValue && !c.AvailableValues.Any()))
             {
                 Debug.WriteLine("IsChallengeDone: No. No availables left in some empty cell.");
                 return Validity.Invalid;
@@ -150,7 +152,7 @@ namespace SudokuX.Solver.Grids
                     result = Validity.Maybe;
                 }
 
-                var avail = cellGroup.Cells.Where(c => !c.HasValue).SelectMany(c => c.AvailableValues).Distinct().ToList();
+                var avail = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue).SelectMany(c => c.AvailableValues).Distinct().ToList();
                 if (avail.Count() + count != GridSize)
                 {
                     Debug.WriteLine("IsChalllengeDone: No. Not enough values left to fill group {0}", cellGroup);
@@ -193,7 +195,7 @@ namespace SudokuX.Solver.Grids
 
         public double GetPercentageDone()
         {
-            int countDone = AllCells().Count(c => c.HasValue);
+            int countDone = AllCells().Count(c => c.HasGivenOrCalculatedValue);
 
             return (1.0 * countDone) / (GridSize * GridSize);
         }
@@ -211,6 +213,50 @@ namespace SudokuX.Solver.Grids
         protected static CellGroup GetByOrdinal(IEnumerable<CellGroup> group, int ordinal)
         {
             return group.First(g => g.Ordinal == ordinal);
+        }
+
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
+        public abstract ISudokuGrid CloneBoardAsChallenge();
+
+        /// <summary>
+        /// Clones the grid to create a challenge.
+        /// </summary>
+        /// <returns></returns>
+        protected void CopyChallenge(ISudokuGrid target)
+        {
+            for (int row = 0; row < GridSize; row++)
+            {
+                for (int col = 0; col < GridSize; col++)
+                {
+                    var sourcecell = GetCellByRowColumn(row, col);
+                    if (sourcecell.GivenValue.HasValue)
+                    {
+                        var targetcell = target.GetCellByRowColumn(row, col);
+                        targetcell.SetGivenValue(sourcecell.GivenValue.Value);
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Clears all calculated values, leaving a challenge.
+        /// </summary>
+        protected void ClearConclusions()
+        {
+            foreach (var cell in AllCells())
+            {
+                if (cell.GivenValue.HasValue)
+                {
+                    cell.AvailableValues.Clear();
+                }
+                else
+                {
+                    cell.Reset(false);
+                }
+            }
         }
 
     }

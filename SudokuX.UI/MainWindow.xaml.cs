@@ -15,7 +15,7 @@ namespace SudokuX.UI
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : Window, IDisposable
     {
         private ValueSelectionMode _selectionMode;
         private SudokuBoard _board;
@@ -63,10 +63,13 @@ namespace SudokuX.UI
                     _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board16);
                     break;
                 case "Irr9":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board9Irregular);
+                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Irregular9);
                     break;
                 case "Irr6":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board6Irregular);
+                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Irregular6);
+                    break;
+                case "Hyp9":
+                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Hyper9);
                     break;
             }
 
@@ -112,6 +115,7 @@ namespace SudokuX.UI
             CreationProgress.IsIndeterminate = true;
             CreationProgress.Visibility = Visibility.Hidden;
             NewGameButton.IsEnabled = true;
+            GridScoreLabel.Text = String.Format(_dict["GridScoreLabel"].ToString(), _board.GridScore, _board.WeightedGridScore);
         }
 
         private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
@@ -121,7 +125,8 @@ namespace SudokuX.UI
             if (board.BoardSize == Solver.Support.Enums.BoardSize.Board4 ||
                 board.BoardSize == Solver.Support.Enums.BoardSize.Board6)
             {
-                string msg = dict["ShowPencil-TooEasy"].ToString();
+                string msg = _dict["ShowPencil-TooEasy"].ToString();
+                ShowPencilmarks.IsChecked = false;
                 MessageBox.Show(msg);
                 return;
             }
@@ -130,28 +135,27 @@ namespace SudokuX.UI
             board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
         }
 
-        private ResourceDictionary dict;
+        private ResourceDictionary _dict;
         private void SetLanguageDictionary()
         {
             // http://www.codeproject.com/Articles/123460/Simplest-Way-to-Implement-Multilingual-WPF-Applica
-            dict = new ResourceDictionary();
+            _dict = new ResourceDictionary();
 
             var cult = Thread.CurrentThread.CurrentCulture.ToString();
             if (cult.StartsWith("nl"))
             {
-                dict.Source = new Uri(@"Resources/StringResources.nl.xaml", UriKind.Relative);
+                _dict.Source = new Uri(@"Resources/StringResources.nl.xaml", UriKind.Relative);
             }
             else
             {
-                dict.Source = new Uri(@"Resources/StringResources.xaml", UriKind.Relative);
+                _dict.Source = new Uri(@"Resources/StringResources.xaml", UriKind.Relative);
             }
 
-            Resources.MergedDictionaries.Add(dict);
+            Resources.MergedDictionaries.Add(_dict);
         }
 
         private void GameWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
-            // MessageBox.Show("GameWindow_OnMouseDown");
             e.Handled = true;
             _selectionMode = ValueSelectionMode.None;
 
@@ -162,7 +166,6 @@ namespace SudokuX.UI
         {
             var tag = ((Button)sender).Tag.ToString();
             e.Handled = true;
-            // MessageBox.Show("SelectButton_OnClick: " + tag);
 
             switch (_selectionMode)
             {
@@ -238,6 +241,24 @@ namespace SudokuX.UI
             {
                 _board.HighlightValue(value);
             }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_board != null)
+                {
+                    _board.Dispose();
+                    _board = null;
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
     }
 }

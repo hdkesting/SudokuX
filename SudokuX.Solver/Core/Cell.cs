@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 
-namespace SudokuX.Solver
+namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// A single cell in the sudoku grid.
@@ -66,12 +66,12 @@ namespace SudokuX.Solver
 
 
         /// <summary>
-        /// Gets a value indicating whether this instance has given or calculated value.
+        /// Gets a value indicating whether this instance has a given value or a calculated value.
         /// </summary>
         /// <value>
         ///   <c>true</c> if this instance has value; otherwise, <c>false</c>.
         /// </value>
-        public bool HasValue { get { return GivenValue.HasValue || CalculatedValue.HasValue; } }
+        public bool HasGivenOrCalculatedValue { get { return GivenValue.HasValue || CalculatedValue.HasValue; } }
 
         /// <summary>
         /// Gets or sets the complexity level used to calculate the value so far.
@@ -90,6 +90,10 @@ namespace SudokuX.Solver
             cellGroup.Cells.Add(this);
         }
 
+        /// <summary>
+        /// Adds this cell to the specified group(s).
+        /// </summary>
+        /// <param name="groups">The groups.</param>
         public void AddToGroups(params CellGroup[] groups)
         {
             foreach (var cellGroup in groups)
@@ -108,6 +112,10 @@ namespace SudokuX.Solver
             return "Cell " + Name;
         }
 
+        /// <summary>
+        /// Resets this cell.
+        /// </summary>
+        /// <param name="clearGiven">if set to <c>true</c>, also clear the given (challenge) value.</param>
         public void Reset(bool clearGiven)
         {
             if (clearGiven || !_givenValue.HasValue)

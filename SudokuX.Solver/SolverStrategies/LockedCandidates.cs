@@ -1,20 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// A digit can be placed on just a limited number of cells in one group and all those cells also belong to the same other group.
     /// That digit can't occur on other cells of that other group.
     /// This is an interaction between a block and a row, column or diagonal.
     /// </summary>
-    public class LockedCandidates : ISolver
+    public class LockedCandidates : ISolverStrategy
     {
-        private const int Complexity = 6;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking LockedCandidates");
@@ -30,14 +29,19 @@ namespace SudokuX.Solver.Strategies
             return Enumerable.Empty<Conclusion>();
         }
 
-        private static IList<Conclusion> EvaluateCandidates(int digit, ISudokuGrid grid)
+        public int Complexity
+        {
+            get { return 6; }
+        }
+
+        private IList<Conclusion> EvaluateCandidates(int digit, ISudokuGrid grid)
         {
             // check all "block" groups
             foreach (var cellGroup in grid.CellGroups.Where(g => g.GroupType == GroupType.Block))
             {
                 // in what cells is this digit a possible value?
                 var cellswithdigit =
-                    cellGroup.Cells.Where(c => !c.HasValue && c.AvailableValues.Contains(digit)).ToList();
+                    cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(digit)).ToList();
 
                 // found more than one cell (if one, then it should have been caught as NakedSingle)
                 if (cellswithdigit.Count > 1)
@@ -61,7 +65,7 @@ namespace SudokuX.Solver.Strategies
             return new List<Conclusion>();
         }
 
-        private static IList<Conclusion> FindCandidates(int digit, IEnumerable<CellGroup> groups, CellGroup sourceGroup)
+        private IList<Conclusion> FindCandidates(int digit, IEnumerable<CellGroup> groups, CellGroup sourceGroup)
         {
             List<Conclusion> conclusions = new List<Conclusion>();
             foreach (Cell cell in groups.SelectMany(g => g.Cells))
@@ -69,7 +73,7 @@ namespace SudokuX.Solver.Strategies
                 // not in the original group,
                 // doesn't have a value yet
                 // and contains this as a possible value
-                if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.HasValue && cell.AvailableValues.Contains(digit))
+                if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Contains(digit))
                 {
                     conclusions.Add(new Conclusion(cell, Complexity, new[] { digit }));
                 }

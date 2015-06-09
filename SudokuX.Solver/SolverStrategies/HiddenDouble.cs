@@ -1,52 +1,68 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Find a set of two numbers that are only in two cells: the other numbers in those two cells are not valid
     /// </summary>
-    public class HiddenDouble : ISolver
+    public class HiddenDouble : ISolverStrategy
     {
-        private const int Complexity = 3;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking HiddenDouble");
+
+            var result = new List<Conclusion>();
             foreach (var group in grid.CellGroups)
             {
                 var list = FindHiddenDoubles(group, grid.MinValue, grid.MaxValue).ToList();
-                if (list.Any())
-                {
-                    // use just the first batch of conclusions
-                    return list;
-                }
+                result.AddRange(list);
             }
-            return Enumerable.Empty<Conclusion>();
+
+            return result;
+        }
+
+        public int Complexity
+        {
+            get { return 4; }
         }
 
         private IEnumerable<Conclusion> FindHiddenDoubles(CellGroup group, int min, int max)
         {
+            // ReSharper disable once PossibleInvalidOperationException
+            var knownvalues = group.Cells
+                                .Where(c => c.HasGivenOrCalculatedValue)
+                                .Select(c => c.GivenValue ?? c.CalculatedValue.Value)
+                                .ToList();
+
+            // loop through all possible pairs of values
+            // first value just short of the maximum value
             for (int v1 = min; v1 < max; v1++)
             {
-                if (group.Cells.Any(c => c.GivenValue == v1 || c.CalculatedValue == v1))
+                if (knownvalues.Contains(v1))
                     continue; // already known - forget about it
 
+                // second value is always higher than the first - so no double checks
                 for (int v2 = v1 + 1; v2 <= max; v2++)
                 {
-                    if (group.Cells.Any(c => c.GivenValue == v2 || c.CalculatedValue == v2))
+                    if (knownvalues.Contains(v2))
                         continue; // already known - forget about it
 
                     // v1 < v2
                     int[] potentialDouble = { v1, v2 };
 
-                    int count = group.Cells.Count(cell => !cell.HasValue && cell.AvailableValues.Intersect(potentialDouble).Any());
+                    int count = group.Cells.Count(cell => !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Intersect(potentialDouble).Any());
 
                     if (count == 2)
                     {
-                        var pair = group.Cells.Where(cell => !cell.HasValue && cell.AvailableValues.Intersect(potentialDouble).Any()).ToArray();
+                        // exactly two cells found with this pair of numbers is a possibility - that's a double!
+                        // but is it still hidden between other possibilities?
+                        var pair = group.Cells
+                                        .Where(cell => !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Intersect(potentialDouble).Any())
+                                        .ToArray();
 
                         var concl1 = new Conclusion(pair[0], Complexity, pair[0].AvailableValues.Except(potentialDouble));
                         var concl2 = new Conclusion(pair[1], Complexity, pair[1].AvailableValues.Except(potentialDouble));

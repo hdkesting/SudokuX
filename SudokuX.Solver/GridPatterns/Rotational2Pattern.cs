@@ -1,13 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver.GridPatterns
 {
     /// <summary>
-    /// Creates a pattern with rotational symmetry (4 x 90°).
+    /// Creates a pattern with rotational symmetry (2 x 180°).
     /// </summary>
-    public class RotationalPattern : IGridPattern
+    public class Rotational2Pattern : IGridPattern
     {
         /// <summary>
         /// Get a list of positions according to the pattern.
@@ -21,9 +22,7 @@ namespace SudokuX.Solver.GridPatterns
             return new List<Position>
             {
                 start,
-                new Position(start.Column, max - start.Row),
-                new Position(max - start.Row, max - start.Column),
-                new Position(max - start.Column, start.Row)
+                new Position(max - start.Row, max - start.Column)
             }.Distinct().ToList();
 
         }

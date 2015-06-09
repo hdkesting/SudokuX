@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
-namespace SudokuX.Solver
+namespace SudokuX.Solver.Core
 {
     /// <summary>
     /// A sudoku grid.
@@ -59,6 +59,12 @@ namespace SudokuX.Solver
         IEnumerable<Cell> AllCells();
 
         double GetPercentageDone();
+
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
+        ISudokuGrid CloneBoardAsChallenge();
 
     }
 }

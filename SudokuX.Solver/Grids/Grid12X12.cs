@@ -1,4 +1,6 @@
-﻿namespace SudokuX.Solver.Grids
+﻿using SudokuX.Solver.Core;
+
+namespace SudokuX.Solver.Grids
 {
     /// <summary>
     /// Creates a 12x12 grid with rectangular blocks.
@@ -11,9 +13,12 @@
 
         }
 
-        // 0 1 2
-        // 3 4 5
-        // 6 7 8
-        // 9 A B
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Grid12X12();
+            CopyChallenge(grid);
+
+            return grid;
+        }
     }
 }

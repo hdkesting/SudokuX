@@ -1,17 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 
-namespace SudokuX.Solver.Strategies
+namespace SudokuX.Solver.SolverStrategies
 {
     /// <summary>
     /// Within a group, check for two cells with only (the same) two possibilities: the other cells in this group can't have these two.
     /// </summary>
-    public class NakedDouble : ISolver
+    public class NakedDouble : ISolverStrategy
     {
-        private const int Complexity = 3;
-
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking NakedDouble");
@@ -27,9 +26,15 @@ namespace SudokuX.Solver.Strategies
             return Enumerable.Empty<Conclusion>();
         }
 
+        public int Complexity
+        {
+            get { return 3; }
+        }
+
         private IEnumerable<Conclusion> FindNakedDoubles(CellGroup cellGroup)
         {
-            var doubles = cellGroup.Cells.Where(c => !c.HasValue && c.AvailableValues.Count == 2).ToList();
+            // find all cells in the group with exactly two options left
+            var doubles = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Count == 2).ToList();
 
             // if you've processed a->b, then there's no need to process b->a
 
@@ -37,24 +42,14 @@ namespace SudokuX.Solver.Strategies
             {
                 var localcell = doubles.First();
                 doubles.Remove(localcell);
-                if (localcell.AvailableValues.Count < 2)
-                {
-                    continue;
-                }
 
                 foreach (var possibletwin in doubles)
                 {
-                    if (possibletwin.AvailableValues.Count < 2)
-                    {
-                        continue; // one of the two values has been removed by a previous naked-double in this group
-                    }
-
                     var localtwin = possibletwin;
-                    if (!localcell.AvailableValues.Except(localtwin.AvailableValues).Any())
+                    if (localcell.AvailableValues.All(v => localtwin.AvailableValues.Contains(v)))
                     {
-
-                        // cellen hebben dezelfde twee mogelijke waarden
-                        // dus de anderen uit de groep hebben die waarden niet
+                        // these two cells share the same two possible values
+                        // so the rest in this group can't have these values
 
                         var list = GetExclusions(localcell, localtwin).ToList();
                         if (list.Any())
@@ -63,28 +58,39 @@ namespace SudokuX.Solver.Strategies
                                 localcell.AvailableValues[0], localcell.AvailableValues[1],
                                 localcell, localtwin,
                                 cellGroup);
-                            return list;
+                            foreach (var conclusion in list)
+                            {
+                                yield return conclusion;
+                            }
                         }
                     }
                 }
             }
-            return Enumerable.Empty<Conclusion>();
+            //return Enumerable.Empty<Conclusion>();
         }
 
         private IEnumerable<Conclusion> GetExclusions(Cell cell1, Cell cell2)
         {
+            // all groups that contain these two cells:
             var commongroups = cell1.ContainingGroups.Intersect(cell2.ContainingGroups).ToList();
-            var values = cell1.AvailableValues.Union(cell2.AvailableValues).ToList();
 
-            foreach (var cell in commongroups.SelectMany(g => g.Cells).Where(c => c != cell1 && c != cell2).Distinct())
+            // the values of the double:
+            //var values = cell1.AvailableValues.Union(cell2.AvailableValues).ToList();
+            var values = cell1.AvailableValues; // identical to cell2.AvailableValues
+
+            // check all sibling cells for options to remove: find cells that have these values as "available" - that should be removed
+            var cells = commongroups
+                    .SelectMany(g => g.Cells)
+                    .Where(c => !c.HasGivenOrCalculatedValue && c != cell1 && c != cell2)
+                    .Distinct()
+                    .ToList();
+
+            foreach (var sibling in cells)
             {
-                if (!cell.HasValue)
+                var todo = sibling.AvailableValues.Intersect(values).ToList();
+                if (todo.Any())
                 {
-                    var todo = cell.AvailableValues.Intersect(values).ToList();
-                    if (todo.Any())
-                    {
-                        yield return new Conclusion(cell, Complexity, todo);
-                    }
+                    yield return new Conclusion(sibling, Complexity, todo);
                 }
             }
         }

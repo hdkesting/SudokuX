@@ -3,12 +3,14 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using SudokuX.Solver;
+using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Common;
@@ -46,6 +48,10 @@ namespace SudokuX.UI.Controls
 
         public BoardSize BoardSize { get { return _boardSize; } }
 
+        public int GridScore { get; set; }
+
+        public double WeightedGridScore { get; set; }
+
         public void Create()
         {
             _boardCreator.DoWork += (sender, args) => CreateChallenge(_boardSize, sender, args);
@@ -59,19 +65,25 @@ namespace SudokuX.UI.Controls
             MainList.DataContext = _gameBoard;
             ValueCounts = _gameBoard.ValueCounts;
 
-            _gameBoard.BoardIsFinished += _gameBoard_BoardIsFinished;
+            //_gameBoard.BoardIsFinished += _gameBoard_BoardIsFinished;
+            _gameBoard.PropertyChanged += _gameBoard_PropertyChanged;
         }
 
-        void _gameBoard_BoardIsFinished(object sender, EventArgs e)
+        async void _gameBoard_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            var fin = BoardIsFinished;
-            if (fin != null)
-            {
-                fin(this, EventArgs.Empty);
-            }
+            await Task.Yield();
 
-            var sb = (Storyboard)this.FindResource("FinishAnimation");
-            sb.Begin();
+            if (e.PropertyName == "IsFinished" && _gameBoard.IsFinished)
+            {
+                var fin = BoardIsFinished;
+                if (fin != null)
+                {
+                    fin(this, EventArgs.Empty);
+                }
+
+                var sb = (Storyboard)this.FindResource("FinishAnimation");
+                sb.Begin();
+            }
         }
 
         public event EventHandler<ProgressChangedEventArgs> Progress;
@@ -121,6 +133,12 @@ namespace SudokuX.UI.Controls
 
             creator.CreateChallenge();
 
+            var testgrid = _creatorGrid.CloneBoardAsChallenge();
+            var solver = new GridSolver(creator.Solvers);
+            solver.Solve(testgrid);
+            GridScore = solver.GridScore;
+            WeightedGridScore = solver.WeightedGridScore;
+
             creator.Progress -= progress;
         }
 
@@ -169,9 +187,10 @@ namespace SudokuX.UI.Controls
                     {
                         color = Utils.FromHsla(block.Ordinal * 0.22, 0.9, 0.5, 1.0);
                     }
-                    else if (_gameBoard.HasDiagonals && (row == col || _creatorGrid.GridSize - 1 - row == col))
+                    //else if (_gameBoard.HasDiagonals && (row == col || _creatorGrid.GridSize - 1 - row == col))
+                    else if (challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special))
                     {
-                        color = Utils.FromHsla(block.Ordinal * 0.17, 0.7, 0.3, 1.0);
+                        color = Utils.FromHsla(block.Ordinal * 0.15, 0.7, 0.3, 1.0);
                     }
                     boardcell.BlockColor = color;
                 }
@@ -181,8 +200,14 @@ namespace SudokuX.UI.Controls
 
         private void Dispose(bool disposing)
         {
-            _boardCreator.CancelAsync(); // moet ik niet eerst checken of dit nog bezig is?
-            _boardCreator.Dispose(); // moet ik niet wachten tot de berekening klaar/gestopt is?           
+            if (disposing)
+            {
+                if (_boardCreator != null)
+                {
+                    _boardCreator.CancelAsync(); // moet ik niet eerst checken of dit nog bezig is?
+                    _boardCreator.Dispose(); // moet ik niet wachten tot de berekening klaar/gestopt is?           
+                }
+            }
         }
 
         public void Dispose()
@@ -193,8 +218,10 @@ namespace SudokuX.UI.Controls
 
         public event EventHandler<CellClickEventArgs> CellClicked;
 
-        private void CellButton_OnClick(object sender, RoutedEventArgs e)
+        private async void CellButton_OnClick(object sender, RoutedEventArgs e)
         {
+            await Task.Yield();
+
             var tag = ((Button)sender).Tag.ToString().Split('|');
             int row = Convert.ToInt32(tag[0]);
             int col = Convert.ToInt32(tag[1]);

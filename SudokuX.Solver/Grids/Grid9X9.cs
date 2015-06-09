@@ -1,4 +1,6 @@
-﻿namespace SudokuX.Solver.Grids
+﻿using SudokuX.Solver.Core;
+
+namespace SudokuX.Solver.Grids
 {
     /// <summary>
     /// Creates a 9x9 grid with square blocks.
@@ -15,6 +17,14 @@
         {
             var grid = new Grid9X9();
             grid.InitializeFromString(challenge);
+            return grid;
+        }
+
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Grid9X9();
+            CopyChallenge(grid);
+
             return grid;
         }
 
