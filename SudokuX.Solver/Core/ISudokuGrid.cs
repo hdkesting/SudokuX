@@ -66,5 +66,21 @@ namespace SudokuX.Solver.Core
         /// <returns></returns>
         ISudokuGrid CloneBoardAsChallenge();
 
+        /// <summary>
+        /// Gets a value indicating whether this grid is regular.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this grid is regular; otherwise, <c>false</c>.
+        /// </value>
+        bool IsRegular { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this grid has special groups.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this grid has special groups; otherwise, <c>false</c>.
+        /// </value>
+        bool HasSpecialGroups { get; }
+
     }
 }

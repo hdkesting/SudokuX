@@ -38,5 +38,26 @@ namespace SudokuX.Solver.Grids
             return grid;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this grid is regular.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this grid is regular; otherwise, <c>false</c>.
+        /// </value>
+        public override bool IsRegular
+        {
+            get { return true; }
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether this grid has special groups.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this grid has special groups; otherwise, <c>false</c>.
+        /// </value>
+        public override bool HasSpecialGroups
+        {
+            get { return false; }
+        }
     }
 }
