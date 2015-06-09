@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using SudokuX.Solver.Core;
 using SudokuX.Solver.Support.Enums;
 
@@ -41,5 +37,33 @@ namespace SudokuX.Solver.Grids
                 }
             }
         }
+
+        public override ISudokuGrid CloneBoardAsChallenge()
+        {
+            var grid = new Hyper9();
+            CopyChallenge(grid);
+
+            return grid;
+        }
+
+        /// <summary>
+        /// Gets all defined groups of cells.
+        /// </summary>
+        public override IEnumerable<CellGroup> CellGroups
+        {
+            get
+            {
+                foreach (var cellGroup in base.CellGroups)
+                {
+                    yield return cellGroup;
+                }
+
+                yield return _blockNw;
+                yield return _blockNe;
+                yield return _blockSw;
+                yield return _blockSe;
+            }
+        }
+
     }
 }

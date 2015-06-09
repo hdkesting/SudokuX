@@ -190,7 +190,7 @@ namespace SudokuX.UI.Controls
                     //else if (_gameBoard.HasDiagonals && (row == col || _creatorGrid.GridSize - 1 - row == col))
                     else if (challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special))
                     {
-                        color = Utils.FromHsla(block.Ordinal * 0.17, 0.7, 0.3, 1.0);
+                        color = Utils.FromHsla(block.Ordinal * 0.15, 0.7, 0.3, 1.0);
                     }
                     boardcell.BlockColor = color;
                 }

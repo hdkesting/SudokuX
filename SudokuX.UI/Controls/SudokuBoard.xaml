@@ -56,10 +56,7 @@
                                         <DrawingGroup>
                                             <GeometryDrawing>
                                                 <GeometryDrawing.Brush>
-                                                    <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
-                                                        <GradientStop Color ="Transparent" Offset ="0"/>
-                                                        <GradientStop Color ="{Binding Path=BlockColor}" Offset ="1"/>
-                                                    </LinearGradientBrush>
+                                                    <SolidColorBrush Color="{Binding Path=BlockColor}"></SolidColorBrush>
                                                 </GeometryDrawing.Brush>
                                                 <GeometryDrawing.Geometry>
                                                     <RectangleGeometry Rect ="0,0,1,1"/>
@@ -69,7 +66,18 @@
                                                 <GeometryDrawing.Brush>
                                                     <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
                                                         <GradientStop Color ="#88FFFFFF" Offset ="0"/>
-                                                        <GradientStop Color ="#33FFFFFF" Offset ="1"/>
+                                                        <GradientStop Color ="Transparent" Offset ="1"/>
+                                                    </LinearGradientBrush>
+                                                </GeometryDrawing.Brush>
+                                                <GeometryDrawing.Geometry>
+                                                    <RectangleGeometry Rect ="0,0,1,1"/>
+                                                </GeometryDrawing.Geometry>
+                                            </GeometryDrawing>
+                                            <GeometryDrawing>
+                                                <GeometryDrawing.Brush>
+                                                    <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
+                                                        <GradientStop Color ="#33FFFFFF" Offset ="0"/>
+                                                        <GradientStop Color ="#11FFFFFF" Offset ="1"/>
                                                     </LinearGradientBrush>
                                                 </GeometryDrawing.Brush>
                                                 <GeometryDrawing.Geometry>

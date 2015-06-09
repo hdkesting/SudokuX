@@ -267,7 +267,12 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());           
+            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            var testgrid = grid.CloneBoardAsChallenge();
+            var solver = new GridSolver(creator.Solvers);
+            solver.Solve(testgrid);
+            Assert.AreEqual(Validity.Full, solver.Validity);
+            Trace.WriteLine("Board score: " + solver.GridScore);
         }
     }
 }
