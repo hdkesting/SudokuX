@@ -16,5 +16,10 @@ namespace SudokuX.Solver.NextPositionStrategies
         {
             return positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Min();
         }
+
+        public static int Any(ISudokuGrid grid, IEnumerable<Position> positions)
+        {
+            return 1;
+        }
     }
 }

@@ -78,6 +78,9 @@ namespace SudokuX.Solver.Core
 
         public void CreateGrid()
         {
+            if (CalculateScore == null)
+                throw new InvalidOperationException("I need a function for CalculateScore.");
+
             // process solvers
             // if error, backtrack
             //    top from stack 
@@ -128,14 +131,14 @@ namespace SudokuX.Solver.Core
                         break;
 
                     case Validity.Maybe:
-                        if (_grid.GetPercentageDone() > 0.5)
-                        {
-                            _scoreCalculator = NextPositionStrategy.MinCount;
-                        }
-                        else
-                        {
-                            _scoreCalculator = NextPositionStrategy.MaxSum;
-                        }
+                        //if (_grid.GetPercentageDone() > 0.5)
+                        //{
+                        //    _scoreCalculator = NextPositionStrategy.MinCount;
+                        //}
+                        //else
+                        //{
+                        //    _scoreCalculator = NextPositionStrategy.MaxSum;
+                        //}
                         swSelect.Start();
                         SelectExtraGiven();
                         swSelect.Stop();
@@ -278,8 +281,8 @@ namespace SudokuX.Solver.Core
 
         private void Rewind()
         {
-            Cell cell;
-            while (true)
+            Cell cell = null;
+            while (cell == null)
             {
                 // if stack is empty, escape
                 if (_stack.Count == 0)
@@ -303,13 +306,20 @@ namespace SudokuX.Solver.Core
 
                     // and exit the "while"
                     cell = top.Target;
-                    break;
                 }
             }
 
             // select a new value
-            SelectValueForCell(cell);
-            ResetSymmetry();
+            if (cell.AvailableValues.Any())
+            {
+                SelectValueForCell(cell);
+                ResetSymmetry();
+            }
+            else
+            {
+                // no availables left, so go back one more 
+                Rewind();
+            }
         }
 
         private void ResetSymmetry()
@@ -317,7 +327,7 @@ namespace SudokuX.Solver.Core
             _nextQueue.Clear();
 
             // find all used positions
-            // add symmetrical positions to list
+            // add all symmetrical positions to list (this will add a lot of doubles)
             var fields = new List<Position>();
             for (int r = 0; r < _grid.GridSize; r++)
             {

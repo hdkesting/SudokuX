@@ -148,7 +148,7 @@ namespace SudokuX.Solver.Test
                 testgrid = grid.CloneBoardAsChallenge();
                 solver = new GridSolver(new ISolverStrategy[] { new NakedSingle() });
                 solver.Solve(testgrid);
-                Trace.WriteLine(solver.Validity); // should be "Maybe", but isn't :-(
+                Trace.WriteLine(solver.Validity);
             }
 
             Debug.WriteLine(sb.ToString());
