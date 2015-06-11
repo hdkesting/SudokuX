@@ -60,7 +60,6 @@ namespace SudokuX.UI.Common
         public void ResetPossibleValues()
         {
             _possibleValuesValue.Clear();
-            _possibleValuesValue.Add(String.Empty);
 
             for (int i = 0; i <= _maxval; i++)
             {
@@ -98,11 +97,15 @@ namespace SudokuX.UI.Common
                 {
                     if ((value ?? -1) < 0)
                     {
+                        // clear user-value
                         _valueValue = null;
                         HasValue = false;
+                        IsHighlighted = false;
+                        if (ShouldShowPencilMarks) ShowPencilMarks = true;
                     }
                     else
                     {
+                        // set user-value
                         _valueValue = value;
                         HasValue = true;
                     }
@@ -213,6 +216,17 @@ namespace SudokuX.UI.Common
 
         public Board Board { get; set; }
 
+        private bool _shouldShowPencilMarks;
+        public bool ShouldShowPencilMarks
+        {
+            get { return _shouldShowPencilMarks; }
+            set
+            {
+                _shouldShowPencilMarks = value;
+                ShowPencilMarks = value && !HasValue;
+            }
+        }
+
         public bool ShowPencilMarks
         {
             get { return _showPencilMarks; }
@@ -232,7 +246,7 @@ namespace SudokuX.UI.Common
             {
                 foreach (var value in row)
                 {
-                    value.Visibility = PossibleValues.Contains(value.Value)
+                    value.Visibility = !HasValue && PossibleValues.Contains(value.Value)
                         ? Visibility.Visible
                         : Visibility.Hidden;
                 }

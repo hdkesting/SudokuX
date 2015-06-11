@@ -169,7 +169,7 @@ namespace SudokuX.Solver.Grids
             {
                 Position pos = new Position(rnd.Next(GridSize), rnd.Next(GridSize));
                 Cell cell = _grid[pos.Row, pos.Column];
-                if (!cell.GivenValue.HasValue && cell.AvailableValues.Any())
+                if (!cell.HasGivenOrCalculatedValue && cell.AvailableValues.Any())
                 {
                     return pos;
                 }
@@ -220,6 +220,22 @@ namespace SudokuX.Solver.Grids
         /// </summary>
         /// <returns></returns>
         public abstract ISudokuGrid CloneBoardAsChallenge();
+
+        /// <summary>
+        /// Gets a value indicating whether this grid is regular.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this grid is regular; otherwise, <c>false</c>.
+        /// </value>
+        public abstract bool IsRegular { get; }
+
+        /// <summary>
+        /// Gets a value indicating whether this grid has special groups.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this grid has special groups; otherwise, <c>false</c>.
+        /// </value>
+        public abstract bool HasSpecialGroups { get; }
 
         /// <summary>
         /// Clones the grid to create a challenge.

@@ -19,10 +19,16 @@ namespace SudokuX.UI.Common
             switch (size)
             {
                 case BoardSize.Board4:
-                    _chars = "♠♣♥♦";
+                    //_chars = "♠♣♥♦";
+                    //_chars = "♈♋♉♌";
+                    _chars = "🍔🍨🍰🍇";
                     _max = 3;
                     break;
                 case BoardSize.Board6:
+                    //_chars = "123456";
+                    _chars = "🚀✈⛅⛄🐞🐘";
+                    _max = 5;
+                    break;
                 case BoardSize.Irregular6:
                     _chars = "123456";
                     _max = 5;
@@ -45,11 +51,31 @@ namespace SudokuX.UI.Common
                 default:
                     throw new InvalidEnumArgumentException("size", (int)size, typeof(BoardSize));
             }
+
+            if (UnicodeLength(_chars) != _max + 1)
+            {
+                throw new InvalidOperationException("List of display characters not correct");
+            }
         }
 
         public int MaxValue { get { return _max; } }
 
         public BoardSize BoardSize { get; private set; }
+
+        private static int UnicodeLength(string value)
+        {
+            int idx = 0;
+            int cnt = 0;
+
+            while (idx < value.Length) // .Length is length in 16-bit chars
+            {
+                var len = Char.IsSurrogatePair(value, idx) ? 2 : 1;
+                cnt += 1;
+                idx += len;
+            }
+
+            return cnt;
+        }
 
         /// <summary>
         /// Convert the 0-based value to a character.
@@ -63,7 +89,21 @@ namespace SudokuX.UI.Common
 
             if (value < 0 || value > _max)
                 throw new ArgumentException(String.Format("Use a value between 0 and {0}, not {1}", _max, value), "value");
-            return _chars[value.Value].ToString();
+            //return _chars[value.Value].ToString();
+            int idx = 0;
+            int cnt = 0;
+            while (idx < _chars.Length)
+            {
+                var len = Char.IsSurrogatePair(_chars, idx) ? 2 : 1;
+                if (cnt == value.Value)
+                {
+                    return _chars.Substring(idx, len);
+                }
+                idx += len;
+                cnt += 1;
+            }
+
+            throw new InvalidOperationException("Value not found");
         }
 
         /// <summary>
@@ -73,10 +113,25 @@ namespace SudokuX.UI.Common
         /// <returns>-1 if is was not a correct character</returns>
         public int ToInt(string character)
         {
-            if (String.IsNullOrEmpty(character))
+            if (String.IsNullOrWhiteSpace(character))
                 return -1;
 
-            return _chars.IndexOf(character, StringComparison.InvariantCulture);
+            //return _chars.IndexOf(character, StringComparison.InvariantCulture);
+            int idx = 0;
+            int cnt = 0;
+            while (idx < _chars.Length)
+            {
+                var len = Char.IsSurrogatePair(_chars, idx) ? 2 : 1;
+                var sub = _chars.Substring(idx, len);
+                if (sub == character)
+                {
+                    return cnt;
+                }
+                idx += len;
+                cnt += 1;
+            }
+
+            throw new InvalidOperationException("Character not found.");
         }
     }
 }

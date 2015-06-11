@@ -182,15 +182,15 @@ namespace SudokuX.UI.Controls
                     }
 
                     var block = challcell.ContainingGroups.First(g => g.GroupType == GroupType.Block);
-                    Color color = Utils.FromHsla(block.Ordinal * 0.15, 0.7, 0.7, 1.0);
+                    double hue = 1.7 / _creatorGrid.GridSize * block.Ordinal;
+                    Color color = Utils.FromHsla(hue, 0.7, 0.7);
                     if (_boardSize.IsIrregular())
                     {
-                        color = Utils.FromHsla(block.Ordinal * 0.22, 0.9, 0.5, 1.0);
+                        color = Utils.FromHsla(hue, 0.8, 0.7);
                     }
-                    //else if (_gameBoard.HasDiagonals && (row == col || _creatorGrid.GridSize - 1 - row == col))
                     else if (challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special))
                     {
-                        color = Utils.FromHsla(block.Ordinal * 0.15, 0.7, 0.3, 1.0);
+                        color = Utils.FromHsla(hue, 0.7, 0.3);
                     }
                     boardcell.BlockColor = color;
                 }
@@ -218,6 +218,11 @@ namespace SudokuX.UI.Controls
 
         public event EventHandler<CellClickEventArgs> CellClicked;
 
+        /// <summary>
+        /// Handles the OnClick event of the CellButton control: the cell was clicked to select it or fill it in
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private async void CellButton_OnClick(object sender, RoutedEventArgs e)
         {
             await Task.Yield();

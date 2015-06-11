@@ -65,5 +65,15 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this grid has special groups.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this grid has special groups; otherwise, <c>false</c>.
+        /// </value>
+        public override bool HasSpecialGroups
+        {
+            get { return true; }
+        }
     }
 }

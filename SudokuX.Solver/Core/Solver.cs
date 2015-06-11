@@ -129,11 +129,14 @@ namespace SudokuX.Solver.Core
                 _conclusionSets++;
                 if (conclusion.ExactValue.HasValue)
                 {
-                    foundone = true;
-                    //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
-                    conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
-                    conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
-                    score += conclusion.ComplexityLevel;
+                    if (!conclusion.TargetCell.HasGivenOrCalculatedValue)
+                    {
+                        foundone = true;
+                        //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
+                        conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
+                        conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
+                        score += conclusion.ComplexityLevel;
+                    }
                 }
                 else
                 {
