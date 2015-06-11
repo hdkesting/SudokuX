@@ -6,8 +6,8 @@ namespace SudokuX.UI.Common
     public static class Utils
     {
         /// <summary>
-        /// Given H,S,L,A in range of 0-1,
-        /// Returns a Color (RGB struct) in range of 0-255.
+        /// Given H,S,L,A values in range of 0-1,
+        /// Returns a Color (RGB struct) with RGB components in the range of 0-255.
         /// </summary>
         /// <param name="hue">The hue (0.0 - 1.0).</param>
         /// <param name="sat">The saturation (0.0 - 1.0).</param>

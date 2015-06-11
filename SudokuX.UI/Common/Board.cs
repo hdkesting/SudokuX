@@ -47,7 +47,7 @@ namespace SudokuX.UI.Common
                     OnPropertyChanged();
                     foreach (var cell in EnumerateAllCells())
                     {
-                        cell.ShowPencilMarks = value && !cell.HasValue;
+                        cell.ShouldShowPencilMarks = value;
                     }
                 }
             }
@@ -151,7 +151,7 @@ namespace SudokuX.UI.Common
 
             foreach (var cell in EnumerateAllCells())
             {
-                cell.IsValid = cell.HasValue || cell.PossibleValues.Count > 1; // there's always an "empty"
+                cell.IsValid = cell.HasValue || cell.PossibleValues.Any();
             }
 
             foreach (var grp in Groups.AllGroups)
@@ -323,7 +323,14 @@ namespace SudokuX.UI.Common
             var cell = this[row, column];
             if (!cell.IsReadOnly)
             {
-                cell.StringValue = value;
+                if (cell.StringValue == value)
+                {
+                    cell.StringValue = "";
+                }
+                else
+                {
+                    cell.StringValue = value;
+                }
             }
         }
     }

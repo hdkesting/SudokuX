@@ -90,7 +90,7 @@ namespace SudokuX.UI
 
         void board_BoardIsFinished(object sender, EventArgs e)
         {
-            ResetButtonsAndCells();
+            ResetButtonsAndCellSelections();
         }
 
         private List<List<T>> SplitInRows<T>(IList<T> list, BoardSize boardSize)
@@ -118,6 +118,11 @@ namespace SudokuX.UI
             GridScoreLabel.Text = String.Format(_dict["GridScoreLabel"].ToString(), _board.GridScore, _board.WeightedGridScore);
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the ShowPencilmarks checkbox.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void ShowPencilmarks_OnClick(object sender, RoutedEventArgs e)
         {
             var board = (SudokuBoard)GridPlaceholder.Child;
@@ -154,12 +159,17 @@ namespace SudokuX.UI
             Resources.MergedDictionaries.Add(_dict);
         }
 
+        /// <summary>
+        /// Handles the OnMouseDown event of the GameWindow control, outside of the game area or value buttons.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="MouseButtonEventArgs"/> instance containing the event data.</param>
         private void GameWindow_OnMouseDown(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
             _selectionMode = ValueSelectionMode.None;
 
-            ResetButtonsAndCells();
+            ResetButtonsAndCellSelections();
         }
 
         private void SelectButton_OnClick(object sender, RoutedEventArgs e)
@@ -174,7 +184,7 @@ namespace SudokuX.UI
                     goto case ValueSelectionMode.ButtonFirst;
 
                 case ValueSelectionMode.ButtonFirst:
-                    ResetButtonsAndCells();
+                    ResetButtonsAndCellSelections();
                     HighlightButton(tag);
                     break;
 
@@ -197,13 +207,13 @@ namespace SudokuX.UI
                     break;
 
                 case ValueSelectionMode.CellFirst:
-                    ResetButtonsAndCells();
+                    ResetButtonsAndCellSelections();
                     HighlightCell(e.Row, e.Column);
                     break;
             }
         }
 
-        private void ResetButtonsAndCells()
+        private void ResetButtonsAndCellSelections()
         {
             foreach (var vc in _board.ValueCounts)
             {
