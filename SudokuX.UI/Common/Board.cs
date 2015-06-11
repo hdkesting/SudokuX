@@ -36,6 +36,12 @@ namespace SudokuX.UI.Common
             get { return _valueCounts; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to show pencil marks.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show pencil marks]; otherwise, <c>false</c>.
+        /// </value>
         public bool ShowPencilMarks
         {
             get { return _showPencilMarks; }

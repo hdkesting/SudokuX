@@ -25,6 +25,7 @@ namespace SudokuX.UI.Common
         private Color _backColor = Colors.Transparent;
         private bool _showPencilMarks;
         private bool _hasValue;
+        private bool _shouldShowPencilMarks;
 
 
         readonly ObservableCollection<string> _possibleValuesValue;
@@ -69,6 +70,12 @@ namespace SudokuX.UI.Common
 
         public string Tag { get; set; }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this cell is read only (given by the challenge).
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this cell is read only; otherwise, <c>false</c>.
+        /// </value>
         public bool IsReadOnly
         {
             get
@@ -85,6 +92,12 @@ namespace SudokuX.UI.Common
             }
         }
 
+        /// <summary>
+        /// Gets or sets the integer version of this cell's value. Range from 0 to "max".
+        /// </summary>
+        /// <value>
+        /// The int value.
+        /// </value>
         public int? IntValue
         {
             get
@@ -115,6 +128,12 @@ namespace SudokuX.UI.Common
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this cell has a value.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this cell has a value; otherwise, <c>false</c>.
+        /// </value>
         public bool HasValue
         {
             get { return _hasValue; }
@@ -132,12 +151,24 @@ namespace SudokuX.UI.Common
             }
         }
 
+        /// <summary>
+        /// Gets or sets the string (symbol) version of this cell's value. This may be a digit, letter or other symbol.
+        /// </summary>
+        /// <value>
+        /// The string value.
+        /// </value>
         public string StringValue
         {
             get { return _translator.ToChar(IntValue); }
             set { IntValue = _translator.ToInt(value); }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this cell is valid.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this cell is valid; otherwise, <c>false</c>.
+        /// </value>
         public bool IsValid
         {
             get
@@ -154,6 +185,12 @@ namespace SudokuX.UI.Common
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this cell is highlighted.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this cell is highlighted; otherwise, <c>false</c>.
+        /// </value>
         public bool IsHighlighted
         {
             get { return _isHighlighted; }
@@ -167,6 +204,12 @@ namespace SudokuX.UI.Common
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether this cell is selected.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this cell is selected; otherwise, <c>false</c>.
+        /// </value>
         public bool IsSelected
         {
             get { return _isSelected; }
@@ -180,7 +223,12 @@ namespace SudokuX.UI.Common
             }
         }
 
-
+        /// <summary>
+        /// Gets the list of remaining possible values, as strings.
+        /// </summary>
+        /// <value>
+        /// The possible values.
+        /// </value>
         public ObservableCollection<string> PossibleValues
         {
             get
@@ -201,6 +249,12 @@ namespace SudokuX.UI.Common
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        /// <summary>
+        /// Gets or sets the color of the block this cell belongs to.
+        /// </summary>
+        /// <value>
+        /// The color of the block.
+        /// </value>
         public Color BlockColor
         {
             get { return _backColor; }
@@ -216,7 +270,13 @@ namespace SudokuX.UI.Common
 
         public Board Board { get; set; }
 
-        private bool _shouldShowPencilMarks;
+        /// <summary>
+        /// Gets or sets a value indicating whether this cell <em>should</em> show pencil marks.
+        /// </summary>
+        /// <remarks>The pencilmarks will still be hidden when the cell has a value.</remarks>
+        /// <value>
+        /// <c>true</c> if this should show pencil marks; otherwise, <c>false</c>.
+        /// </value>
         public bool ShouldShowPencilMarks
         {
             get { return _shouldShowPencilMarks; }
@@ -227,6 +287,12 @@ namespace SudokuX.UI.Common
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to really show pencil marks.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if pencil marks should be shown; otherwise, <c>false</c>.
+        /// </value>
         public bool ShowPencilMarks
         {
             get { return _showPencilMarks; }
@@ -240,13 +306,16 @@ namespace SudokuX.UI.Common
             }
         }
 
+        /// <summary>
+        /// Sets the visibility of all pencil marks. They may however still be hidden if the cell has a value.
+        /// </summary>
         public void UpdatePencilmarkStatus()
         {
             foreach (var row in PencilRows)
             {
                 foreach (var value in row)
                 {
-                    value.Visibility = !HasValue && PossibleValues.Contains(value.Value)
+                    value.Visibility = PossibleValues.Contains(value.Value)
                         ? Visibility.Visible
                         : Visibility.Hidden;
                 }
