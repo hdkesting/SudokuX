@@ -5,6 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              xmlns:clr="clr-namespace:SudokuX.UI"
+             xmlns:common="clr-namespace:SudokuX.UI.Common"
              d:DesignHeight="300" d:DesignWidth="300"
              HorizontalAlignment="Stretch"
         HorizontalContentAlignment ="Stretch"
@@ -14,6 +15,7 @@
         >
     <Grid Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" x:Name="MainGrid" >
         <Grid.Resources>
+            <common:BorderToBrushConverter x:Key="BorderToBrush" />
             <LinearGradientBrush x:Key="BoardBackground" StartPoint="0,0" EndPoint="1,0">
                 <GradientStop Offset="0" Color="LightGray" x:Name="GradientStart"/>
                 <GradientStop Offset="1" Color="Gray" x:Name="GradientEnd"/>
@@ -42,93 +44,99 @@
             </DataTemplate>
             <!-- CellTemplate -->
             <DataTemplate x:Key ="CellTemplate">
-                <Button Click="CellButton_OnClick" Tag="{Binding Tag}">
-                    <Grid>
+                <DockPanel LastChildFill="true">
+                    <Border DockPanel.Dock="Left" BorderBrush="{Binding BorderWest, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
+                    <Border DockPanel.Dock="Top" BorderBrush="{Binding BorderNorth, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
+                    <Border DockPanel.Dock="Right" BorderBrush="{Binding BorderEast, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
+                    <Border DockPanel.Dock="Bottom" BorderBrush="{Binding BorderSouth, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
+                    <Button Click="CellButton_OnClick" Tag="{Binding Tag}">
+                        <Grid>
+                            <!-- mouseover effect -->
+                            <Rectangle RadiusX="7" RadiusY ="7" x:Name ="HoverMask" IsHitTestVisible ="False" Fill ="AliceBlue" Opacity ="0"/>
 
-                        <!-- mouseover effect -->
-                        <Rectangle RadiusX="7" RadiusY ="7" x:Name ="HoverMask" IsHitTestVisible ="False" Fill ="AliceBlue" Opacity ="0"/>
+                            <!-- invulling -->
+                            <Rectangle x:Name ="GlassWindow" IsHitTestVisible ="False" >
+                                <Rectangle.Fill>
+                                    <DrawingBrush>
+                                        <DrawingBrush.Drawing>
+                                            <DrawingGroup>
+                                                <GeometryDrawing>
+                                                    <GeometryDrawing.Brush>
+                                                        <SolidColorBrush Color="{Binding Path=BlockColor}"></SolidColorBrush>
+                                                    </GeometryDrawing.Brush>
+                                                    <GeometryDrawing.Geometry>
+                                                        <RectangleGeometry Rect ="0,0,1,1"/>
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+                                                <GeometryDrawing>
+                                                    <GeometryDrawing.Brush>
+                                                        <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
+                                                            <GradientStop Color ="#88FFFFFF" Offset ="0"/>
+                                                            <GradientStop Color ="Transparent" Offset ="1"/>
+                                                        </LinearGradientBrush>
+                                                    </GeometryDrawing.Brush>
+                                                    <GeometryDrawing.Geometry>
+                                                        <RectangleGeometry Rect ="0,0,1,1"/>
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+                                                <GeometryDrawing>
+                                                    <GeometryDrawing.Brush>
+                                                        <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
+                                                            <GradientStop Color ="#33FFFFFF" Offset ="0"/>
+                                                            <GradientStop Color ="#11FFFFFF" Offset ="1"/>
+                                                        </LinearGradientBrush>
+                                                    </GeometryDrawing.Brush>
+                                                    <GeometryDrawing.Geometry>
+                                                        <RectangleGeometry RadiusX="0.1" RadiusY ="0.1" Rect ="0.05,0.05,0.9,0.45"/>
+                                                    </GeometryDrawing.Geometry>
+                                                </GeometryDrawing>
+                                            </DrawingGroup>
+                                        </DrawingBrush.Drawing>
+                                    </DrawingBrush>
+                                </Rectangle.Fill>
+                            </Rectangle>
 
-                        <!-- invulling -->
-                        <Rectangle x:Name ="GlassWindow" IsHitTestVisible ="False" >
-                            <Rectangle.Fill>
-                                <DrawingBrush>
-                                    <DrawingBrush.Drawing>
-                                        <DrawingGroup>
-                                            <GeometryDrawing>
-                                                <GeometryDrawing.Brush>
-                                                    <SolidColorBrush Color="{Binding Path=BlockColor}"></SolidColorBrush>
-                                                </GeometryDrawing.Brush>
-                                                <GeometryDrawing.Geometry>
-                                                    <RectangleGeometry Rect ="0,0,1,1"/>
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <GeometryDrawing>
-                                                <GeometryDrawing.Brush>
-                                                    <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
-                                                        <GradientStop Color ="#88FFFFFF" Offset ="0"/>
-                                                        <GradientStop Color ="Transparent" Offset ="1"/>
-                                                    </LinearGradientBrush>
-                                                </GeometryDrawing.Brush>
-                                                <GeometryDrawing.Geometry>
-                                                    <RectangleGeometry Rect ="0,0,1,1"/>
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                            <GeometryDrawing>
-                                                <GeometryDrawing.Brush>
-                                                    <LinearGradientBrush StartPoint ="0,0" EndPoint ="0,1">
-                                                        <GradientStop Color ="#33FFFFFF" Offset ="0"/>
-                                                        <GradientStop Color ="#11FFFFFF" Offset ="1"/>
-                                                    </LinearGradientBrush>
-                                                </GeometryDrawing.Brush>
-                                                <GeometryDrawing.Geometry>
-                                                    <RectangleGeometry RadiusX="0.1" RadiusY ="0.1" Rect ="0.05,0.05,0.9,0.45"/>
-                                                </GeometryDrawing.Geometry>
-                                            </GeometryDrawing>
-                                        </DrawingGroup>
-                                    </DrawingBrush.Drawing>
-                                </DrawingBrush>
-                            </Rectangle.Fill>
-                        </Rectangle>
-                        <Border  BorderThickness="2" CornerRadius="2">
-                            <Border.BorderBrush>
-                                <SolidColorBrush x:Name="OuterBorderColor" Color="Transparent"></SolidColorBrush>
-                            </Border.BorderBrush>
-                            <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="4">
-                                <Border.Background>
-                                    <LinearGradientBrush Opacity ="0.2" StartPoint ="0,0" EndPoint ="0,1">
-                                        <GradientStop Color ="DimGray" Offset ="0"/>
-                                        <GradientStop Color ="White" Offset ="0.5"/>
-                                        <GradientStop Color ="DimGray" Offset ="1"/>
-                                    </LinearGradientBrush>
-                                </Border.Background>
-                                <Grid>
-                                    <Viewbox Grid.Column="0" Grid.Row="0">
-                                        <!-- gekozen of gegeven waarde -->
-                                        <TextBlock x:Name ="TextBlock" Focusable ="False" HorizontalAlignment ="Center" VerticalAlignment ="Center" FontWeight ="Bold" 
-                                           Width="Auto" Text ="{Binding Path=StringValue}" FontFamily="Segoe Script">
-                                            <TextBlock.Effect>
-                                                <DropShadowEffect ShadowDepth="3"
-                                                  Color="Black"
-                                                  Opacity="0.5"
-                                                  BlurRadius="5"
-                                                  />
-                                            </TextBlock.Effect>
-                                        </TextBlock>
-                                    </Viewbox>
-                                    <!-- pencil marks -->
-                                    <ItemsControl  Grid.Column="0" Grid.Row="0" ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" 
-                                               x:Name ="PencilMarks" IsHitTestVisible="False" Visibility="Hidden">
-                                        <ItemsControl.ItemsPanel>
-                                            <ItemsPanelTemplate>
-                                                <UniformGrid Columns="1" />
-                                            </ItemsPanelTemplate>
-                                        </ItemsControl.ItemsPanel>
-                                    </ItemsControl>
-                                </Grid>
-                             </Border>
-                        </Border>
-                    </Grid>
-                </Button>
+                            <Border BorderThickness="2" CornerRadius="2">
+                                <Border.BorderBrush>
+                                    <SolidColorBrush x:Name="OuterBorderColor" Color="Transparent"></SolidColorBrush>
+                                </Border.BorderBrush>
+                                <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="4">
+                                    <Border.Background>
+                                        <LinearGradientBrush Opacity ="0.2" StartPoint ="0,0" EndPoint ="0,1">
+                                            <GradientStop Color ="DimGray" Offset ="0"/>
+                                            <GradientStop Color ="White" Offset ="0.5"/>
+                                            <GradientStop Color ="DimGray" Offset ="1"/>
+                                        </LinearGradientBrush>
+                                    </Border.Background>
+                                    <Grid>
+                                        <Viewbox Grid.Column="0" Grid.Row="0">
+                                            <!-- gekozen of gegeven waarde -->
+                                            <TextBlock x:Name ="TextBlock" Focusable ="False" HorizontalAlignment ="Center" VerticalAlignment ="Center" FontWeight ="Bold" 
+                                                Width="Auto" Text ="{Binding Path=StringValue}" FontFamily="Segoe Script">
+                                                <TextBlock.Effect>
+                                                    <DropShadowEffect ShadowDepth="3"
+                                                        Color="Black"
+                                                        Opacity="0.5"
+                                                        BlurRadius="5"
+                                                        />
+                                                </TextBlock.Effect>
+                                            </TextBlock>
+                                        </Viewbox>
+                                        <!-- pencil marks -->
+                                        <ItemsControl  Grid.Column="0" Grid.Row="0" ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" 
+                                                    x:Name ="PencilMarks" IsHitTestVisible="False" Visibility="Hidden">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <UniformGrid Columns="1" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                        </ItemsControl>
+                                    </Grid>
+                                    </Border>
+                            </Border>
+                        </Grid>
+                    </Button>
+                </DockPanel>
                 <DataTemplate.Triggers>
                     <EventTrigger SourceName ="Border" RoutedEvent ="Control.MouseEnter">
                         <EventTrigger.Actions>
@@ -193,7 +201,7 @@
         <ItemsControl  ItemTemplate ="{StaticResource RowTemplate}" ItemsSource ="{Binding Path=GridRows}" x:Name ="MainList">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <UniformGrid Columns ="1" Background="{StaticResource BoardBackground}"/>
+                    <UniformGrid Columns ="1" Background="LightGray"/>
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
          </ItemsControl>

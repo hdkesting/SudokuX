@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Annotations;
+using SudokuX.UI.Common.Enums;
 
 namespace SudokuX.UI.Common
 {
@@ -112,7 +113,21 @@ namespace SudokuX.UI.Common
             var translator = new ValueTranslator(boardSize);
             GridSize = translator.MaxValue + 1;
 
+
             _rows = new List<List<Cell>>();
+            AddCells(translator);
+
+            _valueCounts = new ObservableCollection<ValueCount>();
+            for (int v = 0; v < GridSize; v++)
+            {
+                var vc = new ValueCount(translator.ToChar(v));
+                _valueCounts.Add(vc);
+            }
+        }
+
+        private void AddCells(ValueTranslator translator)
+        {
+            // add cells to board
             for (int row = 0; row < GridSize; row++)
             {
                 List<Cell> cellRow = new List<Cell>();
@@ -125,13 +140,35 @@ namespace SudokuX.UI.Common
                 }
                 _rows.Add(cellRow);
             }
+        }
 
-            _valueCounts = new ObservableCollection<ValueCount>();
-            for (int v = 0; v < GridSize; v++)
+        public void SetBorders()
+        {
+            for (int row = 0; row < GridSize; row++)
             {
-                var vc = new ValueCount(translator.ToChar(v));
-                _valueCounts.Add(vc);
+                for (int col = 0; col < GridSize; col++)
+                {
+                    Cell c = _rows[row][col];
+                    // North is row with lower ordinal, south higher
+                    // West is col with lower ordinal, east higher
+                    c.BorderNorth = row == 0 ? BorderType.Block : BorderBetween(c, _rows[row - 1][col]);
+                    c.BorderSouth = row == GridSize - 1 ? BorderType.Block : BorderBetween(c, _rows[row + 1][col]);
+                    c.BorderWest = col == 0 ? BorderType.Block : BorderBetween(c, _rows[row][col - 1]);
+                    c.BorderEast = col == GridSize - 1 ? BorderType.Block : BorderBetween(c, _rows[row][col + 1]);
+                }
             }
+        }
+
+        private static BorderType BorderBetween(Cell target, Cell neighbour)
+        {
+            //var targetblock = target.
+            if (target.BlockOrdinal != neighbour.BlockOrdinal)
+                return BorderType.Block;
+
+            if (target.BelongsToSpecialGroup && !neighbour.BelongsToSpecialGroup)
+                return BorderType.Special;
+
+            return BorderType.Regular;
         }
 
         async void CellPropertyChanged(object sender, PropertyChangedEventArgs e)

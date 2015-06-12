@@ -101,6 +101,7 @@
     </ApplicationDefinition>
     <Compile Include="Common\ActionStack.cs" />
     <Compile Include="Common\Board.cs" />
+    <Compile Include="Common\BorderToBrushConverter.cs" />
     <Compile Include="Common\Cell.cs" />
     <Compile Include="Common\CellClickEventArgs.cs" />
     <Compile Include="Common\Enums.cs" />

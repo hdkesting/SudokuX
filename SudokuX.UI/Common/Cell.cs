@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Media;
 using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Annotations;
+using SudokuX.UI.Common.Enums;
 
 namespace SudokuX.UI.Common
 {
@@ -69,6 +70,11 @@ namespace SudokuX.UI.Common
         }
 
         public string Tag { get; set; }
+
+        public BorderType BorderNorth { get; set; }
+        public BorderType BorderSouth { get; set; }
+        public BorderType BorderWest { get; set; }
+        public BorderType BorderEast { get; set; }
 
         /// <summary>
         /// Gets or sets a value indicating whether this cell is read only (given by the challenge).
@@ -267,6 +273,9 @@ namespace SudokuX.UI.Common
                 }
             }
         }
+
+        public bool BelongsToSpecialGroup { get; set; }
+        public int BlockOrdinal { get; set; }
 
         public Board Board { get; set; }
 
