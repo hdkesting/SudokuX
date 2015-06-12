@@ -54,7 +54,7 @@
                         </StackPanel>
                         <StackPanel>
                             <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
-                                 Margin="3" VerticalAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
+                                 Margin="3" VerticalContentAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
                             <TextBlock Foreground="Blue" x:Name="GridScoreLabel">??</TextBlock>
                         </StackPanel>
                     </StackPanel>
@@ -137,7 +137,14 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
-            <Button x:Name="UndoButton" Click="UndoButton_OnClick"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
+            <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
+            
+            <Border BorderThickness="1" BorderBrush="Black" Margin="0, 2">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Tag="Pen" IsChecked="True" VerticalContentAlignment="Center" Click="PenPencil_OnClick">✒ Pen</RadioButton>
+                    <RadioButton Tag="Pencil" VerticalContentAlignment="Center" Click="PenPencil_OnClick">✏ Pencil</RadioButton>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
     </DockPanel>

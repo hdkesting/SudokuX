@@ -272,5 +272,10 @@ namespace SudokuX.UI.Controls
         {
             _gameBoard.Undo();
         }
+
+        internal void ToggleAvailableValue(int row, int column, string value)
+        {
+            _gameBoard.ToggleAvailableValue(row, column, value);
+        }
     }
 }

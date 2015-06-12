@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
@@ -330,6 +331,36 @@ namespace SudokuX.UI.Common
                 }
             }
 
+        }
+
+        public bool HasPencilMark(string value)
+        {
+            foreach (var row in _pencilRows)
+            {
+                foreach (var pencilValue in row)
+                {
+                    if (pencilValue.Value == value)
+                    {
+                        return pencilValue.Visibility == Visibility.Visible;
+                    }
+                }
+            }
+
+            throw new InvalidOperationException("Unknown input value");
+        }
+
+        public void SetPencilMark(string value, Visibility visibility)
+        {
+            foreach (var row in _pencilRows)
+            {
+                foreach (var pencilValue in row)
+                {
+                    if (pencilValue.Value == value)
+                    {
+                        pencilValue.Visibility = visibility;
+                    }
+                }
+            }
         }
     }
 }

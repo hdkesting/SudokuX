@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Annotations;
 using SudokuX.UI.Common.Enums;
@@ -23,6 +24,7 @@ namespace SudokuX.UI.Common
         private bool _isFinished;
         private bool _filling;
         private bool _showPencilMarks;
+        private ValueTranslator _translator;
 
         //public event EventHandler<EventArgs> BoardIsFinished;
 
@@ -110,17 +112,17 @@ namespace SudokuX.UI.Common
         {
             HasDiagonals = boardSize.HasDiagonals();
 
-            var translator = new ValueTranslator(boardSize);
-            GridSize = translator.MaxValue + 1;
+            _translator = new ValueTranslator(boardSize);
+            GridSize = _translator.MaxValue + 1;
 
 
             _rows = new List<List<Cell>>();
-            AddCells(translator);
+            AddCells(_translator);
 
             _valueCounts = new ObservableCollection<ValueCount>();
             for (int v = 0; v < GridSize; v++)
             {
-                var vc = new ValueCount(translator.ToChar(v));
+                var vc = new ValueCount(_translator.ToChar(v));
                 _valueCounts.Add(vc);
             }
         }
@@ -405,7 +407,29 @@ namespace SudokuX.UI.Common
                 }
                 else
                 {
-                    // pencil-change not implemented yet
+                    // pencil-change 
+                    var val = _translator.ToChar(undo.IntValue);
+                    undo.Cell.SetPencilMark(val, undo.IsValueSet ? Visibility.Hidden : Visibility.Visible);
+                }
+            }
+        }
+
+        public void ToggleAvailableValue(int row, int column, string value)
+        {
+            var cell = this[row, column];
+            int intval = _translator.ToInt(value);
+
+            if (!cell.IsReadOnly && !cell.HasValue)
+            {
+                if (cell.HasPencilMark(value))
+                {
+                    cell.SetPencilMark(value, Visibility.Hidden);
+                    _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = false, IsRealValue = false, IntValue = intval });
+                }
+                else
+                {
+                    cell.SetPencilMark(value, Visibility.Visible);
+                    _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = true, IsRealValue = false, IntValue = intval });
                 }
             }
         }

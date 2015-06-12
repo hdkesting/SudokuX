@@ -21,6 +21,7 @@ namespace SudokuX.UI
         private SudokuBoard _board;
         private string _selectedButtonValue;
         private int _selectedCellRow, _selectedCellColumn;
+        private bool _isPenSelected = true;
 
         public MainWindow()
         {
@@ -118,6 +119,12 @@ namespace SudokuX.UI
             GridScoreLabel.Text = String.Format(_dict["GridScoreLabel"].ToString(), _board.GridScore, _board.WeightedGridScore);
         }
 
+        private bool TooEasy(BoardSize size)
+        {
+            return size == Solver.Support.Enums.BoardSize.Board4 ||
+                   size == Solver.Support.Enums.BoardSize.Board6;
+        }
+
         /// <summary>
         /// Handles the OnClick event of the ShowPencilmarks checkbox.
         /// </summary>
@@ -127,8 +134,7 @@ namespace SudokuX.UI
         {
             var board = (SudokuBoard)GridPlaceholder.Child;
 
-            if (board.BoardSize == Solver.Support.Enums.BoardSize.Board4 ||
-                board.BoardSize == Solver.Support.Enums.BoardSize.Board6)
+            if (TooEasy(board.BoardSize))
             {
                 string msg = _dict["ShowPencil-TooEasy"].ToString();
                 ShowPencilmarks.IsChecked = false;
@@ -245,11 +251,18 @@ namespace SudokuX.UI
 
         private void SetCellToValue(int row, int column, string value)
         {
-            _board.SetCellToValue(row, column, value);
-
-            if (_selectionMode == ValueSelectionMode.ButtonFirst)
+            if (_isPenSelected)
             {
-                _board.HighlightValue(value);
+                _board.SetCellToValue(row, column, value);
+
+                if (_selectionMode == ValueSelectionMode.ButtonFirst)
+                {
+                    _board.HighlightValue(value);
+                }
+            }
+            else
+            {
+                _board.ToggleAvailableValue(row, column, value);
             }
         }
 
@@ -274,6 +287,17 @@ namespace SudokuX.UI
         private void UndoButton_OnClick(object sender, RoutedEventArgs e)
         {
             _board.Undo();
+        }
+
+        private void PenPencil_OnClick(object sender, RoutedEventArgs e)
+        {
+            var btn = (RadioButton)sender;
+            var tag = btn.Tag.ToString();
+
+            if (!TooEasy(_board.BoardSize))
+            {
+                _isPenSelected = tag == "Pen";
+            }
         }
     }
 }
