@@ -99,6 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\ActionStack.cs" />
     <Compile Include="Common\Board.cs" />
     <Compile Include="Common\Cell.cs" />
     <Compile Include="Common\CellClickEventArgs.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Common\Group.cs" />
     <Compile Include="Common\GroupCollection.cs" />
     <Compile Include="Common\PencilValue.cs" />
+    <Compile Include="Common\PerformedAction.cs" />
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Common\ValueCount.cs" />
     <Compile Include="Common\ValueTranslator.cs" />
