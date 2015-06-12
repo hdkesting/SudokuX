@@ -16,6 +16,8 @@ namespace SudokuX.UI.Common
         private readonly ObservableCollection<ValueCount> _valueCounts;
         private readonly GroupCollection _groups = new GroupCollection();
 
+        private readonly ActionStack _actionStack = new ActionStack();
+
         private bool _isValidValue = true;
         private bool _isFinished;
         private bool _filling;
@@ -331,12 +333,26 @@ namespace SudokuX.UI.Common
             {
                 if (cell.StringValue == value)
                 {
+                    var oldval = cell.IntValue.GetValueOrDefault();
                     cell.StringValue = "";
+                    // add removal to stack, unless the previous item was the addition
+                    _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = false, IsRealValue = true, IntValue = oldval });
                 }
                 else
                 {
                     cell.StringValue = value;
+                    // add the addition to the stack
+                    _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = true, IsRealValue = true, IntValue = cell.IntValue.GetValueOrDefault() });
                 }
+            }
+        }
+
+        public void Undo()
+        {
+            if (_actionStack.HasItems)
+            {
+                // TODO
+                var undo = _actionStack.PopAction();
             }
         }
     }

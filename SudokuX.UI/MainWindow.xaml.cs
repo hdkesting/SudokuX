@@ -270,5 +270,10 @@ namespace SudokuX.UI
             Dispose(true);
             GC.SuppressFinalize(this);
         }
+
+        private void UndoButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            _board.Undo();
+        }
     }
 }

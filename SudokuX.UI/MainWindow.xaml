@@ -137,6 +137,7 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
+            <Button x:Name="UndoButton" IsEnabled="False" Click="UndoButton_OnClick"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
         </StackPanel>
 
     </DockPanel>

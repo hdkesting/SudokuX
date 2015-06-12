@@ -263,5 +263,10 @@ namespace SudokuX.UI.Controls
         {
             _gameBoard.SetCellToValue(row, column, value);
         }
+
+        public void Undo()
+        {
+            _gameBoard.Undo();
+        }
     }
 }
