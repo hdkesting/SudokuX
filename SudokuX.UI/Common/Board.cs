@@ -351,8 +351,25 @@ namespace SudokuX.UI.Common
         {
             if (_actionStack.HasItems)
             {
-                // TODO
                 var undo = _actionStack.PopAction();
+                if (undo.IsRealValue)
+                {
+                    // not a pencil value
+                    if (undo.IsValueSet)
+                    {
+                        // remove this value
+                        undo.Cell.StringValue = "";
+                    }
+                    else
+                    {
+                        // re-set this value
+                        undo.Cell.IntValue = undo.IntValue;
+                    }
+                }
+                else
+                {
+                    // pencil-change not implemented yet
+                }
             }
         }
     }
