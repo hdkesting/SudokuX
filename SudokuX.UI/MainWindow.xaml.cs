@@ -202,7 +202,6 @@ namespace SudokuX.UI
                     goto case ValueSelectionMode.ButtonFirst;
 
                 case ValueSelectionMode.ButtonFirst:
-                    ResetButtonsAndCellSelections();
                     HighlightButton(tag);
                     break;
 
@@ -228,7 +227,6 @@ namespace SudokuX.UI
                     break;
 
                 case ValueSelectionMode.CellFirst:
-                    ResetButtonsAndCellSelections();
                     HighlightCell(e.Row, e.Column);
                     break;
             }
@@ -244,16 +242,19 @@ namespace SudokuX.UI
             _board.DeselectAllCells();
         }
 
-        private void HighlightButton(string value)
+        private bool HighlightButton(string value)
         {
-            _selectedButtonValue = value;
+            ResetButtonsAndCellSelections();
             var cnt = _board.ValueCounts.SingleOrDefault(vc => vc.Value == value);
             if (cnt != null)
             {
+                _selectedButtonValue = value;
                 cnt.IsSelected = true;
+                _board.HighlightValue(value);
+                return true;
             }
 
-            _board.HighlightValue(value);
+            return false;
         }
 
         private void HighlightCell(int row, int column)
@@ -301,7 +302,10 @@ namespace SudokuX.UI
 
         private void UndoButton_OnClick(object sender, RoutedEventArgs e)
         {
-            _board.Undo();
+            if (!_isFinished)
+            {
+                _board.Undo();
+            }
         }
 
         private void PenPencil_OnClick(object sender, RoutedEventArgs e)
@@ -312,6 +316,56 @@ namespace SudokuX.UI
             if (!TooEasy(_board.BoardSize))
             {
                 _isPenSelected = tag == "Pen";
+            }
+        }
+
+        private void MainWindow_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (!e.IsRepeat)
+            {
+                // tab = toggle pen/pencil (space is handled by control, return ??)
+                // backspace = undo
+                // other: pass through to board
+                if (e.Key == Key.Return || e.Key == Key.Tab)
+                {
+                    if (ShowPencilmarks.IsVisible && ShowPencilmarks.IsChecked == true)
+                    {
+                        if (PenButton.IsChecked.GetValueOrDefault())
+                        {
+                            PencilButton.IsChecked = true;
+                            PenPencil_OnClick(PencilButton, null);
+                        }
+                        else
+                        {
+                            PenButton.IsChecked = true;
+                            PenPencil_OnClick(PenButton, null);
+                        }
+                    }
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Back)
+                {
+                    UndoButton_OnClick(null, null);
+                }
+                else
+                {
+                    var key = e.Key.ToString();
+                    if (key != "D" && key.StartsWith("D"))
+                    {
+                        // regular digit
+                        key = key.Substring(1);
+                    }
+                    else if (key.StartsWith("NumPad"))
+                    {
+                        // numpad digit
+                        key = key.Substring("NumPad".Length);
+                    }
+
+                    if (HighlightButton(key))
+                    {
+                        _selectionMode = ValueSelectionMode.ButtonFirst;
+                    }
+                }
             }
         }
     }

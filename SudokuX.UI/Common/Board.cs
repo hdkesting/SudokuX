@@ -24,7 +24,7 @@ namespace SudokuX.UI.Common
         private bool _isFinished;
         private bool _filling;
         private bool _showPencilMarks;
-        private ValueTranslator _translator;
+        private readonly ValueTranslator _translator;
 
         //public event EventHandler<EventArgs> BoardIsFinished;
 
