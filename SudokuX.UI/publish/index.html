@@ -1,0 +1,200 @@
+<!Doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Sudoku X</title>
+		<style>
+			body {
+				margin-left: 20%;
+				margin-right: 20%;
+				background-color: lightgray;
+				font-family: Georgia, "Times New Roman", serif;
+				font-size: 14pt;
+			}
+			h1, h2, h3 {
+				font-family: "Segoe UI", Arial, sans-serif;
+				color: darkblue;
+			}
+			figcaption {
+				font-variant: small-caps;
+	            color: darkred;
+			}
+			
+			blockquote {
+            	-webkit-quotes: "“" "”" "‘" "’";
+				quotes: "“" "”" "‘" "’";
+				background-color: palegoldenrod;
+			}
+	        blockquote::before {
+	            content: open-quote;
+	            font-size: 18pt;
+	            color: darkred;
+			}
+	        blockquote::after {
+	            content: close-quote;
+	            font-size: 18pt;
+	            color: darkred;
+	        }
+			
+			section {
+	            -moz-transition: all ease 1s;
+	            -o-transition: all ease 1s;
+	            -webkit-transition: all ease 1s;
+	            transition: all ease 1s;
+				padding: 10px;
+			}
+			section:hover {
+				background-color: #dddddd;
+			}
+			
+			span.mark{
+				color: white;
+				background-color: darkred;
+				border-radius: 50%;
+				font-family: courier new, monospace;
+			}
+			kbd {
+				border-top: 1px solid black;
+				border-left:1px solid black;
+				border-bottom: 2px solid black;
+				border-right: 2px solid black;
+				background: white;
+				margin: 2px;
+				border-radius: 4px;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>SudokuX &mdash; Een sudoku programma</h1>
+		
+		<section>
+		<h2>Inleiding</h2>
+		<p>Na een tijd sudoku's te hebben opgelost, wilde ik zelf wel eens proberen zo'n programma te maken. Dit is het voorlopige resultaat.</p>
+		<figure>
+			<figcaption>Mijn sudoku programma</figcaption>
+			<img src="full_window.png" alt="Full game window" width="800"/>
+		</figure>
+		<p>Het bekende doel van een sudoku puzzel
+			<blockquote>Zorg ervoor dat in elke rij, elke kolom en elk blok alle mogelijke cijfers (of tekens) precies éénmaal voorkomen.</blockquote>
+		</p>
+		</section>
+		
+		<section>
+		<h2>Mogelijkheden</h2>
+		<p>Naast de standaard 9&times;9 sudoku zijn er nog andere afmetingen mogelijk:
+			<ul>
+				<li>4&times;4</li>
+				<li>6&times;6</li>
+				<li>9&times;9</li>
+				<li>12&times;12</li>
+				<li>16&times;16</li>
+			</ul>
+			Groter dan dat wordt te onoverzichtelijk.
+		</p>
+		<p>De 9&times;9 puzzel gebruikt cijfers (1-9). De kleinere puzzels kunnen symbolen gebruiken in plaats van cijfers (voor de variatie).
+			Voor de grotere puzzels zijn 10 cijfers niet genoeg, dus wordt doorgeteld in letters ("A", "B" etc). De exacte waarde maakt toch niet uit.
+		</p>
+		<p>Maar naast afmetingen zijn er nog meer variaties mogelijk:
+			<ul>
+				<li>Regelmatig (rechthoekige blokken), de standaard</li>
+				<li>Onregelmatig (rijen en kolommen tellen normaal, maar de blokken zijn meestal niet rechthoekig. Let op de kleuren)</li>
+				<li>Met diagonaal: ook op de diagonalen moeten alle cijfers staan</li>
+				<li>"Hyper": er zijn extra blokken aangegeven (donkerder) waar <em>ook</em> alle cijfers in voor moeten komen</li>
+			</ul>
+		</p>
+		<p>
+			<figure>
+				<figcaption>Een 6&times;6 grid met onregelmatige blokken</figcaption>
+				<img src="6x6_irregular.png" alt="6x6 grid met onregelmatige blokken"/>
+			</figure>
+			<figure>
+				<figcaption>Een 9&times;9 grid met extra diagonalen</figcaption>
+				<img src="9x9_diagonal.png" alt="9x9 grid met extra diagonalen" />
+			</figure>
+			<figure>
+				<figcaption>Een 9&times;9 grid met hyper blokken</figcaption>
+				<img src="9x9_hyper.png" alt="9x9 grid met extra blokken"/>
+			</figure>		
+		</p>
+		</section>
+		
+		<section>
+			<h2>Spelen</h2>
+			<h3>Nieuw spel starten</h3>
+			<p>Om een nieuw spel te starten:</p>
+			<ol style="1">
+				<li>Selecteer eerst het gewenste type bord (of laat staan, als dit al goed staat)
+					<ul>
+						<li>Het is de bedoeling dat er nog extra keuzes voor moeilijkheidsgraad bij komen.</li>
+					</ul>
+				</li>
+				<li>Klik dan op "Start nieuw spel" en wacht tot de puzzel gegenereerd is</li>
+				<li>Oplossen maar !</li>
+			</ol>
+			<figure>
+				<figcaption>Nieuw spel starten</figcaption>
+				<img src="game_start.png" width="150" />
+			</figure>
+			
+			<h3>Een getal plaatsen</h3>
+			<p>Er zijn twee manieren om een een plek in de puzzel te voorzien van een nieuw getal:
+				<ul>
+					<li>Selecteer een getal in het getalblok rechtsboven en klik dan een of meer cellen aan waar dat getal ingezet moet worden</li>
+					<li>Selecteer eerst een cel (waarmee ook de bijbehorende rijen, kolommen en blokken gemarkeerd worden) en dan pas het getal dat er in moet</li>
+				</ul>
+				
+				Er wordt gewaarschuwd als dit geplaatste getal in strijd is met eerder geplaatste getallen: de groepen met dubbele getallen worden rood gemarkeerd.
+			</p>
+			<p>Een geplaatst getal verwijderen kan ook op twee manieren: plaats het getal nogmaals of gebruik de "leeg" knop (hieronder gemarkeerd met een <span class="mark">1</span>). 
+			</p>
+			<figure>
+				<figcaption>Het getalblok</figcaption>
+				<img src="number_block.png" />
+			</figure>
+			<h3>Toon mogelijkheden</h3>
+			<p>Een nuttig hulpmiddel is het tonen van de getallen die nog op de open posities mogelijk zijn. Deze worden automatisch bijgehouden op basis van de geplaatste getallen.</p>
+			<p>Je kan ook zelf waarden verwijderen, als je hebt besloten dat die zeker niet kunnen. Er wordt geen melding gegeven als de conclusie niet klopt.</p>
+			<p>Deze optie is uitgeschakeld als de puzzel "te makkelijk" is.</p>
+			<figure>
+				<figcaption>aan/uitzetten</figcaption>
+				<img src="pencilmarks.png"/>
+			</figure>
+		</section>
+		
+		<section>
+			<h2>Toetsenbord bediening</h2>
+			<p>Enkele functies zijn met het toetsenbord te selecteren, voor de rest is een muis noodzakelijk.
+				<ul>
+					<li><kbd>Tab</kbd>: Schakel tussen "pen" en "potlood" (mits "toon mogelijkheden" is aangevinkt)</li>
+					<li><kbd>0</kbd>&hellip;<kbd>9</kbd>, <kbd>A</kbd>&hellip;<kbd>F</kbd>: selecteer dat getal of die letter (voor zover van toepassing).</li>
+					<li><kbd>Backspace</kbd>: de "herstel" functie.
+				</ul>
+			</p>
+		</section>
+		
+		<section>
+		<h2>Installeren</h2>
+		<p>Voor de (Windows) installer, <a href="publish.htm">klik hier</a> en gebruik de "launch" link of de "Install" knop. Voer het gedownloade bestand uit.</p>
+		<p>Dit is een "click once" installer, wat betekent dat bij het opstarten van het programma automatisch gecontroleerd wordt of er een nieuwe versie is.
+			Is dit het geval, dan wordt aangeboden die nieuwe versie te installeren. </p>
+			<h3>SmartScreen meldingen</h3>
+		<p><em>Let op:</em> Op mijn Windows 8 PC krijg ik een ernstig klinkende "SmartScreen" melding, omdat het door mij geschreven programma niet in de Windows lijst van veilige programma's staat.
+			Zoals dit: <br/>
+			<figure>
+				<figcaption>SmartScreen melding op Windows 8</figcaption>
+				<img src="SmartScreen1.png" width="500"/>
+			</figure>
+			<br/>
+			Klik hier <em>niet</em> op de "OK" knop (want dan wordt de installatie afgebroken), maar op de "more info" link (die in een nederlandstalig systeem vast wel "meer info" heet).
+			Dan wijzigt het scherm in <br/>
+			<figure>
+				<figcaption>SmartScreen na "more info"</figcaption>
+				<img src="SmartScreen2.png" width="500">
+			</figure>
+			<br/>
+			Klik daar op de "Run anyway" knop ("Toch uitvoeren"?) om de installatie door te laten gaan.<br/>
+			Deze schermen komen niet alleen bij de eerste installatie, maar ook bij upgrades.
+		</p>
+		</section>
+	</body>
+</html>
