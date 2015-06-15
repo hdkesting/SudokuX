@@ -19,4 +19,6 @@
     <system:String x:Key="Congratulations">😎 Congratulations 🎆</system:String>
     <system:String x:Key="GridScoreLabel">Grid score: {0} ({1:0.0})</system:String>
     <system:String x:Key="UndoButtonText">↩ Undo</system:String>
+    <system:String x:Key="NumberTypePen">✒ Pen</system:String>
+    <system:String x:Key="NumberTypePencil">✏ Pencil</system:String>
 </ResourceDictionary>

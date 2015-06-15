@@ -22,6 +22,7 @@ namespace SudokuX.UI
         private string _selectedButtonValue;
         private int _selectedCellRow, _selectedCellColumn;
         private bool _isPenSelected = true;
+        private bool _isFinished;
 
         public MainWindow()
         {
@@ -86,12 +87,14 @@ namespace SudokuX.UI
                 _board.Create();
                 _board.ValueCounts.Add(new ValueCount(" "));
                 ButtonPanel.ItemsSource = SplitInRows(_board.ValueCounts, _board.BoardSize);
+                _isFinished = false;
             }
         }
 
         void board_BoardIsFinished(object sender, EventArgs e)
         {
             ResetButtonsAndCellSelections();
+            _isFinished = true;
         }
 
         private List<List<T>> SplitInRows<T>(IList<T> list, BoardSize boardSize)
@@ -151,7 +154,7 @@ namespace SudokuX.UI
             board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
             // show/hide pen/pencil selection box accordingly
             PenPencilSelection.Visibility = btn.IsChecked.GetValueOrDefault() ? Visibility.Visible : Visibility.Hidden;
-            // reset to "pen" when unchecked
+            // reset to "pen" when UNchecked
             if (!btn.IsChecked.GetValueOrDefault()) _isPenSelected = true;
         }
 
@@ -209,8 +212,11 @@ namespace SudokuX.UI
             }
         }
 
-        void board_CellClicked(object sender, Common.CellClickEventArgs e)
+        void board_CellClicked(object sender, CellClickEventArgs e)
         {
+            if (_isFinished)
+                return;
+
             switch (_selectionMode)
             {
                 case ValueSelectionMode.None:
