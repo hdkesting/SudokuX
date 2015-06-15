@@ -139,7 +139,7 @@
 
             <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
             
-            <Border BorderThickness="1" BorderBrush="Black" Margin="0, 2">
+            <Border BorderThickness="1" BorderBrush="Black" Margin="0, 2" x:Name="PenPencilSelection" Visibility="Hidden">
                 <StackPanel Orientation="Horizontal">
                     <RadioButton Tag="Pen" IsChecked="True" VerticalContentAlignment="Center" Click="PenPencil_OnClick">✒ Pen</RadioButton>
                     <RadioButton Tag="Pencil" VerticalContentAlignment="Center" Click="PenPencil_OnClick">✏ Pencil</RadioButton>

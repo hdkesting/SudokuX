@@ -4,7 +4,7 @@ using System.Windows.Data;
 using System.Windows.Media;
 using SudokuX.UI.Common.Enums;
 
-namespace SudokuX.UI.Common
+namespace SudokuX.UI.Controls
 {
     public class BorderToBrushConverter : IValueConverter
     {

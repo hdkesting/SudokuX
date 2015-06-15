@@ -52,11 +52,11 @@ namespace SudokuX.UI.Common
         {
             if (action == null) throw new ArgumentNullException("action");
 
-            if (!action.IsValueSet && HasItems)
+            if (HasItems)
             {
-                // The new action is a removal. Did the user just undo a "set"?
+                // Did the user just undo his/her previous action?
                 var top = PeekAction();
-                if (top.IsValueSet && top.IsRealValue == action.IsRealValue && top.IntValue == action.IntValue && top.Cell == action.Cell)
+                if (top.Cell == action.Cell && top.IsValueSet != action.IsValueSet && top.IsRealValue == action.IsRealValue && top.IntValue == action.IntValue)
                 {
                     PopAction(); // returns and discards "top"
                     return;

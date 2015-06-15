@@ -409,7 +409,7 @@ namespace SudokuX.UI.Common
                 {
                     // pencil-change 
                     var val = _translator.ToChar(undo.IntValue);
-                    undo.Cell.SetPencilMark(val, undo.IsValueSet ? Visibility.Hidden : Visibility.Visible);
+                    undo.Cell.SetPencilMark(val, !undo.IsValueSet, true);
                 }
             }
         }
@@ -423,12 +423,12 @@ namespace SudokuX.UI.Common
             {
                 if (cell.HasPencilMark(value))
                 {
-                    cell.SetPencilMark(value, Visibility.Hidden);
+                    cell.SetPencilMark(value, false, true);
                     _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = false, IsRealValue = false, IntValue = intval });
                 }
                 else
                 {
-                    cell.SetPencilMark(value, Visibility.Visible);
+                    cell.SetPencilMark(value, true, true);
                     _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = true, IsRealValue = false, IntValue = intval });
                 }
             }

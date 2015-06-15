@@ -325,9 +325,7 @@ namespace SudokuX.UI.Common
             {
                 foreach (var value in row)
                 {
-                    value.Visibility = PossibleValues.Contains(value.Value)
-                        ? Visibility.Visible
-                        : Visibility.Hidden;
+                    value.Visible = PossibleValues.Contains(value.Value);
                 }
             }
 
@@ -341,7 +339,7 @@ namespace SudokuX.UI.Common
                 {
                     if (pencilValue.Value == value)
                     {
-                        return pencilValue.Visibility == Visibility.Visible;
+                        return pencilValue.Visible;
                     }
                 }
             }
@@ -349,7 +347,7 @@ namespace SudokuX.UI.Common
             throw new InvalidOperationException("Unknown input value");
         }
 
-        public void SetPencilMark(string value, Visibility visibility)
+        public void SetPencilMark(string value, bool visible, bool isExplicit)
         {
             foreach (var row in _pencilRows)
             {
@@ -357,7 +355,10 @@ namespace SudokuX.UI.Common
                 {
                     if (pencilValue.Value == value)
                     {
-                        pencilValue.Visibility = visibility;
+                        if (isExplicit)
+                            pencilValue.ExplicitlyVisible = visible ? default(bool?) : false;
+                        else
+                            pencilValue.Visible = visible;
                     }
                 }
             }

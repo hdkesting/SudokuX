@@ -119,6 +119,11 @@ namespace SudokuX.UI
             GridScoreLabel.Text = String.Format(_dict["GridScoreLabel"].ToString(), _board.GridScore, _board.WeightedGridScore);
         }
 
+        /// <summary>
+        /// Is this boardsize too easy for pencilmarks?
+        /// </summary>
+        /// <param name="size">The boardsize.</param>
+        /// <returns></returns>
         private bool TooEasy(BoardSize size)
         {
             return size == Solver.Support.Enums.BoardSize.Board4 ||
@@ -144,6 +149,10 @@ namespace SudokuX.UI
 
             var btn = (CheckBox)sender;
             board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
+            // show/hide pen/pencil selection box accordingly
+            PenPencilSelection.Visibility = btn.IsChecked.GetValueOrDefault() ? Visibility.Visible : Visibility.Hidden;
+            // reset to "pen" when unchecked
+            if (!btn.IsChecked.GetValueOrDefault()) _isPenSelected = true;
         }
 
         private ResourceDictionary _dict;

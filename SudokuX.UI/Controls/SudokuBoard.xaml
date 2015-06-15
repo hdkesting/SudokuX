@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              mc:Ignorable="d" 
              xmlns:clr="clr-namespace:SudokuX.UI"
-             xmlns:common="clr-namespace:SudokuX.UI.Common"
+             xmlns:controls="clr-namespace:SudokuX.UI.Controls"
              d:DesignHeight="300" d:DesignWidth="300"
              HorizontalAlignment="Stretch"
         HorizontalContentAlignment ="Stretch"
@@ -15,7 +15,9 @@
         >
     <Grid Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}" x:Name="MainGrid" >
         <Grid.Resources>
-            <common:BorderToBrushConverter x:Key="BorderToBrush" />
+            <controls:BorderToBrushConverter x:Key="BorderToBrush" />
+            <controls:BoolToVisibleConverter x:Key="BoolToVisibility" />
+            
             <LinearGradientBrush x:Key="BoardBackground" StartPoint="0,0" EndPoint="1,0">
                 <GradientStop Offset="0" Color="LightGray" x:Name="GradientStart"/>
                 <GradientStop Offset="1" Color="Gray" x:Name="GradientEnd"/>
@@ -24,7 +26,7 @@
             <DataTemplate x:Key="PencilValueTemplate">
                 <ItemsControl ItemsSource="{Binding}">
                     <Viewbox VerticalAlignment="Stretch">
-                        <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visibility}" Width="Auto"
+                        <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visible, Converter={StaticResource BoolToVisibility}}" Width="Auto"
                                 FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
                                 Background="Transparent" Foreground="DarkBlue" BorderBrush="Transparent" Opacity="0.8" FontSize="8pt"
                                 ></TextBox>
