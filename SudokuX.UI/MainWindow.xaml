@@ -3,7 +3,8 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:SudokuX.UI.Controls"
         Title="Sūdoku X" Height="600" Width="1024" FontSize ="20" FontFamily="Segoe UI Semilight"
-        MouseLeftButtonDown="GameWindow_OnMouseDown" Icon="Sūdoku X.ico">
+        MouseLeftButtonDown="GameWindow_OnMouseDown" Icon="Sūdoku X.ico"
+        KeyUp="MainWindow_OnKeyUp">
 
     <Window.Background>
         <RadialGradientBrush GradientOrigin="0.5,0.5">
@@ -12,6 +13,43 @@
         </RadialGradientBrush>
 
     </Window.Background>
+    <Window.Resources>
+
+        <LinearGradientBrush x:Key="BgBrush1" StartPoint="0,0" EndPoint="0,1">
+            <GradientStop Offset="0" Color="#888888"/>
+            <GradientStop Offset="1" Color="#222222"/>
+        </LinearGradientBrush>
+
+        <SolidColorBrush x:Key="BorderBrush1" Color="#333333"/>
+
+        <SolidColorBrush x:Key="CheckedBrush" Color="#80ffffff" />
+        
+        <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="{x:Type RadioButton}">
+            <Border
+                Name="Border"
+                Background="{StaticResource BgBrush1}"
+                BorderBrush="{StaticResource BorderBrush1}"
+                BorderThickness="1"
+                Margin="1"
+                CornerRadius="5,5,5,5">
+                <ContentPresenter
+                    HorizontalAlignment="Center"
+                    Margin="{TemplateBinding Padding}"
+                    VerticalAlignment="Center"
+                    Content="{TemplateBinding Content}"
+                    TextBlock.FontWeight="Bold"
+                    />
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="ToggleButton.IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="#808080"/>
+                </Trigger>
+                <Trigger Property="IsChecked" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource CheckedBrush}"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </Window.Resources>
     <DockPanel>
 
         <!-- title (top) -->
@@ -53,8 +91,14 @@
                             </ComboBox>
                         </StackPanel>
                         <StackPanel>
+                            <TextBlock Foreground="Black">Moeilijkheid</TextBlock>
+                            <ComboBox IsEditable="False" Background="#20FFFFFF" x:Name="DifficultyLevel" IsEnabled="False">
+                                <ComboBoxItem Tag="1" IsSelected="True">Standaard</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel>
                             <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
-                                 Margin="3" VerticalAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
+                                 Margin="3" VerticalContentAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
                             <TextBlock Foreground="Blue" x:Name="GridScoreLabel">??</TextBlock>
                         </StackPanel>
                     </StackPanel>
@@ -137,6 +181,16 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
+            <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
+            
+            <Border BorderThickness="0" BorderBrush="Black" Margin="0, 2" HorizontalAlignment="Stretch" x:Name="PenPencilSelection" Visibility="Hidden">
+                <StackPanel Orientation="Horizontal">
+                    <RadioButton Tag="Pen" x:Name="PenButton" IsChecked="True" VerticalContentAlignment="Center" Content="{DynamicResource NumberTypePen}"
+                                 Click="PenPencil_OnClick" Template="{StaticResource ToggleButtonTemplate}" Padding="4,2"/>
+                    <RadioButton Tag="Pencil" x:Name="PencilButton" VerticalContentAlignment="Center" Content="{DynamicResource NumberTypePencil}"
+                                 Click="PenPencil_OnClick" Template="{StaticResource ToggleButtonTemplate}" Padding="4,2"/>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
     </DockPanel>

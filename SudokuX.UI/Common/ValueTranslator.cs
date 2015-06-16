@@ -5,7 +5,7 @@ using SudokuX.Solver.Support.Enums;
 namespace SudokuX.UI.Common
 {
     /// <summary>
-    /// Translates between internal integer values and external visible string values for cells. 
+    /// Translates between internal integer values (0-based) and external visible string values for cells. 
     /// </summary>
     public class ValueTranslator
     {
@@ -89,7 +89,8 @@ namespace SudokuX.UI.Common
 
             if (value < 0 || value > _max)
                 throw new ArgumentException(String.Format("Use a value between 0 and {0}, not {1}", _max, value), "value");
-            //return _chars[value.Value].ToString();
+
+            // a simple string index will fail for UTF-32 codepoints.
             int idx = 0;
             int cnt = 0;
             while (idx < _chars.Length)
@@ -116,7 +117,6 @@ namespace SudokuX.UI.Common
             if (String.IsNullOrWhiteSpace(character))
                 return -1;
 
-            //return _chars.IndexOf(character, StringComparison.InvariantCulture);
             int idx = 0;
             int cnt = 0;
             while (idx < _chars.Length)

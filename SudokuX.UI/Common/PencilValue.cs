@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using SudokuX.UI.Annotations;
 
 namespace SudokuX.UI.Common
@@ -10,26 +9,40 @@ namespace SudokuX.UI.Common
     /// </summary>
     public class PencilValue : INotifyPropertyChanged
     {
-        private Visibility _visibility;
+        private bool _visible;
+        private bool? _explicitlyVisible;
+
         public string Value { get; private set; }
 
-        public Visibility Visibility
+        public bool Visible
         {
-            get { return _visibility; }
+            get { return ExplicitlyVisible ?? _visible; }
             set
             {
-                if (value != _visibility)
+                if (value != _visible)
                 {
-                    _visibility = value;
+                    _visible = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        public bool? ExplicitlyVisible
+        {
+            get { return _explicitlyVisible; }
+            set
+            {
+                _explicitlyVisible = value;
+
+                // always act as if Visible has changed to the correct value
+                OnPropertyChanged("Visible");
             }
         }
 
         public PencilValue(string value)
         {
             Value = value;
-            _visibility = Visibility.Visible;
+            _visible = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

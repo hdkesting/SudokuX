@@ -192,10 +192,14 @@ namespace SudokuX.UI.Controls
                     {
                         color = Utils.FromHsla(hue, 0.7, 0.3);
                     }
+
                     boardcell.BlockColor = color;
+                    boardcell.BelongsToSpecialGroup = challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special);
+                    boardcell.BlockOrdinal = challcell.ContainingGroups.First(g => g.GroupType == GroupType.Block).Ordinal;
                 }
             }
 
+            _gameBoard.SetBorders();
         }
 
         private void Dispose(bool disposing)
@@ -262,6 +266,16 @@ namespace SudokuX.UI.Controls
         public void SetCellToValue(int row, int column, string value)
         {
             _gameBoard.SetCellToValue(row, column, value);
+        }
+
+        public void Undo()
+        {
+            _gameBoard.Undo();
+        }
+
+        internal void ToggleAvailableValue(int row, int column, string value)
+        {
+            _gameBoard.ToggleAvailableValue(row, column, value);
         }
     }
 }

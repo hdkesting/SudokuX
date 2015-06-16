@@ -12,6 +12,12 @@ namespace SudokuX.UI.Common
 
         public IReadOnlyList<Group> AllGroups { get { return new ReadOnlyCollection<Group>(_groups); } }
 
+        /// <summary>
+        /// Gets (and maybe creates) the specified group.
+        /// </summary>
+        /// <param name="groupType">Type of the group.</param>
+        /// <param name="ordinal">The ordinal number within the group.</param>
+        /// <returns></returns>
         public Group GetGroup(GroupType groupType, int ordinal)
         {
             var grp = _groups.SingleOrDefault(g => g.GroupType == groupType && g.Ordinal == ordinal);

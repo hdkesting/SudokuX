@@ -5,8 +5,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
+using System.Windows;
 using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Annotations;
+using SudokuX.UI.Common.Enums;
 
 namespace SudokuX.UI.Common
 {
@@ -16,10 +18,13 @@ namespace SudokuX.UI.Common
         private readonly ObservableCollection<ValueCount> _valueCounts;
         private readonly GroupCollection _groups = new GroupCollection();
 
+        private readonly ActionStack _actionStack = new ActionStack();
+
         private bool _isValidValue = true;
         private bool _isFinished;
         private bool _filling;
         private bool _showPencilMarks;
+        private readonly ValueTranslator _translator;
 
         //public event EventHandler<EventArgs> BoardIsFinished;
 
@@ -36,6 +41,12 @@ namespace SudokuX.UI.Common
             get { return _valueCounts; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether to show pencil marks.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [show pencil marks]; otherwise, <c>false</c>.
+        /// </value>
         public bool ShowPencilMarks
         {
             get { return _showPencilMarks; }
@@ -101,10 +112,24 @@ namespace SudokuX.UI.Common
         {
             HasDiagonals = boardSize.HasDiagonals();
 
-            var translator = new ValueTranslator(boardSize);
-            GridSize = translator.MaxValue + 1;
+            _translator = new ValueTranslator(boardSize);
+            GridSize = _translator.MaxValue + 1;
+
 
             _rows = new List<List<Cell>>();
+            AddCells(_translator);
+
+            _valueCounts = new ObservableCollection<ValueCount>();
+            for (int v = 0; v < GridSize; v++)
+            {
+                var vc = new ValueCount(_translator.ToChar(v));
+                _valueCounts.Add(vc);
+            }
+        }
+
+        private void AddCells(ValueTranslator translator)
+        {
+            // add cells to board
             for (int row = 0; row < GridSize; row++)
             {
                 List<Cell> cellRow = new List<Cell>();
@@ -117,13 +142,35 @@ namespace SudokuX.UI.Common
                 }
                 _rows.Add(cellRow);
             }
+        }
 
-            _valueCounts = new ObservableCollection<ValueCount>();
-            for (int v = 0; v < GridSize; v++)
+        public void SetBorders()
+        {
+            for (int row = 0; row < GridSize; row++)
             {
-                var vc = new ValueCount(translator.ToChar(v));
-                _valueCounts.Add(vc);
+                for (int col = 0; col < GridSize; col++)
+                {
+                    Cell c = _rows[row][col];
+                    // North is row with lower ordinal, south higher
+                    // West is col with lower ordinal, east higher
+                    c.BorderNorth = row == 0 ? BorderType.Block : BorderBetween(c, _rows[row - 1][col]);
+                    c.BorderSouth = row == GridSize - 1 ? BorderType.Block : BorderBetween(c, _rows[row + 1][col]);
+                    c.BorderWest = col == 0 ? BorderType.Block : BorderBetween(c, _rows[row][col - 1]);
+                    c.BorderEast = col == GridSize - 1 ? BorderType.Block : BorderBetween(c, _rows[row][col + 1]);
+                }
             }
+        }
+
+        private static BorderType BorderBetween(Cell target, Cell neighbour)
+        {
+            //var targetblock = target.
+            if (target.BlockOrdinal != neighbour.BlockOrdinal)
+                return BorderType.Block;
+
+            if (target.BelongsToSpecialGroup && !neighbour.BelongsToSpecialGroup)
+                return BorderType.Special;
+
+            return BorderType.Regular;
         }
 
         async void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -325,11 +372,64 @@ namespace SudokuX.UI.Common
             {
                 if (cell.StringValue == value)
                 {
+                    var oldval = cell.IntValue.GetValueOrDefault();
                     cell.StringValue = "";
+                    // add removal to stack, unless the previous item was the addition
+                    _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = false, IsRealValue = true, IntValue = oldval });
                 }
                 else
                 {
                     cell.StringValue = value;
+                    // add the addition to the stack
+                    _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = true, IsRealValue = true, IntValue = cell.IntValue.GetValueOrDefault() });
+                }
+            }
+        }
+
+        public void Undo()
+        {
+            if (_actionStack.HasItems)
+            {
+                var undo = _actionStack.PopAction();
+                if (undo.IsRealValue)
+                {
+                    // not a pencil value
+                    if (undo.IsValueSet)
+                    {
+                        // remove this value
+                        undo.Cell.StringValue = "";
+                    }
+                    else
+                    {
+                        // re-set this value
+                        undo.Cell.IntValue = undo.IntValue;
+                    }
+                }
+                else
+                {
+                    // pencil-change 
+                    var val = _translator.ToChar(undo.IntValue);
+                    undo.Cell.SetPencilMark(val, !undo.IsValueSet, true);
+                }
+            }
+        }
+
+        public void ToggleAvailableValue(int row, int column, string value)
+        {
+            var cell = this[row, column];
+            int intval = _translator.ToInt(value);
+
+            if (!cell.IsReadOnly && !cell.HasValue)
+            {
+                if (cell.HasPencilMark(value))
+                {
+                    cell.SetPencilMark(value, false, true);
+                    _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = false, IsRealValue = false, IntValue = intval });
+                }
+                else
+                {
+                    cell.SetPencilMark(value, true, true);
+                    _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = true, IsRealValue = false, IntValue = intval });
                 }
             }
         }

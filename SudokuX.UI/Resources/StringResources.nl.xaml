@@ -18,5 +18,8 @@
     <system:String x:Key="Grid-16X16">16 × 16</system:String>
     <system:String x:Key="Congratulations">😎 Gefeliciteerd 🎆</system:String>
     <system:String x:Key="GridScoreLabel">Grid score: {0} ({1:0.0})</system:String>
+    <system:String x:Key="UndoButtonText">↩ Herstel</system:String>
+    <system:String x:Key="NumberTypePen">✒ Pen</system:String>
+    <system:String x:Key="NumberTypePencil">✏ Potlood</system:String>
 
 </ResourceDictionary>

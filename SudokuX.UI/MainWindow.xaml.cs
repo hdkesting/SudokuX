@@ -21,6 +21,8 @@ namespace SudokuX.UI
         private SudokuBoard _board;
         private string _selectedButtonValue;
         private int _selectedCellRow, _selectedCellColumn;
+        private bool _isPenSelected = true;
+        private bool _isFinished;
 
         public MainWindow()
         {
@@ -85,12 +87,14 @@ namespace SudokuX.UI
                 _board.Create();
                 _board.ValueCounts.Add(new ValueCount(" "));
                 ButtonPanel.ItemsSource = SplitInRows(_board.ValueCounts, _board.BoardSize);
+                _isFinished = false;
             }
         }
 
         void board_BoardIsFinished(object sender, EventArgs e)
         {
             ResetButtonsAndCellSelections();
+            _isFinished = true;
         }
 
         private List<List<T>> SplitInRows<T>(IList<T> list, BoardSize boardSize)
@@ -119,6 +123,17 @@ namespace SudokuX.UI
         }
 
         /// <summary>
+        /// Is this boardsize too easy for pencilmarks?
+        /// </summary>
+        /// <param name="size">The boardsize.</param>
+        /// <returns></returns>
+        private bool TooEasy(BoardSize size)
+        {
+            return size == Solver.Support.Enums.BoardSize.Board4 ||
+                   size == Solver.Support.Enums.BoardSize.Board6;
+        }
+
+        /// <summary>
         /// Handles the OnClick event of the ShowPencilmarks checkbox.
         /// </summary>
         /// <param name="sender">The source of the event.</param>
@@ -127,8 +142,7 @@ namespace SudokuX.UI
         {
             var board = (SudokuBoard)GridPlaceholder.Child;
 
-            if (board.BoardSize == Solver.Support.Enums.BoardSize.Board4 ||
-                board.BoardSize == Solver.Support.Enums.BoardSize.Board6)
+            if (TooEasy(board.BoardSize))
             {
                 string msg = _dict["ShowPencil-TooEasy"].ToString();
                 ShowPencilmarks.IsChecked = false;
@@ -138,6 +152,10 @@ namespace SudokuX.UI
 
             var btn = (CheckBox)sender;
             board.ShowPencilMarks = btn.IsChecked.GetValueOrDefault();
+            // show/hide pen/pencil selection box accordingly
+            PenPencilSelection.Visibility = btn.IsChecked.GetValueOrDefault() ? Visibility.Visible : Visibility.Hidden;
+            // reset to "pen" when UNchecked
+            if (!btn.IsChecked.GetValueOrDefault()) _isPenSelected = true;
         }
 
         private ResourceDictionary _dict;
@@ -184,7 +202,6 @@ namespace SudokuX.UI
                     goto case ValueSelectionMode.ButtonFirst;
 
                 case ValueSelectionMode.ButtonFirst:
-                    ResetButtonsAndCellSelections();
                     HighlightButton(tag);
                     break;
 
@@ -194,8 +211,11 @@ namespace SudokuX.UI
             }
         }
 
-        void board_CellClicked(object sender, Common.CellClickEventArgs e)
+        void board_CellClicked(object sender, CellClickEventArgs e)
         {
+            if (_isFinished)
+                return;
+
             switch (_selectionMode)
             {
                 case ValueSelectionMode.None:
@@ -207,7 +227,6 @@ namespace SudokuX.UI
                     break;
 
                 case ValueSelectionMode.CellFirst:
-                    ResetButtonsAndCellSelections();
                     HighlightCell(e.Row, e.Column);
                     break;
             }
@@ -223,16 +242,19 @@ namespace SudokuX.UI
             _board.DeselectAllCells();
         }
 
-        private void HighlightButton(string value)
+        private bool HighlightButton(string value)
         {
-            _selectedButtonValue = value;
+            ResetButtonsAndCellSelections();
             var cnt = _board.ValueCounts.SingleOrDefault(vc => vc.Value == value);
             if (cnt != null)
             {
+                _selectedButtonValue = value;
                 cnt.IsSelected = true;
+                _board.HighlightValue(value);
+                return true;
             }
 
-            _board.HighlightValue(value);
+            return false;
         }
 
         private void HighlightCell(int row, int column)
@@ -245,11 +267,18 @@ namespace SudokuX.UI
 
         private void SetCellToValue(int row, int column, string value)
         {
-            _board.SetCellToValue(row, column, value);
-
-            if (_selectionMode == ValueSelectionMode.ButtonFirst)
+            if (_isPenSelected)
             {
-                _board.HighlightValue(value);
+                _board.SetCellToValue(row, column, value);
+
+                if (_selectionMode == ValueSelectionMode.ButtonFirst)
+                {
+                    _board.HighlightValue(value);
+                }
+            }
+            else
+            {
+                _board.ToggleAvailableValue(row, column, value);
             }
         }
 
@@ -269,6 +298,75 @@ namespace SudokuX.UI
         {
             Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        private void UndoButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            if (!_isFinished)
+            {
+                _board.Undo();
+            }
+        }
+
+        private void PenPencil_OnClick(object sender, RoutedEventArgs e)
+        {
+            var btn = (RadioButton)sender;
+            var tag = btn.Tag.ToString();
+
+            if (!TooEasy(_board.BoardSize))
+            {
+                _isPenSelected = tag == "Pen";
+            }
+        }
+
+        private void MainWindow_OnKeyUp(object sender, KeyEventArgs e)
+        {
+            if (!e.IsRepeat)
+            {
+                // tab = toggle pen/pencil (space is handled by control, return ??)
+                // backspace = undo
+                // other: pass through to board
+                if (e.Key == Key.Return || e.Key == Key.Tab)
+                {
+                    if (ShowPencilmarks.IsVisible && ShowPencilmarks.IsChecked == true)
+                    {
+                        if (PenButton.IsChecked.GetValueOrDefault())
+                        {
+                            PencilButton.IsChecked = true;
+                            PenPencil_OnClick(PencilButton, null);
+                        }
+                        else
+                        {
+                            PenButton.IsChecked = true;
+                            PenPencil_OnClick(PenButton, null);
+                        }
+                    }
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Back)
+                {
+                    UndoButton_OnClick(null, null);
+                }
+                else
+                {
+                    var key = e.Key.ToString();
+                    if (key != "D" && key.StartsWith("D"))
+                    {
+                        // regular digit
+                        key = key.Substring(1);
+                    }
+                    else if (key.StartsWith("NumPad"))
+                    {
+                        // numpad digit
+                        key = key.Substring("NumPad".Length);
+                    }
+
+                    if (HighlightButton(key))
+                    {
+                        _selectionMode = ValueSelectionMode.ButtonFirst;
+                    }
+                }
+            }
         }
     }
 }
