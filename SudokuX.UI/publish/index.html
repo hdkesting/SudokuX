@@ -50,8 +50,31 @@
 			span.mark{
 				color: white;
 				background-color: darkred;
+				padding: 0 0.2em;
 				border-radius: 50%;
 				font-family: courier new, monospace;
+			}
+			ol.mark {
+				margin: 0 0 1.5em;
+				padding: 0;
+				counter-reset: mark;
+			}
+			ol.mark > li {
+				margin: 0;
+				padding: 0 0 0 2em;
+				list-style-type: none;
+				counter-increment: mark;
+			}
+			ol.mark > li:before {
+				display: inline-block;
+				text-align: center;
+				width: 1em;
+				padding: 0 0.2em;
+				color: white;
+				background-color: darkred;
+				border-radius: 50%;
+				font-family: courier new, monospace;
+				content: counter(mark);
 			}
 			kbd {
 				border-top: 1px solid black;
@@ -61,6 +84,15 @@
 				background: white;
 				margin: 2px;
 				border-radius: 4px;
+			}
+			ul > li {
+				margin: 0;
+				padding: 0 0 0 2em;
+				list-style-type: none;
+			}
+			ul > li:before {
+				font-family: "Webdings";
+				content: "a ";
 			}
 		</style>
 	</head>
@@ -72,9 +104,26 @@
 		<p>Na een tijd sudoku's te hebben opgelost, wilde ik zelf wel eens proberen zo'n programma te maken. Dit is het voorlopige resultaat.</p>
 		<figure>
 			<figcaption>Mijn sudoku programma</figcaption>
-			<img src="full_window.png" alt="Full game window" width="800"/>
+			<img src="full_window.png" alt="Full game window" width="700"/>
 		</figure>
-		<p>Het bekende doel van een sudoku puzzel
+		<p>
+			De onderdelen van het scherm:
+			<ol type="1" class="mark">
+				<li>Start een nieuw spel, met de ingestelde afmetingen</li>
+				<li>Opslaan / laden van een spel (nog niet werkzaam)</li>
+				<li>Sluit het spel af</li>
+				<li>Stel het bord-type (waar onder afmeting) in, voor een nieuw spel</li>
+				<li>Stel de moeilijkheidsgraad in (nog niet werkzaam)</li>
+				<li>Indien aangevinkt, toon in elke cel de mogelijke waarden</li>
+				<li>Scores van de moeilijkheidsgraad van het huidige spel</li>
+				<li><strong>Het speelveld</strong> met de gegeven waarden in groen en de zelf geplaatste waarden in zwart</li>
+				<li>Selectie van het te plaatsen getal</li>
+				<li>Wissen van een geplaatst getal</li>
+				<li>Maak de laatste zet ongedaan</li>
+				<li>Kies tussen <em>pen</em> (echte getallen plaatsen) en <em>potlood</em> (mogelijkheden schrappen)</li>
+			</ol>
+		</p>
+		<p><h3>Het bekende doel van een sudoku puzzel</h3>
 			<blockquote>Zorg ervoor dat in elke rij, elke kolom en elk blok alle mogelijke cijfers (of tekens) precies éénmaal voorkomen.</blockquote>
 		</p>
 		</section>
@@ -151,6 +200,8 @@
 				<figcaption>Het getalblok</figcaption>
 				<img src="number_block.png" />
 			</figure>
+			<p>Het witte cijfertje geeft aan hoevaak dit getal nog geplaatst moet worden.</p>
+			
 			<h3>Toon mogelijkheden</h3>
 			<p>Een nuttig hulpmiddel is het tonen van de getallen die nog op de open posities mogelijk zijn. Deze worden automatisch bijgehouden op basis van de geplaatste getallen.</p>
 			<p>Je kan ook zelf waarden verwijderen, als je hebt besloten dat die zeker niet kunnen. Er wordt geen melding gegeven als de conclusie niet klopt.</p>
@@ -175,10 +226,10 @@
 		<section>
 		<h2>Installeren</h2>
 		<p>Voor de (Windows) installer, <a href="publish.htm">klik hier</a> en gebruik de "launch" link of de "Install" knop. Voer het gedownloade bestand uit.</p>
-		<p>Dit is een "click once" installer, wat betekent dat bij het opstarten van het programma automatisch gecontroleerd wordt of er een nieuwe versie is.
+		<p>Bij het opstarten van het programma wordt automatisch gecontroleerd of er een nieuwe versie is.
 			Is dit het geval, dan wordt aangeboden die nieuwe versie te installeren. </p>
 			<h3>SmartScreen meldingen</h3>
-		<p><em>Let op:</em> Op mijn Windows 8 PC krijg ik een ernstig klinkende "SmartScreen" melding, omdat het door mij geschreven programma niet in de Windows lijst van veilige programma's staat.
+		<p><em>Let op:</em> Op mijn Windows 8 PC krijg ik bij het (her)installeren een ernstig klinkende "SmartScreen" melding, omdat het door mij geschreven programma niet in de Windows lijst van veilige programma's staat.
 			Zoals dit: <br/>
 			<figure>
 				<figcaption>SmartScreen melding op Windows 8</figcaption>
@@ -193,7 +244,6 @@
 			</figure>
 			<br/>
 			Klik daar op de "Run anyway" knop ("Toch uitvoeren"?) om de installatie door te laten gaan.<br/>
-			Deze schermen komen niet alleen bij de eerste installatie, maar ook bij upgrades.
 		</p>
 		</section>
 	</body>

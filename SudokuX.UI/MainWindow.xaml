@@ -91,6 +91,12 @@
                             </ComboBox>
                         </StackPanel>
                         <StackPanel>
+                            <TextBlock Foreground="Black">Moeilijkheid</TextBlock>
+                            <ComboBox IsEditable="False" Background="#20FFFFFF" x:Name="DifficultyLevel" IsEnabled="False">
+                                <ComboBoxItem Tag="1" IsSelected="True">Standaard</ComboBoxItem>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel>
                             <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
                                  Margin="3" VerticalContentAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
                             <TextBlock Foreground="Blue" x:Name="GridScoreLabel">??</TextBlock>
