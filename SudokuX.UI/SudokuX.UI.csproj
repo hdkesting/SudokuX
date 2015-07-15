@@ -30,6 +30,7 @@
     <UpdateRequired>false</UpdateRequired>
     <MapFileExtensions>true</MapFileExtensions>
     <InstallUrl>https://hdkesting.blob.core.windows.net/sudoku/</InstallUrl>
+    <SupportUrl>https://hdkesting.blob.core.windows.net/sudoku/index.html</SupportUrl>
     <ProductName>SudokuX</ProductName>
     <PublisherName>Hans Kesting</PublisherName>
     <CreateWebPageOnPublish>true</CreateWebPageOnPublish>
@@ -37,6 +38,7 @@
     <ApplicationRevision>11</ApplicationRevision>
     <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
     <UseApplicationTrust>false</UseApplicationTrust>
+    <CreateDesktopShortcut>true</CreateDesktopShortcut>
     <PublishWizardCompleted>true</PublishWizardCompleted>
     <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
@@ -78,6 +80,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <ApplicationIcon>Sūdoku X.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetZone>Internet</TargetZone>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
