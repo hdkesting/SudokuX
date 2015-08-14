@@ -24,4 +24,4 @@ The challenges can have various symmetries, like:
 
 There are several levels of difficulty possible, although those are not yet fully implemented.
 
-The UI still needs a lot of work.
+For an installer and (dutch) documentation, go to http://hdkesting.blob.core.windows.net/sudoku/index.html

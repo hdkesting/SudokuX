@@ -228,6 +228,9 @@ namespace SudokuX.UI.Common
             //}
         }
 
+        /// <summary>
+        /// Unhighlights all cells.
+        /// </summary>
         public void DeselectAllCells()
         {
             foreach (var cell in EnumerateAllCells())
@@ -237,8 +240,17 @@ namespace SudokuX.UI.Common
             }
         }
 
+        /// <summary>
+        /// Highlights the given cell (plus siblings).
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="column">The column.</param>
         public void SelectCell(int row, int column)
         {
+            // unselect previous cells
+            DeselectAllCells();
+
+            // select requested cell
             var cell = this[row, column];
             cell.IsSelected = true;
 

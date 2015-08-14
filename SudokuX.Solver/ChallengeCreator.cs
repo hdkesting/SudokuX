@@ -173,6 +173,9 @@ namespace SudokuX.Solver
 
         }
 
+        /// <summary>
+        /// Occurs when new progress can be reported.
+        /// </summary>
         public event EventHandler<ProgressEventArgs> Progress;
 
         /// <summary>

@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
 using SudokuX.Solver.Core;
@@ -26,6 +25,12 @@ namespace SudokuX.Solver.Grids
         /// </summary>
         public int MinValue { get; private set; }
 
+        /// <summary>
+        /// Gets the grid.
+        /// </summary>
+        /// <value>
+        /// The grid.
+        /// </value>
         protected Cell[,] Grid { get { return _grid; } }
 
         /// <summary>
@@ -163,6 +168,11 @@ namespace SudokuX.Solver.Grids
             return result;
         }
 
+        /// <summary>
+        /// Tries to get a random empty position.
+        /// </summary>
+        /// <param name="rnd">The random.</param>
+        /// <returns></returns>
         public Position GetRandomEmptyPosition(Random rnd)
         {
             for (int count = 0; count < 20; count++)
@@ -193,6 +203,10 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        /// <summary>
+        /// Gets the percentage done (cells given or calculated compared to the total number of cells).
+        /// </summary>
+        /// <returns></returns>
         public double GetPercentageDone()
         {
             int countDone = AllCells().Count(c => c.HasGivenOrCalculatedValue);
@@ -210,6 +224,12 @@ namespace SudokuX.Solver.Grids
             return GetByOrdinal(_cols, ordinal);
         }
 
+        /// <summary>
+        /// Gets the <see cref="CellGroup"/> by it's ordinal.
+        /// </summary>
+        /// <param name="group">The group.</param>
+        /// <param name="ordinal">The ordinal.</param>
+        /// <returns></returns>
         protected static CellGroup GetByOrdinal(IEnumerable<CellGroup> group, int ordinal)
         {
             return group.First(g => g.Ordinal == ordinal);
