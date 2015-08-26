@@ -390,7 +390,7 @@ namespace SudokuX.Solver.Test
             var grid = Grid9X9.LoadFromString(challenge);
 
             var solver = new Core.Solver(grid,
-                new ISolverStrategy[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
+                new ISolverStrategy[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
             var res = solver.ProcessSolvers();
@@ -421,7 +421,7 @@ namespace SudokuX.Solver.Test
             var grid = Grid9X9.LoadFromString(challenge);
 
             var solver = new Core.Solver(grid,
-                new ISolverStrategy[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
+                new ISolverStrategy[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
             var res = solver.ProcessSolvers();
@@ -454,7 +454,7 @@ namespace SudokuX.Solver.Test
             var solver = new Core.Solver(grid,
                 new ISolverStrategy[]
                 {
-                    new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble(),
+                    new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble(),
                     new NakedTriple(), new LockedCandidates()
                 });
             // needs an X(Y)-Wing
@@ -496,7 +496,7 @@ E  .  1  8   .  3  .  .   .  .  .  A   .  .  F  .
             var grid = Grid16X16.LoadFromString(challenge);
 
             var solver = new Core.Solver(grid,
-                new ISolverStrategy[] { new BasicRule(), new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
+                new ISolverStrategy[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
             Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
             solver.ProcessSolvers();

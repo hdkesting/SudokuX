@@ -18,7 +18,11 @@ namespace SudokuX.Solver.Grids
 
         private readonly int[,] _blockgrid;
 
-
+        /// <summary>
+        /// Initializes a new instance of the <see cref="IrregularGrid"/> class.
+        /// </summary>
+        /// <param name="startblockwidth">The starting block width.</param>
+        /// <param name="startblockheight">The starting block height.</param>
         protected IrregularGrid(int startblockwidth, int startblockheight)
             : base(startblockwidth * startblockheight)
         {
@@ -82,7 +86,6 @@ namespace SudokuX.Solver.Grids
                 }
             }
         }
-
 
         /// <summary>
         /// Initializes the block grid with a basic square grid.
@@ -310,5 +313,15 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this grid is regular.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this grid is regular; otherwise, <c>false</c>.
+        /// </value>
+        public override bool IsRegular
+        {
+            get { return false; }
+        }
     }
 }

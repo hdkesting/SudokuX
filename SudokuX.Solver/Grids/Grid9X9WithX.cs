@@ -11,12 +11,19 @@ namespace SudokuX.Solver.Grids
     {
         private CellGroup _diagonal1, _diagonal2;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Grid9X9WithX"/> class.
+        /// </summary>
         public Grid9X9WithX()
         {
             // Grid9x9 constructor has executed by now
             CreateDiags();
         }
 
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
         public override ISudokuGrid CloneBoardAsChallenge()
         {
             var grid = new Grid9X9WithX();

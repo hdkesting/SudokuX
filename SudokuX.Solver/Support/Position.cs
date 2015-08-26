@@ -37,6 +37,11 @@ namespace SudokuX.Solver.Support
         /// </value>
         public int Column { get; private set; }
 
+        /// <summary>
+        /// Checks whether this Position is equal to the supplied other one.
+        /// </summary>
+        /// <param name="other">The other.</param>
+        /// <returns></returns>
         public bool Equals(Position other)
         {
             if (other == null) return false;
@@ -44,11 +49,24 @@ namespace SudokuX.Solver.Support
             return (other.Row == this.Row && other.Column == this.Column);
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             return Equals(obj as Position);
         }
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             return Row * 100 + Column;

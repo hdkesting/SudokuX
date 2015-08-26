@@ -16,9 +16,27 @@ namespace SudokuX.Solver.Grids
     {
         private readonly List<CellGroup> _blocks = new List<CellGroup>();
 
+        /// <summary>
+        /// Gets the width of the block.
+        /// </summary>
+        /// <value>
+        /// The width of the block.
+        /// </value>
         public int BlockWidth { get; private set; }
+
+        /// <summary>
+        /// Gets the height of the block.
+        /// </summary>
+        /// <value>
+        /// The height of the block.
+        /// </value>
         public int BlockHeight { get; private set; }
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RectangularGrid"/> class.
+        /// </summary>
+        /// <param name="blockwidth">The blockwidth.</param>
+        /// <param name="blockheight">The blockheight.</param>
         protected RectangularGrid(int blockwidth, int blockheight)
             : base(blockwidth * blockheight)
         {
@@ -93,6 +111,10 @@ namespace SudokuX.Solver.Grids
             return blockrow * BlockHeight + blockcol;
         }
 
+        /// <summary>
+        /// Fill the given values of the grid from a serialized version.
+        /// </summary>
+        /// <param name="challenge"></param>
         protected void InitializeFromString(string challenge)
         {
             // input: a string like the ToChallengeString output

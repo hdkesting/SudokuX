@@ -4,10 +4,16 @@ using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver.Grids
 {
+    /// <summary>
+    /// Creates a 9x9 grid with 4 extra "hyper" blocks
+    /// </summary>
     public class Hyper9 : Grid9X9
     {
         private CellGroup _blockNw, _blockNe, _blockSe, _blockSw;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Hyper9"/> class.
+        /// </summary>
         public Hyper9()
         {
             CreateHyperBlocks();
@@ -38,6 +44,10 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
         public override ISudokuGrid CloneBoardAsChallenge()
         {
             var grid = new Hyper9();

@@ -18,6 +18,9 @@ namespace SudokuX.Solver.Grids
 
         private readonly Cell[,] _grid;
 
+        /// <summary>
+        /// Gets the size of the grid.
+        /// </summary>
         public int GridSize { get; private set; }
 
         /// <summary>
@@ -258,7 +261,7 @@ namespace SudokuX.Solver.Grids
         public abstract bool HasSpecialGroups { get; }
 
         /// <summary>
-        /// Clones the grid to create a challenge.
+        /// Clones the grid to create a challenge. Only the given values are copied.
         /// </summary>
         /// <returns></returns>
         protected void CopyChallenge(ISudokuGrid target)

@@ -13,6 +13,12 @@ namespace SudokuX.Solver.SolverStrategies
     {
         private enum CellColor { Green, Blue }
 
+        /// <summary>
+        /// Gets the complexity-score of this solver (7).
+        /// </summary>
+        /// <value>
+        /// The complexity.
+        /// </value>
         public int Complexity
         {
             get { return 7; }
@@ -29,6 +35,11 @@ namespace SudokuX.Solver.SolverStrategies
          * - clash: a colored cell should get a different color
          */
 
+        /// <summary>
+        /// Processes the grid and returns any helpful conclusions.
+        /// </summary>
+        /// <param name="grid">The grid to process.</param>
+        /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             for (var candidateValue = grid.MinValue; candidateValue <= grid.MaxValue; candidateValue++)

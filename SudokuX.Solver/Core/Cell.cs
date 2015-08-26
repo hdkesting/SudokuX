@@ -10,8 +10,22 @@ namespace SudokuX.Solver.Core
     /// </summary>
     public class Cell
     {
+        /// <summary>
+        /// Gets or sets the row index of this Cell.
+        /// </summary>
+        /// <value>
+        /// The row.
+        /// </value>
         public int Row { get; set; }
+
+        /// <summary>
+        /// Gets or sets the column index of this Cell.
+        /// </summary>
+        /// <value>
+        /// The column.
+        /// </value>
         public int Column { get; set; }
+
         private readonly int _min;
         private readonly int _max;
         private readonly List<CellGroup> _groups = new List<CellGroup>();
@@ -19,6 +33,18 @@ namespace SudokuX.Solver.Core
         private int? _calculatedValue;
         private readonly List<int> _available = new List<int>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Cell"/> class.
+        /// </summary>
+        /// <param name="row">The row index.</param>
+        /// <param name="column">The column index.</param>
+        /// <param name="min">The minimum.</param>
+        /// <param name="max">The maximum.</param>
+        /// <exception cref="System.ArgumentException">
+        /// Min value must be >= 0;min
+        /// or
+        /// Max value must be higher that min;max
+        /// </exception>
         public Cell(int row, int column, int min, int max)
         {
             Row = row;
@@ -32,33 +58,71 @@ namespace SudokuX.Solver.Core
             _available.AddRange(Enumerable.Range(_min, _max - _min + 1));
         }
 
+        /// <summary>
+        /// Gets or sets the name of this Cell.
+        /// </summary>
+        /// <value>
+        /// The name.
+        /// </value>
         public string Name { get; set; }
 
+        /// <summary>
+        /// Gets the containing groups.
+        /// </summary>
+        /// <value>
+        /// The containing groups.
+        /// </value>
         public IList<CellGroup> ContainingGroups
         {
             get { return new ReadOnlyCollection<CellGroup>(_groups); }
         }
 
+        /// <summary>
+        /// Gets the available values.
+        /// </summary>
+        /// <value>
+        /// The available values.
+        /// </value>
         public IList<int> AvailableValues
         {
             get { return new ReadOnlyCollection<int>(_available); }
         }
 
+        /// <summary>
+        /// Sets the given value.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void SetGivenValue(int value)
         {
             _givenValue = value;
         }
 
+        /// <summary>
+        /// Sets the calculated value.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void SetCalculatedValue(int value)
         {
             _calculatedValue = value;
         }
 
+        /// <summary>
+        /// Gets the given value.
+        /// </summary>
+        /// <value>
+        /// The given value.
+        /// </value>
         public int? GivenValue
         {
             get { return _givenValue; }
         }
 
+        /// <summary>
+        /// Gets the calculated value.
+        /// </summary>
+        /// <value>
+        /// The calculated value.
+        /// </value>
         public int? CalculatedValue
         {
             get { return _calculatedValue; }
@@ -102,11 +166,22 @@ namespace SudokuX.Solver.Core
             }
         }
 
+        /// <summary>
+        /// Erases the available value from the list.
+        /// </summary>
+        /// <param name="value">The value.</param>
+        /// <returns></returns>
         public bool EraseAvailable(int value)
         {
             return _available.Remove(value);
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return "Cell " + Name;
@@ -139,6 +214,11 @@ namespace SudokuX.Solver.Core
                 .All(c => c.GivenValue != val);
         }
 
+        /// <summary>
+        /// Checks whether the supplied value is legal as given or calculated value.
+        /// </summary>
+        /// <param name="val">The value to check.</param>
+        /// <returns><c>true</c> if legal, otherwise <c>false</c>.</returns>
         public bool GivenOrCalculatedValueIsLegal(int val)
         {
             return _groups.SelectMany(g => g.Cells)

@@ -7,12 +7,18 @@ namespace SudokuX.Solver.Grids
     /// </summary>
     public class Grid12X12 : RectangularGrid
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Grid12X12"/> class.
+        /// </summary>
         public Grid12X12()
             : base(4, 3)
         {
-
         }
 
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
         public override ISudokuGrid CloneBoardAsChallenge()
         {
             var grid = new Grid12X12();

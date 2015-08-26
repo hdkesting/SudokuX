@@ -2,6 +2,9 @@
 
 namespace SudokuX.Solver.Support.Enums
 {
+    /// <summary>
+    /// Extensions for various enums.
+    /// </summary>
     public static class EnumExtensions
     {
         /// <summary>
@@ -31,6 +34,11 @@ namespace SudokuX.Solver.Support.Enums
             throw new InvalidEnumArgumentException("boardSize", (int)boardSize, typeof(BoardSize));
         }
 
+        /// <summary>
+        /// Determines whether this board is irregular.
+        /// </summary>
+        /// <param name="boardSize">Size of the board.</param>
+        /// <returns></returns>
         public static bool IsIrregular(this BoardSize boardSize)
         {
             switch (boardSize)
@@ -43,6 +51,11 @@ namespace SudokuX.Solver.Support.Enums
             return false;
         }
 
+        /// <summary>
+        /// Determines whether this board has diagonals.
+        /// </summary>
+        /// <param name="boardSize">Size of the board.</param>
+        /// <returns></returns>
         public static bool HasDiagonals(this BoardSize boardSize)
         {
             return boardSize == BoardSize.Board9X;

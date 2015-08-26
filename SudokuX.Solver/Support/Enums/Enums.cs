@@ -77,10 +77,29 @@
     /// </summary>
     public enum GroupType
     {
+        /// <summary>
+        /// The type of this group is unknown (yet?). 
+        /// </summary>
         Unknown,
+
+        /// <summary>
+        /// This group is a row.
+        /// </summary>
         Row,
+
+        /// <summary>
+        /// This group is a column.
+        /// </summary>
         Column,
+
+        /// <summary>
+        /// This group is a block.
+        /// </summary>
         Block,
+
+        /// <summary>
+        /// This is a special group.
+        /// </summary>
         Special
     }
 

@@ -54,10 +54,23 @@ namespace SudokuX.Solver.Core
         /// <returns></returns>
         Validity IsChallengeDone();
 
+        /// <summary>
+        /// Gets a random empty position.
+        /// </summary>
+        /// <param name="rnd">The random.</param>
+        /// <returns></returns>
         Position GetRandomEmptyPosition(Random rnd);
 
+        /// <summary>
+        /// Enumerates all the cells.
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<Cell> AllCells();
 
+        /// <summary>
+        /// Gets the percentage done.
+        /// </summary>
+        /// <returns></returns>
         double GetPercentageDone();
 
         /// <summary>
