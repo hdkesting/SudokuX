@@ -118,6 +118,7 @@
     <Compile Include="Common\Utils.cs" />
     <Compile Include="Common\ValueCount.cs" />
     <Compile Include="Common\ValueTranslator.cs" />
+    <Compile Include="Controls\HighlightToOpacityConverter.cs" />
     <Compile Include="Controls\SudokuBoard.xaml.cs">
       <DependentUpon>SudokuBoard.xaml</DependentUpon>
     </Compile>

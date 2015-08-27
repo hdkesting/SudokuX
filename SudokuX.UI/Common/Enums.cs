@@ -37,4 +37,33 @@ namespace SudokuX.UI.Common.Enums
         /// </summary>
         Special
     }
+
+    [System.Flags]
+    public enum Highlight
+    {
+        /// <summary>
+        /// No highlight.
+        /// </summary>
+        None = 0,
+
+        /// <summary>
+        /// A value is found as pencil mark.
+        /// </summary>
+        Pencil = 1,
+
+        /// <summary>
+        /// A value is given or placed.
+        /// </summary>
+        Pen = 2,
+
+        /// <summary>
+        /// The recently completed group.
+        /// </summary>
+        Group = 4,
+
+        /// <summary>
+        /// An easily solvable field (just 1 possibility)
+        /// </summary>
+        Easy = 8
+    }
 }

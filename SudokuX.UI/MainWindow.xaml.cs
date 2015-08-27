@@ -267,18 +267,19 @@ namespace SudokuX.UI
 
         private void SetCellToValue(int row, int column, string value)
         {
+            _board.DeselectAllCells();
             if (_isPenSelected)
             {
                 _board.SetCellToValue(row, column, value);
-
-                if (_selectionMode == ValueSelectionMode.ButtonFirst)
-                {
-                    _board.HighlightValue(value);
-                }
             }
             else
             {
                 _board.ToggleAvailableValue(row, column, value);
+            }
+
+            if (_selectionMode == ValueSelectionMode.ButtonFirst)
+            {
+                _board.HighlightValue(value);
             }
         }
 

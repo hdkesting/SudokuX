@@ -235,7 +235,7 @@ namespace SudokuX.UI.Common
         {
             foreach (var cell in EnumerateAllCells())
             {
-                cell.IsHighlighted = false;
+                cell.Highlighted = Highlight.None;
                 cell.IsSelected = false;
             }
         }
@@ -259,7 +259,7 @@ namespace SudokuX.UI.Common
             {
                 foreach (var sibling in grp.ContainedCells.Where(c => c != cell))
                 {
-                    sibling.IsHighlighted = true;
+                    sibling.Highlighted &= Highlight.Easy;
                 }
             }
         }
@@ -369,11 +369,23 @@ namespace SudokuX.UI.Common
             Recalculate();
         }
 
+        /// <summary>
+        /// Highlights the cells that contain the supplied value.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void HighlightValue(string value)
         {
             foreach (var cell in EnumerateAllCells().Where(c => c.HasValue && c.StringValue == value))
             {
-                cell.IsHighlighted = true;
+                cell.Highlighted |= Highlight.Pen;
+            }
+
+            if (ShowPencilMarks)
+            {
+                foreach (var cell in EnumerateAllCells().Where(c => !c.HasValue && c.HasPencilMark(value)))
+                {
+                    cell.Highlighted |= Highlight.Pencil;
+                }
             }
         }
 
