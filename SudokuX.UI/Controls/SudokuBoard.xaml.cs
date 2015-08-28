@@ -260,6 +260,7 @@ namespace SudokuX.UI.Controls
 
         public void HighlightValue(string value)
         {
+            _gameBoard.SetActiveButtonValue(value);
             _gameBoard.HighlightValue(value);
         }
 

@@ -190,6 +190,11 @@ namespace SudokuX.UI
             ResetButtonsAndCellSelections();
         }
 
+        /// <summary>
+        /// Handles the OnClick event of the SelectButton control: select a "digit".
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
         private void SelectButton_OnClick(object sender, RoutedEventArgs e)
         {
             var tag = ((Button)sender).Tag.ToString();
@@ -211,6 +216,11 @@ namespace SudokuX.UI
             }
         }
 
+        /// <summary>
+        /// Handles the CellClicked event of the board control: select a cell in the grid.
+        /// </summary>
+        /// <param name="sender">The source of the event.</param>
+        /// <param name="e">The <see cref="CellClickEventArgs"/> instance containing the event data.</param>
         void board_CellClicked(object sender, CellClickEventArgs e)
         {
             if (_isFinished)
@@ -267,7 +277,7 @@ namespace SudokuX.UI
 
         private void SetCellToValue(int row, int column, string value)
         {
-            _board.DeselectAllCells();
+            //_board.DeselectAllCells();
             if (_isPenSelected)
             {
                 _board.SetCellToValue(row, column, value);

@@ -25,6 +25,7 @@ namespace SudokuX.UI.Common
         private bool _filling;
         private bool _showPencilMarks;
         private readonly ValueTranslator _translator;
+        private string _activeButtonValue;
 
         //public event EventHandler<EventArgs> BoardIsFinished;
 
@@ -186,6 +187,11 @@ namespace SudokuX.UI.Common
             }
         }
 
+        public void SetActiveButtonValue(string activeValue)
+        {
+            _activeButtonValue = activeValue;
+        }
+
         private void Recalculate()
         {
             ResetInvalid();
@@ -195,6 +201,12 @@ namespace SudokuX.UI.Common
 
             // redo all "PossibleValues" for entire grid (maybe the value was reset, maybe it was changed - in both cases you need to get rid of the old values)
             RedoPossibleValues();
+
+            DeselectAllCells();
+            if (!String.IsNullOrEmpty(_activeButtonValue))
+            {
+                HighlightValue(_activeButtonValue);
+            }
 
             foreach (var cell in EnumerateAllCells())
             {
@@ -448,6 +460,7 @@ namespace SudokuX.UI.Common
                 if (cell.HasPencilMark(value))
                 {
                     cell.SetPencilMark(value, false, true);
+                    cell.Highlighted = cell.Highlighted & ~Highlight.Pencil; // remove any pencil highlight
                     _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = false, IsRealValue = false, IntValue = intval });
                 }
                 else
