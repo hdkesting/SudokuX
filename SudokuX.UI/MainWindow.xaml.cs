@@ -9,6 +9,7 @@ using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Common;
 using SudokuX.UI.Common.Enums;
 using SudokuX.UI.Controls;
+using System.Threading.Tasks;
 
 namespace SudokuX.UI
 {
@@ -93,7 +94,10 @@ namespace SudokuX.UI
 
         void board_BoardIsFinished(object sender, EventArgs e)
         {
+            _board.HighlightValue(null);
             ResetButtonsAndCellSelections();
+            _board.DeselectAllCells();
+
             _isFinished = true;
         }
 
@@ -195,7 +199,7 @@ namespace SudokuX.UI
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="RoutedEventArgs"/> instance containing the event data.</param>
-        private void SelectButton_OnClick(object sender, RoutedEventArgs e)
+        private async void SelectButton_OnClick(object sender, RoutedEventArgs e)
         {
             var tag = ((Button)sender).Tag.ToString();
             e.Handled = true;
@@ -211,7 +215,7 @@ namespace SudokuX.UI
                     break;
 
                 case ValueSelectionMode.CellFirst:
-                    SetCellToValue(_selectedCellRow, _selectedCellColumn, tag);
+                    await SetCellToValue(_selectedCellRow, _selectedCellColumn, tag);
                     break;
             }
         }
@@ -221,7 +225,7 @@ namespace SudokuX.UI
         /// </summary>
         /// <param name="sender">The source of the event.</param>
         /// <param name="e">The <see cref="CellClickEventArgs"/> instance containing the event data.</param>
-        void board_CellClicked(object sender, CellClickEventArgs e)
+        private async void board_CellClicked(object sender, CellClickEventArgs e)
         {
             if (_isFinished)
                 return;
@@ -233,7 +237,7 @@ namespace SudokuX.UI
                     goto case ValueSelectionMode.CellFirst;
 
                 case ValueSelectionMode.ButtonFirst:
-                    SetCellToValue(e.Row, e.Column, _selectedButtonValue);
+                    await SetCellToValue(e.Row, e.Column, _selectedButtonValue);
                     break;
 
                 case ValueSelectionMode.CellFirst:
@@ -275,12 +279,12 @@ namespace SudokuX.UI
             _board.SelectCell(row, column);
         }
 
-        private void SetCellToValue(int row, int column, string value)
+        private async Task SetCellToValue(int row, int column, string value)
         {
             //_board.DeselectAllCells();
             if (_isPenSelected)
             {
-                _board.SetCellToValue(row, column, value);
+                await _board.SetCellToValue(row, column, value);
             }
             else
             {
@@ -363,12 +367,12 @@ namespace SudokuX.UI
                     var key = e.Key.ToString();
                     if (key != "D" && key.StartsWith("D"))
                     {
-                        // regular digit
+                        // regular digit (D0 .. D9)
                         key = key.Substring(1);
                     }
                     else if (key.StartsWith("NumPad"))
                     {
-                        // numpad digit
+                        // numpad digit (NumPad0 .. NumPad9)
                         key = key.Substring("NumPad".Length);
                     }
 

@@ -228,16 +228,6 @@ namespace SudokuX.UI.Common
             IsValid = valid;
 
             IsFinished = IsValid && IsBoardFinished();
-
-            //if (IsFinished)
-            //{
-            //    var done = BoardIsFinished;
-            //    if (done != null)
-            //    {
-            //        done(this, new EventArgs());
-            //    }
-
-            //}
         }
 
         /// <summary>
@@ -401,7 +391,7 @@ namespace SudokuX.UI.Common
             }
         }
 
-        public void SetCellToValue(int row, int column, string value)
+        public async Task SetCellToValue(int row, int column, string value)
         {
             var cell = this[row, column];
             if (!cell.IsReadOnly)
@@ -418,7 +408,39 @@ namespace SudokuX.UI.Common
                     cell.StringValue = value;
                     // add the addition to the stack
                     _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = true, IsRealValue = true, IntValue = cell.IntValue.GetValueOrDefault() });
+
+                    var fullgroups = _groups
+                                        .Where(g => g.ContainedCells.Contains(cell))
+                                        .Where(g => g.ContainedCells.All(c => c.HasValue))
+                                        .ToList();
+                    if (fullgroups.Any())
+                    {
+                        // flash all finished groups
+                        var tasks = fullgroups.Select(g => FlashGroup(g)).ToArray();
+                        await Task.WhenAll(tasks);
+                    }
                 }
+            }
+        }
+
+        private async Task FlashGroup(Group group)
+        {
+            const int delay = 50;
+
+            // set group highlight
+            foreach(var cell in group.ContainedCells)
+            {
+                await Task.Delay(delay);
+                cell.Highlighted |= Highlight.Group;
+            }
+
+            await Task.Delay(delay);
+
+            // remove group highlight
+            foreach (var cell in group.ContainedCells)
+            {
+                await Task.Delay(delay);
+                cell.Highlighted = cell.Highlighted & ~Highlight.Group;
             }
         }
 
