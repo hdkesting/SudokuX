@@ -17,6 +17,7 @@
         <Grid.Resources>
             <controls:BorderToBrushConverter x:Key="BorderToBrush" />
             <controls:BoolToVisibleConverter x:Key="BoolToVisibility" />
+            <controls:HighlightToOpacityConverter x:Key="HighlightToOpacity" />
             
             <LinearGradientBrush x:Key="BoardBackground" StartPoint="0,0" EndPoint="1,0">
                 <GradientStop Offset="0" Color="LightGray" x:Name="GradientStart"/>
@@ -102,13 +103,21 @@
                                 <Border.BorderBrush>
                                     <SolidColorBrush x:Name="OuterBorderColor" Color="Transparent"></SolidColorBrush>
                                 </Border.BorderBrush>
-                                <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="4">
+                                <Border.Effect>
+                                    <DropShadowEffect x:Name="BorderShadow" 
+                                                      ShadowDepth="0" 
+                                                      Opacity="0" 
+                                                      BlurRadius="5" 
+                                                      Color="White"/>
+                                </Border.Effect>
+                                <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="6">
                                     <Border.Background>
-                                        <LinearGradientBrush Opacity ="0.2" StartPoint ="0,0" EndPoint ="0,1">
+                                        <!--<LinearGradientBrush Opacity ="{Binding Path=Highlighted, Converter={StaticResource HighlightToOpacity}}" StartPoint ="0,0" EndPoint ="0,1">
                                             <GradientStop Color ="DimGray" Offset ="0"/>
                                             <GradientStop Color ="White" Offset ="0.5"/>
                                             <GradientStop Color ="DimGray" Offset ="1"/>
-                                        </LinearGradientBrush>
+                                        </LinearGradientBrush>-->
+                                        <SolidColorBrush Color="White" Opacity ="{Binding Path=Highlighted, Converter={StaticResource HighlightToOpacity}}"/>
                                     </Border.Background>
                                     <Grid>
                                         <Viewbox Grid.Column="0" Grid.Row="0">
@@ -171,7 +180,8 @@
                         <Setter TargetName ="Border" Property ="BorderBrush" Value="Brown"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                        <Setter TargetName="Border" Property="BorderBrush" Value="Gold"></Setter>
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Gold" />
+                        <!--<Setter TargetName="BorderShadow" Property="Opacity" Value="1" />-->
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsSelected}" Value="True">
                         <Setter TargetName="Border" Property="Background" Value="Gold"></Setter>

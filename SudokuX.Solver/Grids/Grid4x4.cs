@@ -7,11 +7,19 @@ namespace SudokuX.Solver.Grids
     /// </summary>
     public class Grid4X4 : RectangularGrid
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Grid4X4"/> class.
+        /// </summary>
         public Grid4X4()
             : base(2, 2)
         {
         }
 
+        /// <summary>
+        /// Loads from string.
+        /// </summary>
+        /// <param name="challenge">The challenge.</param>
+        /// <returns></returns>
         public static Grid4X4 LoadFromString(string challenge)
         {
             var grid = new Grid4X4();
@@ -19,6 +27,10 @@ namespace SudokuX.Solver.Grids
             return grid;
         }
 
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
         public override ISudokuGrid CloneBoardAsChallenge()
         {
             var grid = new Grid4X4();

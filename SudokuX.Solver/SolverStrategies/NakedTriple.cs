@@ -11,6 +11,11 @@ namespace SudokuX.Solver.SolverStrategies
     /// </summary>
     public class NakedTriple : ISolverStrategy
     {
+        /// <summary>
+        /// Processes the grid and returns any helpful conclusions.
+        /// </summary>
+        /// <param name="grid">The grid to process.</param>
+        /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking NakedTriple");
@@ -28,6 +33,12 @@ namespace SudokuX.Solver.SolverStrategies
             return Enumerable.Empty<Conclusion>();
         }
 
+        /// <summary>
+        /// Gets the complexity-score of this solver (5).
+        /// </summary>
+        /// <value>
+        /// The complexity.
+        /// </value>
         public int Complexity
         {
             get { return 5; }

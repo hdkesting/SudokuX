@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2013
-VisualStudioVersion = 12.0.31101.0
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SudokuX.Solver", "SudokuX.Solver\SudokuX.Solver.csproj", "{C369B350-D44F-4A14-AD66-AAC5F2723E41}"
 EndProject
@@ -20,8 +20,8 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C369B350-D44F-4A14-AD66-AAC5F2723E41}.Debug|Any CPU.ActiveCfg = Release|Any CPU
-		{C369B350-D44F-4A14-AD66-AAC5F2723E41}.Debug|Any CPU.Build.0 = Release|Any CPU
+		{C369B350-D44F-4A14-AD66-AAC5F2723E41}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C369B350-D44F-4A14-AD66-AAC5F2723E41}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C369B350-D44F-4A14-AD66-AAC5F2723E41}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C369B350-D44F-4A14-AD66-AAC5F2723E41}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A96248EF-61F4-473C-AC75-6ED42A67DEC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU

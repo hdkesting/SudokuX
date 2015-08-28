@@ -19,6 +19,18 @@ namespace SudokuX.Solver.Core
         private readonly IList<ISolverStrategy> _solvers;
         private readonly Dictionary<Type, PerformanceMeasurement> _measurements = new Dictionary<Type, PerformanceMeasurement>();
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Solver"/> class.
+        /// </summary>
+        /// <param name="grid">The grid.</param>
+        /// <param name="solvers">The solvers.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// grid
+        /// or
+        /// solvers
+        /// </exception>
+        /// <exception cref="System.ArgumentException">List of solvers cannot be empty.;solvers</exception>
+        /// <exception cref="System.InvalidOperationException">Do not add BasicRule as a solver, it is built-in.</exception>
         public Solver([NotNull] ISudokuGrid grid, [NotNull] IList<ISolverStrategy> solvers)
         {
             if (grid == null) throw new ArgumentNullException("grid");
@@ -35,6 +47,12 @@ namespace SudokuX.Solver.Core
         /// </summary>
         public event EventHandler<ProgressEventArgs> Progress;
 
+        /// <summary>
+        /// Gets the performance measurements.
+        /// </summary>
+        /// <value>
+        /// The measurements.
+        /// </value>
         public Dictionary<Type, PerformanceMeasurement> Measurements { get { return _measurements; } }
 
         readonly Stopwatch _swConclusion = new Stopwatch();

@@ -25,6 +25,7 @@ namespace SudokuX.UI.Common
         private bool _filling;
         private bool _showPencilMarks;
         private readonly ValueTranslator _translator;
+        private string _activeButtonValue;
 
         //public event EventHandler<EventArgs> BoardIsFinished;
 
@@ -186,6 +187,11 @@ namespace SudokuX.UI.Common
             }
         }
 
+        public void SetActiveButtonValue(string activeValue)
+        {
+            _activeButtonValue = activeValue;
+        }
+
         private void Recalculate()
         {
             ResetInvalid();
@@ -195,6 +201,12 @@ namespace SudokuX.UI.Common
 
             // redo all "PossibleValues" for entire grid (maybe the value was reset, maybe it was changed - in both cases you need to get rid of the old values)
             RedoPossibleValues();
+
+            DeselectAllCells();
+            if (!String.IsNullOrEmpty(_activeButtonValue))
+            {
+                HighlightValue(_activeButtonValue);
+            }
 
             foreach (var cell in EnumerateAllCells())
             {
@@ -216,29 +228,31 @@ namespace SudokuX.UI.Common
             IsValid = valid;
 
             IsFinished = IsValid && IsBoardFinished();
-
-            //if (IsFinished)
-            //{
-            //    var done = BoardIsFinished;
-            //    if (done != null)
-            //    {
-            //        done(this, new EventArgs());
-            //    }
-
-            //}
         }
 
+        /// <summary>
+        /// Unhighlights all cells.
+        /// </summary>
         public void DeselectAllCells()
         {
             foreach (var cell in EnumerateAllCells())
             {
-                cell.IsHighlighted = false;
+                cell.Highlighted = Highlight.None;
                 cell.IsSelected = false;
             }
         }
 
+        /// <summary>
+        /// Highlights the given cell (plus siblings).
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="column">The column.</param>
         public void SelectCell(int row, int column)
         {
+            // unselect previous cells
+            DeselectAllCells();
+
+            // select requested cell
             var cell = this[row, column];
             cell.IsSelected = true;
 
@@ -247,7 +261,7 @@ namespace SudokuX.UI.Common
             {
                 foreach (var sibling in grp.ContainedCells.Where(c => c != cell))
                 {
-                    sibling.IsHighlighted = true;
+                    sibling.Highlighted &= Highlight.Easy;
                 }
             }
         }
@@ -357,15 +371,27 @@ namespace SudokuX.UI.Common
             Recalculate();
         }
 
+        /// <summary>
+        /// Highlights the cells that contain the supplied value.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public void HighlightValue(string value)
         {
             foreach (var cell in EnumerateAllCells().Where(c => c.HasValue && c.StringValue == value))
             {
-                cell.IsHighlighted = true;
+                cell.Highlighted |= Highlight.Pen;
+            }
+
+            if (ShowPencilMarks)
+            {
+                foreach (var cell in EnumerateAllCells().Where(c => !c.HasValue && c.HasPencilMark(value)))
+                {
+                    cell.Highlighted |= Highlight.Pencil;
+                }
             }
         }
 
-        public void SetCellToValue(int row, int column, string value)
+        public async Task SetCellToValue(int row, int column, string value)
         {
             var cell = this[row, column];
             if (!cell.IsReadOnly)
@@ -382,7 +408,39 @@ namespace SudokuX.UI.Common
                     cell.StringValue = value;
                     // add the addition to the stack
                     _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = true, IsRealValue = true, IntValue = cell.IntValue.GetValueOrDefault() });
+
+                    var fullgroups = _groups
+                                        .Where(g => g.ContainedCells.Contains(cell))
+                                        .Where(g => g.ContainedCells.All(c => c.HasValue))
+                                        .ToList();
+                    if (fullgroups.Any())
+                    {
+                        // flash all finished groups
+                        var tasks = fullgroups.Select(g => FlashGroup(g)).ToArray();
+                        await Task.WhenAll(tasks);
+                    }
                 }
+            }
+        }
+
+        private async Task FlashGroup(Group group)
+        {
+            const int delay = 50;
+
+            // set group highlight
+            foreach(var cell in group.ContainedCells)
+            {
+                await Task.Delay(delay);
+                cell.Highlighted |= Highlight.Group;
+            }
+
+            await Task.Delay(delay);
+
+            // remove group highlight
+            foreach (var cell in group.ContainedCells)
+            {
+                await Task.Delay(delay);
+                cell.Highlighted = cell.Highlighted & ~Highlight.Group;
             }
         }
 
@@ -424,6 +482,7 @@ namespace SudokuX.UI.Common
                 if (cell.HasPencilMark(value))
                 {
                     cell.SetPencilMark(value, false, true);
+                    cell.Highlighted = cell.Highlighted & ~Highlight.Pencil; // remove any pencil highlight
                     _actionStack.PushAction(new PerformedAction(cell) { IsValueSet = false, IsRealValue = false, IntValue = intval });
                 }
                 else

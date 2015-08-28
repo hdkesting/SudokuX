@@ -66,8 +66,8 @@ namespace SudokuX.Solver.Core
 
         public int FullResets { get; private set; }
 
+        private readonly Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
 
-        private Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
         /// <summary>
         /// Gets the score calculator for a position list. Higher = better.
         /// </summary>
@@ -213,7 +213,7 @@ namespace SudokuX.Solver.Core
             Rewind();
             Debug.WriteLine("Rewound, {0} givens left", CountGivens(_grid));
             BackTracks++;
-            var s = _grid.ToString();
+            //var s = _grid.ToString();
             if (BackTracks > 1000)
             {
                 BackTracks = 0;

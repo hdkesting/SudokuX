@@ -65,7 +65,6 @@ namespace SudokuX.UI.Controls
             MainList.DataContext = _gameBoard;
             ValueCounts = _gameBoard.ValueCounts;
 
-            //_gameBoard.BoardIsFinished += _gameBoard_BoardIsFinished;
             _gameBoard.PropertyChanged += _gameBoard_PropertyChanged;
         }
 
@@ -75,6 +74,7 @@ namespace SudokuX.UI.Controls
 
             if (e.PropertyName == "IsFinished" && _gameBoard.IsFinished)
             {
+                // All done!
                 var fin = BoardIsFinished;
                 if (fin != null)
                 {
@@ -260,12 +260,13 @@ namespace SudokuX.UI.Controls
 
         public void HighlightValue(string value)
         {
+            _gameBoard.SetActiveButtonValue(value);
             _gameBoard.HighlightValue(value);
         }
 
-        public void SetCellToValue(int row, int column, string value)
+        public async Task SetCellToValue(int row, int column, string value)
         {
-            _gameBoard.SetCellToValue(row, column, value);
+            await _gameBoard.SetCellToValue(row, column, value);
         }
 
         public void Undo()

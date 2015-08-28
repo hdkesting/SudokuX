@@ -42,6 +42,12 @@ namespace SudokuX.Solver
         /// </value>
         public ISudokuGrid Grid { get { return _grid; } }
 
+        /// <summary>
+        /// Gets the solvers to use in creating the challenge.
+        /// </summary>
+        /// <value>
+        /// The solvers.
+        /// </value>
         public IList<ISolverStrategy> Solvers
         {
             get { return new ReadOnlyCollection<ISolverStrategy>(_solvers); }
@@ -173,6 +179,9 @@ namespace SudokuX.Solver
 
         }
 
+        /// <summary>
+        /// Occurs when new progress can be reported.
+        /// </summary>
         public event EventHandler<ProgressEventArgs> Progress;
 
         /// <summary>

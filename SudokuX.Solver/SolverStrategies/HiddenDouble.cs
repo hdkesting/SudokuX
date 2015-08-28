@@ -11,6 +11,11 @@ namespace SudokuX.Solver.SolverStrategies
     /// </summary>
     public class HiddenDouble : ISolverStrategy
     {
+        /// <summary>
+        /// Processes the grid and returns any helpful conclusions.
+        /// </summary>
+        /// <param name="grid">The grid to process.</param>
+        /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             Debug.WriteLine("Invoking HiddenDouble");
@@ -25,6 +30,12 @@ namespace SudokuX.Solver.SolverStrategies
             return result;
         }
 
+        /// <summary>
+        /// Gets the complexity-score of this solver (4).
+        /// </summary>
+        /// <value>
+        /// The complexity.
+        /// </value>
         public int Complexity
         {
             get { return 4; }

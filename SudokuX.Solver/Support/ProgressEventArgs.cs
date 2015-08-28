@@ -2,6 +2,9 @@
 
 namespace SudokuX.Solver.Support
 {
+    /// <summary>
+    /// EventArgs for Progress reports.
+    /// </summary>
     public class ProgressEventArgs : EventArgs
     {
         /// <summary>

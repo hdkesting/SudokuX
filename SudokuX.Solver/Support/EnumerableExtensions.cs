@@ -4,6 +4,9 @@ using System.Linq;
 
 namespace SudokuX.Solver.Support
 {
+    /// <summary>
+    /// Extension methods for IEnumerable.
+    /// </summary>
     public static class EnumerableExtensions
     {
         /// <summary>

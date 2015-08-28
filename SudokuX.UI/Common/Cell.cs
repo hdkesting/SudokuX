@@ -22,7 +22,7 @@ namespace SudokuX.UI.Common
         bool _readOnlyValue;
         int? _valueValue;
         bool _isValidValue = true;
-        private bool _isHighlighted;
+        private Highlight _highlighted;
         private bool _isSelected;
         private Color _backColor = Colors.Transparent;
         private bool _showPencilMarks;
@@ -120,7 +120,7 @@ namespace SudokuX.UI.Common
                         // clear user-value
                         _valueValue = null;
                         HasValue = false;
-                        IsHighlighted = false;
+                        Highlighted = Highlight.None;
                         if (ShouldShowPencilMarks) ShowPencilMarks = true;
                     }
                     else
@@ -198,14 +198,14 @@ namespace SudokuX.UI.Common
         /// <value>
         /// <c>true</c> if this cell is highlighted; otherwise, <c>false</c>.
         /// </value>
-        public bool IsHighlighted
+        public Highlight Highlighted
         {
-            get { return _isHighlighted; }
+            get { return _highlighted; }
             set
             {
-                if (_isHighlighted != value)
+                if (_highlighted != value)
                 {
-                    _isHighlighted = value;
+                    _highlighted = value;
                     OnPropertyChanged();
                 }
             }
