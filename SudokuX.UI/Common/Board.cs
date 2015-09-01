@@ -176,13 +176,12 @@ namespace SudokuX.UI.Common
 
         async void CellPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            await Task.Yield();
-
             // check op "Value" changed
             // reset invalid vlag op gehele grid
             // check dan pas rijen en kolommen - markeer hele rij/kolom invalid bij fout
             if (e.PropertyName == "StringValue" && !_filling)
             {
+                await Task.Yield();
                 Recalculate();
             }
         }

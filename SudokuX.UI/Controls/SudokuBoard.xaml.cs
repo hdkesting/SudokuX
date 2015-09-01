@@ -70,11 +70,10 @@ namespace SudokuX.UI.Controls
 
         async void _gameBoard_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            await Task.Yield();
-
             if (e.PropertyName == "IsFinished" && _gameBoard.IsFinished)
             {
                 // All done!
+                await Task.Delay(100);
                 var fin = BoardIsFinished;
                 if (fin != null)
                 {

@@ -281,7 +281,6 @@ namespace SudokuX.UI
 
         private async Task SetCellToValue(int row, int column, string value)
         {
-            //_board.DeselectAllCells();
             if (_isPenSelected)
             {
                 await _board.SetCellToValue(row, column, value);
@@ -291,7 +290,7 @@ namespace SudokuX.UI
                 _board.ToggleAvailableValue(row, column, value);
             }
 
-            if (_selectionMode == ValueSelectionMode.ButtonFirst)
+            if (_selectionMode == ValueSelectionMode.ButtonFirst && !_isFinished)
             {
                 _board.HighlightValue(value);
             }
