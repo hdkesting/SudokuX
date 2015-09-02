@@ -164,12 +164,11 @@ namespace SudokuX.UI.Common
 
         private static BorderType BorderBetween(Cell target, Cell neighbour)
         {
-            //var targetblock = target.
             if (target.BlockOrdinal != neighbour.BlockOrdinal)
                 return BorderType.Block;
 
             if (target.BelongsToSpecialGroup && !neighbour.BelongsToSpecialGroup)
-                return BorderType.Special;
+                return BorderType.Special; // I don't care if they are *different* special groups
 
             return BorderType.Regular;
         }

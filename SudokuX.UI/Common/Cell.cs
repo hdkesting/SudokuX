@@ -28,6 +28,7 @@ namespace SudokuX.UI.Common
         private bool _showPencilMarks;
         private bool _hasValue;
         private bool _shouldShowPencilMarks;
+        private BorderType _borderNorth, _borderSouth, _borderEast, _borderWest;
 
 
         readonly ObservableCollection<string> _possibleValuesValue;
@@ -72,10 +73,57 @@ namespace SudokuX.UI.Common
 
         public string Tag { get; set; }
 
-        public BorderType BorderNorth { get; set; }
-        public BorderType BorderSouth { get; set; }
-        public BorderType BorderWest { get; set; }
-        public BorderType BorderEast { get; set; }
+        public BorderType BorderNorth
+        {
+            get { return _borderNorth; }
+            set
+            {
+                if (_borderNorth != value)
+                {
+                    _borderNorth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public BorderType BorderSouth
+        {
+            get { return _borderSouth; }
+            set
+            {
+                if (_borderSouth != value)
+                {
+                    _borderSouth = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public BorderType BorderWest
+        {
+            get { return _borderWest; }
+            set
+            {
+                if (_borderWest != value)
+                {
+                    _borderWest = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        public BorderType BorderEast
+        {
+            get { return _borderEast; }
+            set
+            {
+                if (_borderEast != value)
+                {
+                    _borderEast = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value indicating whether this cell is read only (given by the challenge).

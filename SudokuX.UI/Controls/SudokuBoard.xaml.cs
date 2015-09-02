@@ -123,15 +123,21 @@ namespace SudokuX.UI.Controls
             EventHandler<ProgressEventArgs> progress =
                 (snd, progressArgs) => ((BackgroundWorker)sender).ReportProgress(progressArgs.PercentageDone);
 
-            var creator = new ChallengeCreator(boardSize);
-            _creatorGrid = creator.Grid;
+            ChallengeCreator creator;
+            bool success;
+            do
+            {
+                creator = new ChallengeCreator(boardSize);
+                _creatorGrid = creator.Grid; // block structure (possibly irregular) has been created by now
 
-            AttachBlocks();
+                AttachBlocks();
 
-            creator.Progress += progress;
+                creator.Progress += progress;
 
-            creator.CreateChallenge();
+                success = creator.CreateChallenge();
+            } while (!success);
 
+            // solve the newly created board, to get it's score
             var testgrid = _creatorGrid.CloneBoardAsChallenge();
             var solver = new GridSolver(creator.Solvers);
             solver.Solve(testgrid);
@@ -167,6 +173,7 @@ namespace SudokuX.UI.Controls
 
         private void AttachBlocks()
         {
+            ClearAllGroups();
             for (int row = 0; row < _creatorGrid.GridSize; row++)
             {
                 for (int col = 0; col < _creatorGrid.GridSize; col++)
@@ -181,24 +188,30 @@ namespace SudokuX.UI.Controls
                     }
 
                     var block = challcell.ContainingGroups.First(g => g.GroupType == GroupType.Block);
+                    boardcell.BlockOrdinal = block.Ordinal;
+                    boardcell.BelongsToSpecialGroup = challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special);
+
                     double hue = 1.7 / _creatorGrid.GridSize * block.Ordinal;
                     Color color = Utils.FromHsla(hue, 0.7, 0.7);
                     if (_boardSize.IsIrregular())
                     {
                         color = Utils.FromHsla(hue, 0.8, 0.7);
                     }
-                    else if (challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special))
+                    else if (boardcell.BelongsToSpecialGroup)
                     {
                         color = Utils.FromHsla(hue, 0.7, 0.3);
                     }
 
                     boardcell.BlockColor = color;
-                    boardcell.BelongsToSpecialGroup = challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special);
-                    boardcell.BlockOrdinal = challcell.ContainingGroups.First(g => g.GroupType == GroupType.Block).Ordinal;
                 }
             }
 
             _gameBoard.SetBorders();
+        }
+
+        private void ClearAllGroups()
+        {
+            _gameBoard.Groups.Clear();
         }
 
         private void Dispose(bool disposing)

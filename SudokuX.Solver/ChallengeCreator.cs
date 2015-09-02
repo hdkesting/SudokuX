@@ -188,7 +188,7 @@ namespace SudokuX.Solver
         /// Creates the challenge.
         /// </summary>
         /// <param name="rng">The RNG.</param>
-        public void CreateChallenge(Random rng = null)
+        public bool CreateChallenge(Random rng = null)
         {
             if (rng == null)
             {
@@ -197,7 +197,7 @@ namespace SudokuX.Solver
                 rng = new Random(time);
             }
 
-            CreateGrid(_grid, _pattern, _solvers, rng);
+            return CreateGrid(_grid, _pattern, _solvers, rng);
         }
 
         /// <summary>
@@ -207,19 +207,21 @@ namespace SudokuX.Solver
         /// <param name="pattern">A symmetry pattern (if any) for the givens.</param>
         /// <param name="solvers">A list of strategies to solve a grid.</param>
         /// <param name="rng">A random number generator</param>
-        private void CreateGrid(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
+        private bool CreateGrid(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
         {
             var sw = Stopwatch.StartNew();
 
             var strategy = new ChallengeBuilder(grid, pattern, solvers, rng);
             strategy.Progress += strategy_Progress;
-            strategy.CreateGrid();
+            var success = strategy.CreateGrid();
 
             sw.Stop();
             strategy.Progress -= strategy_Progress;
 
             Debug.WriteLine("Created a grid in {0} ms with {1} backtracks and {2} values set ({3} full resets):", sw.ElapsedMilliseconds, strategy.BackTracks, strategy.ValueSets, strategy.FullResets);
             DumpGrid(grid);
+
+            return success;
         }
 
         private void strategy_Progress(object sender, ProgressEventArgs e)
