@@ -21,4 +21,6 @@
     <system:String x:Key="UndoButtonText">↩ Undo</system:String>
     <system:String x:Key="NumberTypePen">✒ Pen</system:String>
     <system:String x:Key="NumberTypePencil">✏ Pencil</system:String>
+    <system:String x:Key="Difficulty">Difficulty:</system:String>
+    <system:String x:Key="Difficulty-Standard">Standard</system:String>
 </ResourceDictionary>

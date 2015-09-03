@@ -168,7 +168,7 @@ namespace SudokuX.UI
             // http://www.codeproject.com/Articles/123460/Simplest-Way-to-Implement-Multilingual-WPF-Applica
             _dict = new ResourceDictionary();
 
-            var cult = Thread.CurrentThread.CurrentCulture.ToString();
+            var cult = Thread.CurrentThread.CurrentUICulture.ToString();
             if (cult.StartsWith("nl"))
             {
                 _dict.Source = new Uri(@"Resources/StringResources.nl.xaml", UriKind.Relative);
