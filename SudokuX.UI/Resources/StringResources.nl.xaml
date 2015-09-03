@@ -21,5 +21,7 @@
     <system:String x:Key="UndoButtonText">↩ Herstel</system:String>
     <system:String x:Key="NumberTypePen">✒ Pen</system:String>
     <system:String x:Key="NumberTypePencil">✏ Potlood</system:String>
+    <system:String x:Key="Difficulty">Moeilijkheid:</system:String>
+    <system:String x:Key="Difficulty-Standard">Standaard</system:String>
 
 </ResourceDictionary>

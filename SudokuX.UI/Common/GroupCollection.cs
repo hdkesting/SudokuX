@@ -45,5 +45,10 @@ namespace SudokuX.UI.Common
         {
             return ((IEnumerable)_groups).GetEnumerator();
         }
+
+        public void Clear()
+        {
+            _groups.Clear();
+        }
     }
 }

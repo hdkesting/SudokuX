@@ -76,7 +76,7 @@ namespace SudokuX.Solver.Core
         /// </value>
         private Func<ISudokuGrid, IEnumerable<Position>, int> CalculateScore { get { return _scoreCalculator; } }
 
-        public void CreateGrid()
+        public bool CreateGrid()
         {
             if (CalculateScore == null)
                 throw new InvalidOperationException("I need a function for CalculateScore.");
@@ -122,12 +122,17 @@ namespace SudokuX.Solver.Core
                         Debug.WriteLine("Timings: process {0:N} ms, backtrack {1:N} ms, select extra {2:N} ms",
                             swProcess.ElapsedMilliseconds, swBacktrack.ElapsedMilliseconds, swSelect.ElapsedMilliseconds);
 
-                        return; // done!
+                        return true; // done!
 
                     case Validity.Invalid:
                         swBacktrack.Start();
                         PerformBackTrack();
                         swBacktrack.Stop();
+                        if (FullResets > 1 && !_grid.IsRegular)
+                        {
+                            // probably an impossible irregular grid - quit!
+                            return false;
+                        }
                         break;
 
                     case Validity.Maybe:
