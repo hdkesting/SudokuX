@@ -192,14 +192,14 @@ namespace SudokuX.UI.Controls
                     boardcell.BelongsToSpecialGroup = challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special);
 
                     double hue = 1.7 / _creatorGrid.GridSize * block.Ordinal;
-                    Color color = Utils.FromHsla(hue, 0.7, 0.7);
+                    Color color = Utils.FromHsla(hue, 0.5, 0.8);
                     if (_boardSize.IsIrregular())
                     {
                         color = Utils.FromHsla(hue, 0.8, 0.7);
                     }
                     else if (boardcell.BelongsToSpecialGroup)
                     {
-                        color = Utils.FromHsla(hue, 0.7, 0.3);
+                        color = Utils.FromHsla(hue, 0.6, 0.4);
                     }
 
                     boardcell.BlockColor = color;
