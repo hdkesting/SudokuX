@@ -87,7 +87,7 @@
                                 <ComboBoxItem Tag="Hyp9" Content="{DynamicResource Grid-Hyp9}"></ComboBoxItem>
                                 <ComboBoxItem Tag="Irr9" Content="{DynamicResource Grid-Irr9}"></ComboBoxItem>
                                 <ComboBoxItem Tag="12x12" Content="{DynamicResource Grid-12X12}"></ComboBoxItem>
-                                <ComboBoxItem Tag="16x16" Content=""></ComboBoxItem>
+                                <ComboBoxItem Tag="16x16" Content="{DynamicResource Grid-16X16}"></ComboBoxItem>
                             </ComboBox>
                         </StackPanel>
                         <StackPanel>
