@@ -61,49 +61,45 @@
 
         <!-- menu (on the left) -->
         <StackPanel DockPanel.Dock ="Left">
-            <Expander IsExpanded ="True" Header ="Main Menu">
-                <Border Margin="5" Padding="10" Background="#18FFFFFF">
-                    <StackPanel>
+            <Border Margin="5" Padding="10" Background="#18FFFFFF">
+                <StackPanel>
+                    <StackPanel Margin="5">
+                        <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
+
+                        <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
+                            <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}"></ComboBoxItem>
+                            <ComboBoxItem Tag="6x6" Content="{DynamicResource Grid-6X6}" IsSelected="True"></ComboBoxItem>
+                            <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"></ComboBoxItem>
+                            <ComboBoxItem Tag="9x9" Content="{DynamicResource Grid-9X9}"></ComboBoxItem>
+                            <ComboBoxItem Tag="9Diag" Content="{DynamicResource Grid-9Diag}"></ComboBoxItem>
+                            <ComboBoxItem Tag="Hyp9" Content="{DynamicResource Grid-Hyp9}"></ComboBoxItem>
+                            <ComboBoxItem Tag="Irr9" Content="{DynamicResource Grid-Irr9}"></ComboBoxItem>
+                            <ComboBoxItem Tag="12x12" Content="{DynamicResource Grid-12X12}"></ComboBoxItem>
+                            <ComboBoxItem Tag="16x16" Content="{DynamicResource Grid-16X16}"></ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="5">
+                        <TextBlock Foreground="Black" Text="{DynamicResource Difficulty}"></TextBlock>
+                        <ComboBox IsEditable="False" Background="#20FFFFFF" x:Name="DifficultyLevel" IsEnabled="False">
+                            <ComboBoxItem Tag="1" IsSelected="True" Content="{DynamicResource Difficulty-Standard}"></ComboBoxItem>
+                        </ComboBox>
+                    </StackPanel>
+                    <StackPanel Margin="5">
                         <Button Click="NewGame" x:Name="NewGameButton" Content="{DynamicResource New-Game}"></Button>
+                            <TextBlock Foreground="Blue" x:Name="GridScoreLabel">??</TextBlock>
+                    </StackPanel>
+                </StackPanel>
+            </Border>
+
+            <Border Margin="5" Padding="10" Background="#18FFFFFF">
+                <StackPanel>
+                   <StackPanel>
                         <Button IsEnabled="False">Load Game</Button>
                         <Button IsEnabled="False">Save Game</Button>
                         <Button Click="QuitClicked" Content="{DynamicResource Quit}"></Button>
                     </StackPanel>
-                </Border>
-            </Expander>
-
-            <Expander IsExpanded ="True" Header ="New Game Settings">
-                <Border Margin="5" Padding="10" Background="#18FFFFFF">
-                    <StackPanel>
-                        <StackPanel>
-                            <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
-
-                            <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
-                                <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}"></ComboBoxItem>
-                                <ComboBoxItem Tag="6x6" Content="{DynamicResource Grid-6X6}" IsSelected="True"></ComboBoxItem>
-                                <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"></ComboBoxItem>
-                                <ComboBoxItem Tag="9x9" Content="{DynamicResource Grid-9X9}"></ComboBoxItem>
-                                <ComboBoxItem Tag="9Diag" Content="{DynamicResource Grid-9Diag}"></ComboBoxItem>
-                                <ComboBoxItem Tag="Hyp9" Content="{DynamicResource Grid-Hyp9}"></ComboBoxItem>
-                                <ComboBoxItem Tag="Irr9" Content="{DynamicResource Grid-Irr9}"></ComboBoxItem>
-                                <ComboBoxItem Tag="12x12" Content="{DynamicResource Grid-12X12}"></ComboBoxItem>
-                                <ComboBoxItem Tag="16x16" Content=""></ComboBoxItem>
-                            </ComboBox>
-                        </StackPanel>
-                        <StackPanel>
-                            <TextBlock Foreground="Black" Text="{DynamicResource Difficulty}"></TextBlock>
-                            <ComboBox IsEditable="False" Background="#20FFFFFF" x:Name="DifficultyLevel" IsEnabled="False">
-                                <ComboBoxItem Tag="1" IsSelected="True" Content="{DynamicResource Difficulty-Standard}"></ComboBoxItem>
-                            </ComboBox>
-                        </StackPanel>
-                        <StackPanel>
-                            <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
-                                 Margin="3" VerticalContentAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
-                            <TextBlock Foreground="Blue" x:Name="GridScoreLabel">??</TextBlock>
-                        </StackPanel>
-                    </StackPanel>
-                </Border>
-            </Expander>
+                </StackPanel>
+            </Border>
         </StackPanel>
 
         <!-- placeholder for the sudoku grid (center) -->
@@ -182,7 +178,11 @@
             </ItemsControl>
 
             <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
-            
+
+            <StackPanel>
+                <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
+                                Margin="3" VerticalContentAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
+            </StackPanel>
             <Border BorderThickness="0" BorderBrush="Black" Margin="0, 2" HorizontalAlignment="Stretch" x:Name="PenPencilSelection" Visibility="Hidden">
                 <StackPanel Orientation="Horizontal">
                     <RadioButton Tag="Pen" x:Name="PenButton" IsChecked="True" VerticalContentAlignment="Center" Content="{DynamicResource NumberTypePen}"

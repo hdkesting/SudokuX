@@ -339,6 +339,7 @@ namespace SudokuX.UI
             {
                 // tab = toggle pen/pencil (space is handled by control, return ??)
                 // backspace = undo
+                // F1 = help (webpage)
                 // other: pass through to board
                 if (e.Key == Key.Return || e.Key == Key.Tab)
                 {
@@ -360,6 +361,12 @@ namespace SudokuX.UI
                 else if (e.Key == Key.Back)
                 {
                     UndoButton_OnClick(null, null);
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.F1)
+                {
+                    ShowHelp();
+                    e.Handled = true;
                 }
                 else
                 {
@@ -378,9 +385,16 @@ namespace SudokuX.UI
                     if (HighlightButton(key))
                     {
                         _selectionMode = ValueSelectionMode.ButtonFirst;
+                        e.Handled = true;
                     }
                 }
             }
+        }
+
+        private void ShowHelp()
+        {
+            System.Diagnostics.ProcessStartInfo psi = new System.Diagnostics.ProcessStartInfo("https://hdkesting.blob.core.windows.net/sudoku/index.html");
+            System.Diagnostics.Process.Start(psi);
         }
     }
 }

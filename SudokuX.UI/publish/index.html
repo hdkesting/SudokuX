@@ -47,6 +47,12 @@
 				background-color: #dddddd;
 			}
 			
+			section#inhoud {
+				position: fixed;
+				top: 50px;
+				left: 0px;
+			}
+			
 			span.mark{
 				color: white;
 				background-color: darkred;
@@ -94,12 +100,28 @@
 				font-family: "Webdings";
 				content: "a ";
 			}
+			
+			#inhoud ul {
+				padding: 0;
+				list-style-type: disk;
+			}
 		</style>
 	</head>
 	<body>
 		<h1>SudokuX &mdash; Een sudoku programma</h1>
 		
-		<section>
+		<section id="inhoud">
+			<h2>Inhoud</h2>
+			<ul>
+				<li><a href="#inleiding">Inleiding</a></li>
+				<li><a href="#mogelijkheden">Mogelijkheden</a></li>
+				<li><a href="#spelen">Spelen</a></li>
+				<li><a href="#toetsen">Toetsenbord</a></li>
+				<li><a href="#installeren">Installeren</a></li>
+			</ul>
+		</section>
+		
+		<section id="inleiding">
 		<h2>Inleiding</h2>
 		<p>Na een tijd sudoku's te hebben opgelost, wilde ik zelf wel eens proberen zo'n programma te maken. Dit is het voorlopige resultaat.</p>
 		<figure>
@@ -128,7 +150,7 @@
 		</p>
 		</section>
 		
-		<section>
+		<section id="mogelijkheden">
 		<h2>Mogelijkheden</h2>
 		<p>Naast de standaard 9&times;9 sudoku zijn er nog andere afmetingen mogelijk:
 			<ul>
@@ -167,7 +189,7 @@
 		</p>
 		</section>
 		
-		<section>
+		<section id="spelen">
 			<h2>Spelen</h2>
 			<h3>Nieuw spel starten</h3>
 			<p>Om een nieuw spel te starten:</p>
@@ -212,18 +234,19 @@
 			</figure>
 		</section>
 		
-		<section>
+		<section id="toetsen">
 			<h2>Toetsenbord bediening</h2>
 			<p>Enkele functies zijn met het toetsenbord te selecteren, voor de rest is een muis noodzakelijk.
 				<ul>
 					<li><kbd>Tab</kbd>: Schakel tussen "pen" en "potlood" (mits "toon mogelijkheden" is aangevinkt)</li>
 					<li><kbd>0</kbd>&hellip;<kbd>9</kbd>, <kbd>A</kbd>&hellip;<kbd>F</kbd>: selecteer dat getal of die letter (voor zover van toepassing).</li>
-					<li><kbd>Backspace</kbd>: de "herstel" functie.
+					<li><kbd>Backspace</kbd>: de "herstel" functie.</li>
+					<li><kbd>F1</kbd>: deze (help) pagina</li>
 				</ul>
 			</p>
 		</section>
 		
-		<section>
+		<section id="installeren">
 		<h2>Installeren</h2>
 		<p>Voor de (Windows) installer, <a href="publish.htm">klik hier</a> en gebruik de "launch" link of de "Install" knop. Voer het gedownloade bestand uit.</p>
 		<p>Bij het opstarten van het programma wordt automatisch gecontroleerd of er een nieuwe versie is.
