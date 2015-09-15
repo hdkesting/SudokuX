@@ -38,11 +38,14 @@ namespace SudokuX.UI
             this.Close();
         }
 
-        private void NewGame(object sender, RoutedEventArgs e)
+        private async void NewGame(object sender, RoutedEventArgs e)
         {
             NewGameButton.IsEnabled = false;
             ShowPencilmarks.IsChecked = false;
             ShowPencilmarks.IsEnabled = true;
+            GridScoreLabel.Text = "🔁";
+
+            await Task.Delay(10);
 
             _board = null;
             switch (((ComboBoxItem)BoardSize.SelectedItem).Tag.ToString())

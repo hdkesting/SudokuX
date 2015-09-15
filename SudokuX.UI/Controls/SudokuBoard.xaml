@@ -55,7 +55,7 @@
                     <Button Click="CellButton_OnClick" Tag="{Binding Tag}">
                         <Grid>
                             <!-- mouseover effect -->
-                            <Rectangle RadiusX="7" RadiusY ="7" x:Name ="HoverMask" IsHitTestVisible ="False" Fill ="AliceBlue" Opacity ="0"/>
+                            <Rectangle RadiusX="2" RadiusY ="2" x:Name ="HoverMask" IsHitTestVisible ="False" Fill ="AliceBlue" Opacity ="0"/>
 
                             <!-- invulling -->
                             <Rectangle x:Name ="GlassWindow" IsHitTestVisible ="False" >
@@ -110,7 +110,7 @@
                                                       BlurRadius="5" 
                                                       Color="White"/>
                                 </Border.Effect>
-                                <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="6">
+                                <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="2">
                                     <Border.Background>
                                         <!--<LinearGradientBrush Opacity ="{Binding Path=Highlighted, Converter={StaticResource HighlightToOpacity}}" StartPoint ="0,0" EndPoint ="0,1">
                                             <GradientStop Color ="DimGray" Offset ="0"/>
