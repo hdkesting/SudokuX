@@ -4,6 +4,9 @@
 		<meta charset="utf-8">
 		<title>Sudoku X</title>
 		<style>
+			html {
+				scroll-behavior: smooth;  /* firefox, chrome experimental */
+			}
 			body {
 				margin-left: 20%;
 				margin-right: 20%;
@@ -97,13 +100,17 @@
 				list-style-type: none;
 			}
 			ul > li:before {
-				font-family: "Webdings";
-				content: "a ";
+				/*font-family: "Webdings";*/
+				content: "✒ ";
 			}
 			
 			#inhoud ul {
 				padding: 0;
 				list-style-type: disk;
+			}
+			
+			nav a, nav a:visited {
+				color: blue;
 			}
 		</style>
 	</head>
@@ -111,14 +118,16 @@
 		<h1>SudokuX &mdash; Een sudoku programma</h1>
 		
 		<section id="inhoud">
+			<nav>
 			<h2>Inhoud</h2>
 			<ul>
-				<li><a href="#inleiding">Inleiding</a></li>
+				<li><a href="#">Inleiding</a></li>
 				<li><a href="#mogelijkheden">Mogelijkheden</a></li>
 				<li><a href="#spelen">Spelen</a></li>
 				<li><a href="#toetsen">Toetsenbord</a></li>
 				<li><a href="#installeren">Installeren</a></li>
 			</ul>
+			</nav>
 		</section>
 		
 		<section id="inleiding">
