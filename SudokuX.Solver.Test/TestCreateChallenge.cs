@@ -14,7 +14,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateChallenge4()
         {
-            var creator = new ChallengeCreator(BoardSize.Board4);
+            var creator = new ChallengeCreator(BoardSize.Board4, Difficulty.Normal);
             creator.CreateChallenge(new Random(9));
             var grid = creator.Grid;
 
@@ -36,7 +36,7 @@ namespace SudokuX.Solver.Test
             for (int i = 1; i <= 30; i++)
             {
                 Debug.WriteLine("####################### {0} ####################", i);
-                var creator = new ChallengeCreator(BoardSize.Board4);
+                var creator = new ChallengeCreator(BoardSize.Board4, Difficulty.Normal);
                 creator.CreateChallenge(new Random(i));
                 var grid = creator.Grid;
 
@@ -58,7 +58,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateChallenge6()
         {
-            var creator = new ChallengeCreator(BoardSize.Board6);
+            var creator = new ChallengeCreator(BoardSize.Board6, Difficulty.Normal);
             creator.CreateChallenge(new Random(1));
             var grid = creator.Grid;
 
@@ -81,7 +81,7 @@ namespace SudokuX.Solver.Test
             for (int i = 1; i <= 10; i++)
             {
                 Debug.WriteLine("####################### {0} ####################", i);
-                var creator = new ChallengeCreator(BoardSize.Board6);
+                var creator = new ChallengeCreator(BoardSize.Board6, Difficulty.Normal);
                 creator.CreateChallenge(new Random(i));
                 var grid = creator.Grid;
 
@@ -103,7 +103,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateChallenge9()
         {
-            var creator = new ChallengeCreator(BoardSize.Board9);
+            var creator = new ChallengeCreator(BoardSize.Board9, Difficulty.Normal);
             creator.CreateChallenge(new Random(10));
             var grid = creator.Grid;
 
@@ -130,7 +130,7 @@ namespace SudokuX.Solver.Test
             var sb = new StringBuilder();
             for (int i = 1; i <= 10; i++)
             {
-                var creator = new ChallengeCreator(BoardSize.Board9);
+                var creator = new ChallengeCreator(BoardSize.Board9, Difficulty.Normal);
                 creator.CreateChallenge(new Random(i));
                 var grid = creator.Grid;
 
@@ -157,7 +157,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateChallenge9WithX()
         {
-            var creator = new ChallengeCreator(BoardSize.Board9X);
+            var creator = new ChallengeCreator(BoardSize.Board9X, Difficulty.Normal);
             creator.CreateChallenge(new Random(2));
             var grid = creator.Grid;
 
@@ -179,7 +179,7 @@ namespace SudokuX.Solver.Test
             var sb = new StringBuilder();
             for (int i = 1; i <= 10; i++)
             {
-                var creator = new ChallengeCreator(BoardSize.Board9X);
+                var creator = new ChallengeCreator(BoardSize.Board9X, Difficulty.Normal);
                 creator.CreateChallenge(new Random(i));
                 var grid = creator.Grid;
 
@@ -201,7 +201,7 @@ namespace SudokuX.Solver.Test
         [TestProperty("Time", "Long")]
         public void CreateChallenge12()
         {
-            var creator = new ChallengeCreator(BoardSize.Board12);
+            var creator = new ChallengeCreator(BoardSize.Board12, Difficulty.Normal);
             creator.CreateChallenge(new Random(2));
             var grid = creator.Grid;
 
@@ -221,7 +221,7 @@ namespace SudokuX.Solver.Test
         [TestProperty("Time", "Long")]
         public void CreateChallenge16()
         {
-            var creator = new ChallengeCreator(BoardSize.Board16);
+            var creator = new ChallengeCreator(BoardSize.Board16, Difficulty.Normal);
             creator.CreateChallenge(new Random(2));
             var grid = creator.Grid;
 
@@ -234,7 +234,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateIrregularChallenge9()
         {
-            var creator = new ChallengeCreator(BoardSize.Irregular9);
+            var creator = new ChallengeCreator(BoardSize.Irregular9, Difficulty.Normal);
             creator.CreateChallenge(new Random(2));
             var grid = creator.Grid;
 
@@ -251,7 +251,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateIrregularChallenge6()
         {
-            var creator = new ChallengeCreator(BoardSize.Irregular6);
+            var creator = new ChallengeCreator(BoardSize.Irregular6, Difficulty.Normal);
             creator.CreateChallenge(new Random(2));
             var grid = creator.Grid;
 
@@ -262,7 +262,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateHyper9Challenge()
         {
-            var creator = new ChallengeCreator(BoardSize.Hyper9);
+            var creator = new ChallengeCreator(BoardSize.Hyper9, Difficulty.Normal);
             creator.CreateChallenge(new Random(2));
             var grid = creator.Grid;
 

@@ -38,6 +38,46 @@ namespace SudokuX.UI
             this.Close();
         }
 
+        private BoardSize SelectedBoardSize
+        {
+            get
+            {
+                var tag = ((ComboBoxItem)BoardSize.SelectedItem).Tag.ToString();
+                switch (tag)
+                {
+                    case "4x4":
+                        return Solver.Support.Enums.BoardSize.Board4;
+                    case "6x6":
+                        return Solver.Support.Enums.BoardSize.Board6;
+                    case "9x9":
+                        return Solver.Support.Enums.BoardSize.Board9;
+                    case "9Diag":
+                        return Solver.Support.Enums.BoardSize.Board9X;
+                    case "12x12":
+                        return Solver.Support.Enums.BoardSize.Board12;
+                    case "16x16":
+                        return Solver.Support.Enums.BoardSize.Board16;
+                    case "Irr9":
+                        return Solver.Support.Enums.BoardSize.Irregular9;
+                    case "Irr6":
+                        return Solver.Support.Enums.BoardSize.Irregular6;
+                    case "Hyp9":
+                        return Solver.Support.Enums.BoardSize.Hyper9;
+                }
+                throw new InvalidOperationException("Unknown board size: " + tag);
+            }
+        }
+
+        private Difficulty SelectedDifficulty
+        {
+            get
+            {
+                return DifficultyLevel.SelectedItem != null
+                    ? ((ComboBoxItem)DifficultyLevel.SelectedItem).Tag as Difficulty? ?? Difficulty.Normal
+                    : Difficulty.Normal;
+            }
+        }
+
         private async void NewGame(object sender, RoutedEventArgs e)
         {
             NewGameButton.IsEnabled = false;
@@ -47,37 +87,7 @@ namespace SudokuX.UI
 
             await Task.Delay(10);
 
-            _board = null;
-            switch (((ComboBoxItem)BoardSize.SelectedItem).Tag.ToString())
-            {
-                case "4x4":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board4);
-                    break;
-                case "6x6":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board6);
-                    break;
-                case "9x9":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board9);
-                    break;
-                case "9Diag":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board9X);
-                    break;
-                case "12x12":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board12);
-                    break;
-                case "16x16":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Board16);
-                    break;
-                case "Irr9":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Irregular9);
-                    break;
-                case "Irr6":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Irregular6);
-                    break;
-                case "Hyp9":
-                    _board = new SudokuBoard(Solver.Support.Enums.BoardSize.Hyper9);
-                    break;
-            }
+            _board = new SudokuBoard(SelectedBoardSize, SelectedDifficulty);
 
             if (_board != null)
             {
@@ -390,6 +400,35 @@ namespace SudokuX.UI
                         _selectionMode = ValueSelectionMode.ButtonFirst;
                         e.Handled = true;
                     }
+                }
+            }
+        }
+
+        private void BoardSize_Selected(object sender, RoutedEventArgs e)
+        {
+            // new board size has been selected, adjust difficulty dropdown accordingly
+            var rangeTuple = Solver.GridCreator.GetLevelRange(SelectedBoardSize);
+
+            if (DifficultyLevel != null)
+            {
+                DifficultyLevel.Items.Clear();
+
+                // easy?
+                if (rangeTuple.Item1 <= Difficulty.Easy)
+                {
+                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Easy, Content = "Easy" });
+                }
+
+                // normal?
+                if (rangeTuple.Item1 <= Difficulty.Normal && rangeTuple.Item2 >= Difficulty.Normal)
+                {
+                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Normal, Content = "Normal", IsSelected = true });
+                }
+
+                // harder?
+                if (rangeTuple.Item1 <= Difficulty.Harder && rangeTuple.Item2 >= Difficulty.Harder)
+                {
+                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Harder, Content = "Harder" });
                 }
             }
         }

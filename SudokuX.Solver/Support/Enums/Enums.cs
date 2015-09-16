@@ -103,4 +103,13 @@
         Special
     }
 
+    /// <summary>
+    /// Difficulty level of a sudoku challenge
+    /// </summary>
+    public enum Difficulty
+    {
+        Easy,
+        Normal,
+        Harder
+    }
 }

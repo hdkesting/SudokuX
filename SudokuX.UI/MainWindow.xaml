@@ -66,7 +66,7 @@
                     <StackPanel Margin="5">
                         <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
 
-                        <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
+                        <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize" SelectionChanged="BoardSize_Selected">
                             <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}"></ComboBoxItem>
                             <ComboBoxItem Tag="6x6" Content="{DynamicResource Grid-6X6}" IsSelected="True"></ComboBoxItem>
                             <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"></ComboBoxItem>
@@ -80,7 +80,7 @@
                     </StackPanel>
                     <StackPanel Margin="5">
                         <TextBlock Foreground="Black" Text="{DynamicResource Difficulty}"></TextBlock>
-                        <ComboBox IsEditable="False" Background="#20FFFFFF" x:Name="DifficultyLevel" IsEnabled="False">
+                        <ComboBox IsEditable="False" Background="#20FFFFFF" x:Name="DifficultyLevel">
                             <ComboBoxItem Tag="1" IsSelected="True" Content="{DynamicResource Difficulty-Standard}"></ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
