@@ -108,7 +108,7 @@
 
         <!-- placeholder for the sudoku grid (center) -->
         <Grid>
-            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="50" Padding="60" Text="{DynamicResource Congratulations}"></TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="50" Padding="60" Text="{DynamicResource Congratulations}" Visibility="Hidden"></TextBlock>
             <Border x:Name="GridPlaceholder" Margin="10px" Grid.Column="0" Grid.Row="0"></Border>
         </Grid>
 

@@ -442,6 +442,19 @@ namespace SudokuX.UI.Common
             }
         }
 
+        public async Task FlashAllGroups()
+        {
+            List<Task> tasks = new List<Task>();
+            int i = 0;
+            foreach(var grp in Groups)
+            {
+                i += 1;
+                tasks.Add(Task.Delay(i*150).ContinueWith(_ => FlashGroup(grp)));
+            }
+
+            await Task.WhenAll(tasks);
+        }
+
         public void Undo()
         {
             if (_actionStack.HasItems)

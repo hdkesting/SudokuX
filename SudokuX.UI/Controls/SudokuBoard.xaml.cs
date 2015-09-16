@@ -82,8 +82,9 @@ namespace SudokuX.UI.Controls
                     fin(this, EventArgs.Empty);
                 }
 
-                var sb = (Storyboard)this.FindResource("FinishAnimation");
-                sb.Begin();
+                //var sb = (Storyboard)this.FindResource("FinishAnimation");
+                //sb.Begin();
+                await _gameBoard.FlashAllGroups();
             }
         }
 
