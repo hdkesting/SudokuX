@@ -23,5 +23,7 @@
     <system:String x:Key="NumberTypePencil">✏ Potlood</system:String>
     <system:String x:Key="Difficulty">Moeilijkheid:</system:String>
     <system:String x:Key="Difficulty-Standard">Standaard</system:String>
+    <system:String x:Key="Difficulty-Easy">Makkelijk</system:String>
+    <system:String x:Key="Difficulty-Harder">Moeilijker</system:String>
 
 </ResourceDictionary>

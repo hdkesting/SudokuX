@@ -131,12 +131,17 @@ namespace SudokuX.UI
             return result;
         }
 
+        private string GetTranslation(string key)
+        {
+            return _dict[key].ToString();
+        }
+
         void board_DoneCreating(object sender, EventArgs e)
         {
             CreationProgress.IsIndeterminate = true;
             CreationProgress.Visibility = Visibility.Hidden;
             NewGameButton.IsEnabled = true;
-            GridScoreLabel.Text = String.Format(_dict["GridScoreLabel"].ToString(), _board.GridScore, _board.WeightedGridScore);
+            GridScoreLabel.Text = String.Format(GetTranslation("GridScoreLabel"), _board.GridScore, _board.WeightedGridScore);
         }
 
         /// <summary>
@@ -416,19 +421,19 @@ namespace SudokuX.UI
                 // easy?
                 if (rangeTuple.Item1 <= Difficulty.Easy)
                 {
-                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Easy, Content = "Easy" });
+                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Easy, Content = GetTranslation("Difficulty-Easy") });
                 }
 
                 // normal?
                 if (rangeTuple.Item1 <= Difficulty.Normal && rangeTuple.Item2 >= Difficulty.Normal)
                 {
-                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Normal, Content = "Normal", IsSelected = true });
+                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Normal, Content = GetTranslation("Difficulty-Standard"), IsSelected = true });
                 }
 
                 // harder?
                 if (rangeTuple.Item1 <= Difficulty.Harder && rangeTuple.Item2 >= Difficulty.Harder)
                 {
-                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Harder, Content = "Harder" });
+                    DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Harder, Content = GetTranslation("Difficulty-Harder") });
                 }
             }
         }
