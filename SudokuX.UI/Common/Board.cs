@@ -445,11 +445,15 @@ namespace SudokuX.UI.Common
         public async Task FlashAllGroups()
         {
             List<Task> tasks = new List<Task>();
+             
             int i = 0;
-            foreach(var grp in Groups)
+            foreach (var family in Groups.GroupBy(g => g.GroupType))
             {
+                foreach (var grp in family)
+                {
+                    tasks.Add(Task.Delay(i * 300).ContinueWith(_ => FlashGroup(grp)));
+                }
                 i += 1;
-                tasks.Add(Task.Delay(i*150).ContinueWith(_ => FlashGroup(grp)));
             }
 
             await Task.WhenAll(tasks);

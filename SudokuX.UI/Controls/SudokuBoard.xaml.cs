@@ -84,6 +84,7 @@ namespace SudokuX.UI.Controls
 
                 //var sb = (Storyboard)this.FindResource("FinishAnimation");
                 //sb.Begin();
+                await Task.Delay(300); // give "group filled" flash some time to finish
                 await _gameBoard.FlashAllGroups();
             }
         }
