@@ -50,8 +50,8 @@
                 <DockPanel LastChildFill="true">
                     <Border DockPanel.Dock="Left" BorderBrush="{Binding BorderWest, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
                     <Border DockPanel.Dock="Top" BorderBrush="{Binding BorderNorth, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
-                    <Border DockPanel.Dock="Right" BorderBrush="{Binding BorderEast, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
-                    <Border DockPanel.Dock="Bottom" BorderBrush="{Binding BorderSouth, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
+                    <Border DockPanel.Dock="Right" BorderBrush="{Binding BorderEast, Converter={StaticResource BorderToBrush}}" BorderThickness="1" Opacity="0.6"/>
+                    <Border DockPanel.Dock="Bottom" BorderBrush="{Binding BorderSouth, Converter={StaticResource BorderToBrush}}" BorderThickness="1" Opacity="0.6"/>
                     <Button Click="CellButton_OnClick" Tag="{Binding Tag}">
                         <Grid>
                             <!-- mouseover effect -->
@@ -177,7 +177,8 @@
                         <Setter TargetName ="TextBlock" Property ="Effect" Value="{x:Null}"/>
                     </DataTrigger>
                     <DataTrigger Binding ="{Binding IsValid}" Value ="False">
-                        <Setter TargetName ="Border" Property ="BorderBrush" Value="Brown"/>
+                        <Setter TargetName ="Border" Property ="BorderBrush" Value="Red"/>
+                        <Setter TargetName="Border" Property="BorderThickness" Value="3"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                         <Setter TargetName="Border" Property="BorderBrush" Value="Gold" />
