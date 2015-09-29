@@ -18,7 +18,7 @@ namespace SudokuX.Solver.SolverStrategies
         /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
-            Debug.WriteLine("Invoking NakedDouble");
+            //Debug.WriteLine("Invoking NakedDouble");
             foreach (var group in grid.CellGroups)
             {
                 var list = FindNakedDoubles(group).ToList();
@@ -45,7 +45,7 @@ namespace SudokuX.Solver.SolverStrategies
         private IEnumerable<Conclusion> FindNakedDoubles(CellGroup cellGroup)
         {
             // find all cells in the group with exactly two options left
-            var doubles = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Count == 2).ToList();
+            var doubles = cellGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Count == 2).ToList();
 
             // if you've processed a->b, then there's no need to process b->a
 
@@ -65,10 +65,10 @@ namespace SudokuX.Solver.SolverStrategies
                         var list = GetExclusions(localcell, localtwin).ToList();
                         if (list.Any())
                         {
-                            Debug.WriteLine("Naked double: found values {0} and {1} in cells {2} and {3} (group {4})",
-                                localcell.AvailableValues[0], localcell.AvailableValues[1],
-                                localcell, localtwin,
-                                cellGroup);
+                            //Debug.WriteLine("Naked double: found values {0} and {1} in cells {2} and {3} (group {4})",
+                            //    localcell.AvailableValues[0], localcell.AvailableValues[1],
+                            //    localcell, localtwin,
+                            //    cellGroup);
                             foreach (var conclusion in list)
                             {
                                 yield return conclusion;
@@ -92,7 +92,7 @@ namespace SudokuX.Solver.SolverStrategies
             // check all sibling cells for options to remove: find cells that have these values as "available" - that should be removed
             var cells = commongroups
                     .SelectMany(g => g.Cells)
-                    .Where(c => !c.HasGivenOrCalculatedValue && c != cell1 && c != cell2)
+                    .Where(c => !c.GivenOrCalculatedValue.HasValue && c != cell1 && c != cell2)
                     .Distinct()
                     .ToList();
 

@@ -130,12 +130,12 @@ namespace SudokuX.Solver.Core
 
 
         /// <summary>
-        /// Gets a value indicating whether this instance has a given value or a calculated value.
+        /// Gets the given value or calculated value for this cell, if any.
         /// </summary>
         /// <value>
-        ///   <c>true</c> if this instance has value; otherwise, <c>false</c>.
+        ///   <c>null</c> if the cell is still empty.
         /// </value>
-        public bool HasGivenOrCalculatedValue { get { return GivenValue.HasValue || CalculatedValue.HasValue; } }
+        public int? GivenOrCalculatedValue { get { return GivenValue ?? CalculatedValue; } }
 
         /// <summary>
         /// Gets or sets the complexity level used to calculate the value so far.

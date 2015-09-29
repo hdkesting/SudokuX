@@ -49,7 +49,7 @@ namespace SudokuX.Solver.SolverStrategies
             // find groups of the first type containing exactly two cells with this digit as available
             var groups = grid.CellGroups
                                 .Where(g => g.GroupType == first) // just the first type
-                                .Where(g => g.Cells.Count(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(digit)) == 2)
+                                .Where(g => g.Cells.Count(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit)) == 2)
                                 .ToList();
             if (groups.Count < 2)
             {
@@ -62,11 +62,11 @@ namespace SudokuX.Solver.SolverStrategies
             {
                 // find the "other" groups for the matching cells
                 var cross1 =
-                    pair.Item1.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(digit))
+                    pair.Item1.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
                         .Select(c => c.ContainingGroups.First(g => g.GroupType == second))
                         .ToList();
                 var cross2 =
-                    pair.Item2.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(digit))
+                    pair.Item2.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
                         .Select(c => c.ContainingGroups.First(g => g.GroupType == second))
                         .ToList();
 

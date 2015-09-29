@@ -18,7 +18,7 @@ namespace SudokuX.Solver.SolverStrategies
         /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
-            Debug.WriteLine("Invoking NakedTriple");
+            //Debug.WriteLine("Invoking NakedTriple");
             foreach (CellGroup group in grid.CellGroups)
             {
                 var conclusions = FindNakedTriples(group).ToList();
@@ -46,7 +46,7 @@ namespace SudokuX.Solver.SolverStrategies
 
         private IEnumerable<Conclusion> FindNakedTriples(CellGroup cellGroup)
         {
-            var possibletriples = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Count <= 3).ToList();
+            var possibletriples = cellGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Count <= 3).ToList();
 
             // if you've processed a->b, then there's no need to process b->a
 
@@ -103,8 +103,8 @@ namespace SudokuX.Solver.SolverStrategies
                     var list = BuildConclusions(cellGroup, first, second, third, threecellavailable).ToList();
                     if (list.Any())
                     {
-                        Debug.WriteLine("Found useful naked triple for group {0}, values {1}, {2}, {3}",
-                            cellGroup, threecellavailable[0], threecellavailable[1], threecellavailable[2]);
+                        //Debug.WriteLine("Found useful naked triple for group {0}, values {1}, {2}, {3}",
+                        //    cellGroup, threecellavailable[0], threecellavailable[1], threecellavailable[2]);
                         return list;
                     }
                 }
@@ -116,7 +116,7 @@ namespace SudokuX.Solver.SolverStrategies
         private IEnumerable<Conclusion> BuildConclusions(CellGroup cellGroup, Cell first, Cell second, Cell third,
             IList<int> triple)
         {
-            foreach (var cell in cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c != first && c != second && c != third))
+            foreach (var cell in cellGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c != first && c != second && c != third))
             {
                 // remove triplet values from cells other than that triple
                 var toomuch = cell.AvailableValues.Intersect(triple).ToList();

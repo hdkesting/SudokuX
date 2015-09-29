@@ -18,7 +18,7 @@ namespace SudokuX.Solver.SolverStrategies
         /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
-            Debug.WriteLine("Invoking HiddenDouble");
+            //Debug.WriteLine("Invoking HiddenDouble");
 
             var result = new List<Conclusion>();
             foreach (var group in grid.CellGroups)
@@ -43,10 +43,10 @@ namespace SudokuX.Solver.SolverStrategies
 
         private IEnumerable<Conclusion> FindHiddenDoubles(CellGroup group, int min, int max)
         {
-            // ReSharper disable once PossibleInvalidOperationException
+            // find all given or calculated values in this group
             var knownvalues = group.Cells
-                                .Where(c => c.HasGivenOrCalculatedValue)
-                                .Select(c => c.GivenValue ?? c.CalculatedValue.Value)
+                                .Where(c => c.GivenOrCalculatedValue.HasValue)
+                                .Select(c => c.GivenOrCalculatedValue)
                                 .ToList();
 
             // loop through all possible pairs of values
@@ -65,14 +65,14 @@ namespace SudokuX.Solver.SolverStrategies
                     // v1 < v2
                     int[] potentialDouble = { v1, v2 };
 
-                    int count = group.Cells.Count(cell => !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Intersect(potentialDouble).Any());
+                    int count = group.Cells.Count(cell => !cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Intersect(potentialDouble).Any());
 
                     if (count == 2)
                     {
                         // exactly two cells found with this pair of numbers is a possibility - that's a double!
                         // but is it still hidden between other possibilities?
                         var pair = group.Cells
-                                        .Where(cell => !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Intersect(potentialDouble).Any())
+                                        .Where(cell => !cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Intersect(potentialDouble).Any())
                                         .ToArray();
 
                         var concl1 = new Conclusion(pair[0], Complexity, pair[0].AvailableValues.Except(potentialDouble));
@@ -80,7 +80,7 @@ namespace SudokuX.Solver.SolverStrategies
 
                         if (concl1.ExcludedValues.Any() || concl2.ExcludedValues.Any())
                         {
-                            Debug.WriteLine("Hidden double found: {0} and {1} in group {2}", potentialDouble[0], potentialDouble[1], group);
+                            //Debug.WriteLine("Hidden double found: {0} and {1} in group {2}", potentialDouble[0], potentialDouble[1], group);
 
                             if (concl1.ExcludedValues.Any())
                                 yield return concl1;

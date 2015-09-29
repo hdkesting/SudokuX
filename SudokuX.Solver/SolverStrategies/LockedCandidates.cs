@@ -21,7 +21,7 @@ namespace SudokuX.Solver.SolverStrategies
         /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
-            Debug.WriteLine("Invoking LockedCandidates");
+            //Debug.WriteLine("Invoking LockedCandidates");
             for (int i = grid.MinValue; i <= grid.MaxValue; i++)
             {
                 var conclusions = EvaluateCandidates(i, grid);
@@ -52,7 +52,7 @@ namespace SudokuX.Solver.SolverStrategies
             {
                 // in what cells is this digit a possible value?
                 var cellswithdigit =
-                    cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(digit)).ToList();
+                    cellGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit)).ToList();
 
                 // found more than one cell (if one, then it should have been caught as NakedSingle)
                 if (cellswithdigit.Count > 1)
@@ -66,7 +66,7 @@ namespace SudokuX.Solver.SolverStrategies
                         var candidates = FindCandidates(digit, groups, cellGroup);
                         if (candidates.Any())
                         {
-                            Debug.WriteLine("LockedCandidates: found it for {0} in group {1}", digit, cellGroup);
+                            //Debug.WriteLine("LockedCandidates: found it for {0} in group {1}", digit, cellGroup);
                             return candidates;
                         }
                     }
@@ -84,7 +84,7 @@ namespace SudokuX.Solver.SolverStrategies
                 // not in the original group,
                 // doesn't have a value yet
                 // and contains this as a possible value
-                if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Contains(digit))
+                if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Contains(digit))
                 {
                     conclusions.Add(new Conclusion(cell, Complexity, new[] { digit }));
                 }

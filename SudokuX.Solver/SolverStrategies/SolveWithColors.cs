@@ -57,7 +57,7 @@ namespace SudokuX.Solver.SolverStrategies
             foreach (var block in grid.CellGroups.Where(g => g.GroupType == GroupType.Block))
             {
                 var cells =
-                    block.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(candidateValue))
+                    block.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(candidateValue))
                         .ToList();
                 if (cells.Count == 2)
                 {
@@ -105,7 +105,7 @@ namespace SudokuX.Solver.SolverStrategies
             }
 
             // check each non-colored cell, if it is in a group with both colors, then it can't be a valid candidate
-            foreach (var cell in grid.AllCells().Where(c => !c.HasGivenOrCalculatedValue
+            foreach (var cell in grid.AllCells().Where(c => !c.GivenOrCalculatedValue.HasValue
                                                                 && c.AvailableValues.Contains(candidateValue)
                                                                 && !GetColor(colorgrid, c).HasValue))
             {
@@ -140,7 +140,7 @@ namespace SudokuX.Solver.SolverStrategies
                 {
                     var sibs =
                         cellGroup.Cells.Where(
-                            c => c != cell && !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(candidateValue)).ToList();
+                            c => c != cell && !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(candidateValue)).ToList();
                     if (sibs.Count == 1)
                     {
                         var sib = sibs.Single();
