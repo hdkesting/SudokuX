@@ -50,8 +50,8 @@
                 <DockPanel LastChildFill="true">
                     <Border DockPanel.Dock="Left" BorderBrush="{Binding BorderWest, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
                     <Border DockPanel.Dock="Top" BorderBrush="{Binding BorderNorth, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
-                    <Border DockPanel.Dock="Right" BorderBrush="{Binding BorderEast, Converter={StaticResource BorderToBrush}}" BorderThickness="1" Opacity="0.6"/>
-                    <Border DockPanel.Dock="Bottom" BorderBrush="{Binding BorderSouth, Converter={StaticResource BorderToBrush}}" BorderThickness="1" Opacity="0.6"/>
+                    <Border DockPanel.Dock="Right" BorderBrush="{Binding BorderEast, Converter={StaticResource BorderToBrush}, ConverterParameter=L}" BorderThickness="1" />
+                    <Border DockPanel.Dock="Bottom" BorderBrush="{Binding BorderSouth, Converter={StaticResource BorderToBrush}, ConverterParameter=L}" BorderThickness="1" />
                     <Button Click="CellButton_OnClick" Tag="{Binding Tag}">
                         <Grid>
                             <!-- mouseover effect -->

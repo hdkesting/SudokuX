@@ -451,7 +451,7 @@ namespace SudokuX.UI.Common
             {
                 foreach (var grp in family)
                 {
-                    tasks.Add(Task.Delay(i * 300).ContinueWith(_ => FlashGroup(grp)));
+                    tasks.Add(Task.Delay(i * 600).ContinueWith(_ => FlashGroup(grp)));
                 }
                 i += 1;
             }

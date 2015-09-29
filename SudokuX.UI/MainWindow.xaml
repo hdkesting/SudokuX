@@ -179,7 +179,7 @@
             <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
 
             <StackPanel>
-                <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
+                <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick" Style="{DynamicResource ModernCheckBoxStyle}"
                                 Margin="3" VerticalContentAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
             </StackPanel>
             <Border BorderThickness="0" BorderBrush="Black" Margin="0, 2" HorizontalAlignment="Stretch" x:Name="PenPencilSelection" Visibility="Hidden">
