@@ -101,6 +101,26 @@ namespace SudokuX.UI
                 _board.Create();
                 _board.ValueCounts.Add(new ValueCount(" "));
                 ButtonPanel.ItemsSource = SplitInRows(_board.ValueCounts, _board.BoardSize);
+
+                const int buttonWidth = 65;
+                switch(_board.BoardSize)
+                {
+                    case Solver.Support.Enums.BoardSize.Board4:
+                        RightPanel.Width = buttonWidth * 3; // some extra space here
+                        break;
+                    case Solver.Support.Enums.BoardSize.Board6:
+                    case Solver.Support.Enums.BoardSize.Irregular6:
+                    case Solver.Support.Enums.BoardSize.Board9:
+                    case Solver.Support.Enums.BoardSize.Board9X:
+                    case Solver.Support.Enums.BoardSize.Hyper9:
+                    case Solver.Support.Enums.BoardSize.Irregular9:
+                        RightPanel.Width = buttonWidth * 3;
+                        break;
+                    default: // 12, 16
+                        RightPanel.Width = buttonWidth * 4;
+                        break;
+                }
+
                 _isFinished = false;
             }
         }
