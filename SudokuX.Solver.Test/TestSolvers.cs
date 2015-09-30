@@ -185,7 +185,7 @@ namespace SudokuX.Solver.Test
 
             // first real naked double found is r0c4/r1c3
             // conclusions are r0c3 not 1,4, r0c5 not 4
-            Assert.AreEqual(2, list.Count);
+            Assert.AreEqual(3, list.Count);
             Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 1, 4 }));
             Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 4 }));
 
@@ -218,7 +218,8 @@ namespace SudokuX.Solver.Test
 
             // first real naked double found is r3c2/r7c2
             // conclusions are r0c2 not 7, r4c2 not 7,8 (column)
-            Assert.AreEqual(2, list.Count);
+            // and r5c4 not 7, r4c4 not 2,7
+            Assert.AreEqual(4, list.Count);
             Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 7 }));
             Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 7, 8 }));
         }
@@ -307,7 +308,8 @@ namespace SudokuX.Solver.Test
             sw.Stop();
             Console.WriteLine(sw.ElapsedMilliseconds);
             // exclude value 8 in r1 c67 (b2) because of b0
-            Assert.AreEqual(2, list.Count);
+            // exclude value 9 in c8 r01 (b2) because of b5
+            Assert.AreEqual(5, list.Count);
             Assert.IsTrue(_listsAreEqual(list[0].ExcludedValues, new[] { 8 }));
             Assert.IsTrue(_listsAreEqual(list[1].ExcludedValues, new[] { 8 }));
 

@@ -48,7 +48,7 @@ namespace SudokuX.Solver.SolverStrategies
                 Cell latest = null;
                 foreach (var cell in group.Cells)
                 {
-                    if (cell.CalculatedValue == val || cell.GivenValue == val)
+                    if (cell.GivenOrCalculatedValue == val)
                     {
                         // already have given this value, it can't be a hidden single
                         latest = null;
