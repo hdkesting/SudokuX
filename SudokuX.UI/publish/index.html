@@ -4,6 +4,9 @@
 		<meta charset="utf-8">
 		<title>Sudoku X</title>
 		<style>
+			html {
+				scroll-behavior: smooth;  /* firefox, chrome experimental */
+			}
 			body {
 				margin-left: 20%;
 				margin-right: 20%;
@@ -97,13 +100,26 @@
 				list-style-type: none;
 			}
 			ul > li:before {
-				font-family: "Webdings";
-				content: "a ";
+				/*font-family: "Webdings";*/
+				content: "✒ ";
 			}
 			
 			#inhoud ul {
 				padding: 0;
 				list-style-type: disk;
+			}
+			
+			nav a, nav a:visited {
+				color: blue;
+			}
+			
+			a.install {
+			    background-color: yellow;
+				padding: 5px;
+				border-radius: 5px;
+			}
+			a.install:hover {
+				font-size: larger;
 			}
 		</style>
 	</head>
@@ -111,14 +127,33 @@
 		<h1>SudokuX &mdash; Een sudoku programma</h1>
 		
 		<section id="inhoud">
+			<nav>
 			<h2>Inhoud</h2>
 			<ul>
-				<li><a href="#inleiding">Inleiding</a></li>
+				<li>
+					<a href="#">Inleiding</a>
+					<ul>
+						<li><a href="#inleiding-doel">Doel</a></li>
+					</ul>
+				</li>
 				<li><a href="#mogelijkheden">Mogelijkheden</a></li>
-				<li><a href="#spelen">Spelen</a></li>
+				<li>
+					<a href="#spelen">Spelen</a>
+					<ul>
+						<li><a href="#spelen-start">Nieuw spel</a></li>
+						<li><a href="#spelen-plaatsen">Getal plaatsen</a></li>
+						<li><a href="#spelen-mogelijkheden">Mogelijkheden</a></li>
+					</ul>
+				</li>
 				<li><a href="#toetsen">Toetsenbord</a></li>
-				<li><a href="#installeren">Installeren</a></li>
+				<li>
+					<a href="#installeren">Installeren</a>
+					<ul>
+						<li><a href="#installeren-smartscreen">SmartScreen</a></li>
+					</ul>
+				</li>
 			</ul>
+			</nav>
 		</section>
 		
 		<section id="inleiding">
@@ -131,21 +166,21 @@
 		<p>
 			De onderdelen van het scherm:
 			<ol type="1" class="mark">
+				<li>Stel het bord-type (waar onder afmeting) in, voor een nieuw spel</li>
+				<li>Stel de moeilijkheidsgraad in (nog niet volledig werkzaam)</li>
 				<li>Start een nieuw spel, met de ingestelde afmetingen</li>
+				<li>Scores van de moeilijkheidsgraad van het huidige spel</li>
 				<li>Opslaan / laden van een spel (nog niet werkzaam)</li>
 				<li>Sluit het spel af</li>
-				<li>Stel het bord-type (waar onder afmeting) in, voor een nieuw spel</li>
-				<li>Stel de moeilijkheidsgraad in (nog niet werkzaam)</li>
-				<li>Indien aangevinkt, toon in elke cel de mogelijke waarden</li>
-				<li>Scores van de moeilijkheidsgraad van het huidige spel</li>
 				<li><strong>Het speelveld</strong> met de gegeven waarden in groen en de zelf geplaatste waarden in zwart</li>
 				<li>Selectie van het te plaatsen getal</li>
 				<li>Wissen van een geplaatst getal</li>
 				<li>Maak de laatste zet ongedaan</li>
+				<li>Indien aan, toon in elke cel de mogelijke waarden (zoals hier)</li>
 				<li>Kies tussen <em>pen</em> (echte getallen plaatsen) en <em>potlood</em> (mogelijkheden schrappen)</li>
 			</ol>
 		</p>
-		<p><h3>Het bekende doel van een sudoku puzzel</h3>
+		<p><h3 id="inleiding-doel">Het bekende doel van een sudoku puzzel</h3>
 			<blockquote>Zorg ervoor dat in elke rij, elke kolom en elk blok alle mogelijke cijfers (of tekens) precies éénmaal voorkomen.</blockquote>
 		</p>
 		</section>
@@ -191,14 +226,11 @@
 		
 		<section id="spelen">
 			<h2>Spelen</h2>
-			<h3>Nieuw spel starten</h3>
+			<h3 id="spelen-start">Nieuw spel starten</h3>
 			<p>Om een nieuw spel te starten:</p>
 			<ol style="1">
-				<li>Selecteer eerst het gewenste type bord (of laat staan, als dit al goed staat)
-					<ul>
-						<li>Het is de bedoeling dat er nog extra keuzes voor moeilijkheidsgraad bij komen.</li>
-					</ul>
-				</li>
+				<li>Selecteer eerst het gewenste type bord (of laat staan, als dit al goed staat)</li>
+				<li>Stel de gewenste moeilijkheidsgraad in</li>
 				<li>Klik dan op "Start nieuw spel" en wacht tot de puzzel gegenereerd is</li>
 				<li>Oplossen maar !</li>
 			</ol>
@@ -207,7 +239,7 @@
 				<img src="game_start.png" width="150" />
 			</figure>
 			
-			<h3>Een getal plaatsen</h3>
+			<h3 id="spelen-plaatsen">Een getal plaatsen</h3>
 			<p>Er zijn twee manieren om een een plek in de puzzel te voorzien van een nieuw getal:
 				<ul>
 					<li>Selecteer een getal in het getalblok rechtsboven en klik dan een of meer cellen aan waar dat getal ingezet moet worden</li>
@@ -224,14 +256,20 @@
 			</figure>
 			<p>Het witte cijfertje geeft aan hoevaak dit getal nog geplaatst moet worden.</p>
 			
-			<h3>Toon mogelijkheden</h3>
+			<h3 id="spelen-mogelijkheden">Toon mogelijkheden</h3>
 			<p>Een nuttig hulpmiddel is het tonen van de getallen die nog op de open posities mogelijk zijn. Deze worden automatisch bijgehouden op basis van de geplaatste getallen.</p>
 			<p>Je kan ook zelf waarden verwijderen, als je hebt besloten dat die zeker niet kunnen. Er wordt geen melding gegeven als de conclusie niet klopt.</p>
-			<p>Deze optie is uitgeschakeld als de puzzel "te makkelijk" is.</p>
+			<p>Deze optie is niet te gebruiken als de puzzel "te makkelijk" is.</p>
 			<figure>
 				<figcaption>aan/uitzetten</figcaption>
 				<img src="pencilmarks.png"/>
 			</figure>
+			<p>Zodra de schakelaar op "aan" gezet is, verschijnen er twee extra knoppen:</p>
+			<figure>
+				<figcaption>pen/potlood keuze</figcaption>
+				<img src="pencilmarks-on.png"/>
+			</figure>
+			<p>Hiermee is te kiezen of er "echte" getallen geplaatst worden (pen) of de mogelijkheden verwijderd worden (potlood).</p>
 		</section>
 		
 		<section id="toetsen">
@@ -248,19 +286,24 @@
 		
 		<section id="installeren">
 		<h2>Installeren</h2>
-		<p>Voor de (Windows) installer, <a href="publish.htm">klik hier</a> en gebruik de "launch" link of de "Install" knop. Voer het gedownloade bestand uit.</p>
+		<p>Voor de (Windows) installer, <a href="publish.htm" class="install">klik hier</a> en gebruik de "launch" link of de "Install" knop. Voer het gedownloade bestand uit.</p>
 		<p>Bij het opstarten van het programma wordt automatisch gecontroleerd of er een nieuwe versie is.
 			Is dit het geval, dan wordt aangeboden die nieuwe versie te installeren. </p>
-			<h3>SmartScreen meldingen</h3>
-		<p><em>Let op:</em> Op mijn Windows 8 PC krijg ik bij het (her)installeren een ernstig klinkende "SmartScreen" melding, omdat het door mij geschreven programma niet in de Windows lijst van veilige programma's staat.
+			<figure>
+				<figcaption>Nieuwe versie gevonden</figcaption>
+				<img src="Update-Available.png" />
+			</figure>
+
+		<h3 id="installeren-smartscreen">SmartScreen meldingen</h3>
+		<p><em>Let op:</em> Op Windows 8 en 10 krijg ik bij het (her)installeren een ernstig klinkende "SmartScreen" melding, omdat het door mij geschreven programma niet in de Windows lijst van veilige programma's staat.
 			Zoals dit: <br/>
 			<figure>
-				<figcaption>SmartScreen melding op Windows 8</figcaption>
+				<figcaption>SmartScreen melding</figcaption>
 				<img src="SmartScreen1.png" width="500"/>
 			</figure>
 			<br/>
-			Klik hier <em>niet</em> op de "OK" knop (want dan wordt de installatie afgebroken), maar op de "more info" link (die in een nederlandstalig systeem vast wel "meer info" heet).
-			Dan wijzigt het scherm in <br/>
+			Klik hier <em>niet</em> op de "OK" of "Don't run" knop (want dan wordt de installatie afgebroken), maar op de "more info" link (die in een nederlandstalig systeem vast wel "meer info" heet). Zie pijltje.<br/>
+			Dan wijzigt het scherm in: <br/>
 			<figure>
 				<figcaption>SmartScreen na "more info"</figcaption>
 				<img src="SmartScreen2.png" width="500">
@@ -268,6 +311,12 @@
 			<br/>
 			Klik daar op de "Run anyway" knop ("Toch uitvoeren"?) om de installatie door te laten gaan.<br/>
 		</p>
+		</section>
+		
+		<section id="flair">
+		<a href="http://stackoverflow.com/users/121309/hans-kesting">
+<img src="http://stackoverflow.com/users/flair/121309.png?theme=clean" width="208" height="58" alt="profile for Hans Kesting at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Hans Kesting at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
+</a>
 		</section>
 	</body>
 </html>

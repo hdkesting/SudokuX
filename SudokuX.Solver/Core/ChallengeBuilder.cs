@@ -21,6 +21,7 @@ namespace SudokuX.Solver.Core
         private readonly Stack<SelectedValue> _stack = new Stack<SelectedValue>();
         private readonly Queue<Position> _nextQueue = new Queue<Position>();
         private readonly Solver _solver;
+        private readonly Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
 
         public ChallengeBuilder(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
         {
@@ -29,8 +30,7 @@ namespace SudokuX.Solver.Core
             _rng = rng;
             _solver = new Solver(_grid, solvers);
 
-            _scoreCalculator = NextPositionStrategy.MaxSum;
-
+            _scoreCalculator = NextPositionStrategy.MaxCount;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -51,13 +51,12 @@ namespace SudokuX.Solver.Core
             {
                 var e = new ProgressEventArgs
                 {
-                    Calculated = _grid.AllCells().Count(c => c.HasGivenOrCalculatedValue),
+                    Calculated = _grid.AllCells().Count(c => c.GivenOrCalculatedValue.HasValue),
                     Given = _grid.AllCells().Count(c => c.GivenValue.HasValue),
                     Total = _grid.GridSize * _grid.GridSize
                 };
                 handler(this, e);
             }
-
         }
 
         public int BackTracks { get; private set; }
@@ -65,8 +64,6 @@ namespace SudokuX.Solver.Core
         public int ValueSets { get; private set; }
 
         public int FullResets { get; private set; }
-
-        private readonly Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
 
         /// <summary>
         /// Gets the score calculator for a position list. Higher = better.
@@ -174,7 +171,7 @@ namespace SudokuX.Solver.Core
 
                 var cell = _grid.GetCellByRowColumn(pos.Row, pos.Column);
                 // ReSharper disable once PossibleInvalidOperationException
-                cell.SetGivenValue(cell.CalculatedValue.Value);
+                cell.SetGivenValue(cell.GivenOrCalculatedValue.Value);
             }
         }
 
@@ -204,7 +201,7 @@ namespace SudokuX.Solver.Core
                 var val = cell.AvailableValues[_rng.Next(cell.AvailableValues.Count)];
                 // and remove it from the list
                 cell.EraseAvailable(val);
-                Debug.WriteLine(">> Setting {0} to value {1}", cell, val);
+                //Debug.WriteLine(">> Setting {0} to value {1}", cell, val);
                 cell.SetGivenValue(val);
                 _stack.Push(new SelectedValue(cell, cell.AvailableValues));
 
@@ -216,14 +213,14 @@ namespace SudokuX.Solver.Core
         private void PerformBackTrack()
         {
             Rewind();
-            Debug.WriteLine("Rewound, {0} givens left", CountGivens(_grid));
+            //Debug.WriteLine("Rewound, {0} givens left", CountGivens(_grid));
             BackTracks++;
             //var s = _grid.ToString();
             if (BackTracks > 1000)
             {
                 BackTracks = 0;
                 FullResets++;
-                Debug.WriteLine("Giving up on this track, resetting all (#{0})", FullResets);
+                //Debug.WriteLine("Giving up on this track, resetting all (#{0})", FullResets);
                 Cleargrid(_grid);
             }
         }

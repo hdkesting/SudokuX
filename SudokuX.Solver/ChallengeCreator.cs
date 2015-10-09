@@ -4,8 +4,6 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using SudokuX.Solver.Core;
-using SudokuX.Solver.GridPatterns;
-using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 
@@ -17,18 +15,21 @@ namespace SudokuX.Solver
     public class ChallengeCreator
     {
         private readonly BoardSize _boardSize;
+        private readonly Difficulty _difficulty;
         private readonly ISudokuGrid _grid;
 
         private IGridPattern _pattern;
-        private List<ISolverStrategy> _solvers;
+        private IList<ISolverStrategy> _solvers;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="ChallengeCreator"/> class.
+        /// Initializes a new instance of the <see cref="ChallengeCreator" /> class.
         /// </summary>
         /// <param name="boardSize">Size of the board.</param>
-        public ChallengeCreator(BoardSize boardSize)
+        /// <param name="difficulty">The difficulty of the board.</param>
+        public ChallengeCreator(BoardSize boardSize, Difficulty difficulty)
         {
             _boardSize = boardSize;
+            _difficulty = difficulty;
             _grid = GridCreator.Create(_boardSize);
 
             Setup();
@@ -59,124 +60,8 @@ namespace SudokuX.Solver
         /// <exception cref="System.InvalidOperationException">Unsupported board size.</exception>
         private void Setup()
         {
-            switch (_boardSize)
-            {
-                case BoardSize.Board4:
-                    _pattern = new RandomPattern();
-                    _solvers = new List<ISolverStrategy>
-                        {
-                            new NakedSingle(), 
-                            new HiddenSingle()
-                        };
-                    break;
-
-                case BoardSize.Board6:
-                    _pattern = new RandomPattern();
-                    _solvers = new List<ISolverStrategy>
-                        {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new NakedDouble(),
-                            new HiddenDouble()
-                        };
-                    break;
-
-                case BoardSize.Irregular6:
-                    _pattern = new RandomPattern();
-                    _solvers = new List<ISolverStrategy>
-                        {
-                            new NakedSingle(),
-                            new HiddenSingle()
-                        };
-                    break;
-
-                case BoardSize.Board9:
-                    _pattern = new Rotational2Pattern();
-                    _solvers = new List<ISolverStrategy>
-                        {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new NakedTriple(),
-                            new XWing(),
-                            new SolveWithColors()
-                        };
-                    break;
-
-                case BoardSize.Board9X:
-                    _pattern = new DoubleMirroredPattern();
-                    _solvers = new List<ISolverStrategy>
-                        {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new HiddenTriple(),
-                            new SolveWithColors()
-                        };
-                    break;
-
-                case BoardSize.Irregular9:
-                    _pattern = new RandomPattern();
-                    _solvers = new List<ISolverStrategy>
-                        {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new HiddenTriple()
-                        };
-                    break;
-
-                case BoardSize.Hyper9:
-                    _pattern = new RandomPattern();
-                    _solvers = new List<ISolverStrategy>
-                    {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new HiddenTriple()                        
-                    };
-                    break;
-
-                case BoardSize.Board12:
-                    _pattern = new Rotational4Pattern();
-                    _solvers = new List<ISolverStrategy>
-                        {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            //new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new NakedTriple(),
-                            new SolveWithColors()
-                        };
-                    break;
-
-                case BoardSize.Board16:
-                    _pattern = new Rotational4Pattern();
-                    _solvers = new List<ISolverStrategy>
-                        {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            //new HiddenDouble(), 
-                            //new NakedTriple(),
-                            new SolveWithColors()
-                        };
-                    break;
-
-                default:
-                    throw new InvalidOperationException("Unsupported board size: " + _boardSize);
-            }
-
+            _pattern = GridCreator.GetGridPattern(_boardSize, _difficulty);
+            _solvers = GridCreator.GetGridSolvers(_boardSize, _difficulty);
         }
 
         /// <summary>

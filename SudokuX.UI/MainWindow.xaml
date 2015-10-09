@@ -66,7 +66,7 @@
                     <StackPanel Margin="5">
                         <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
 
-                        <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize">
+                        <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize" SelectionChanged="BoardSize_Selected">
                             <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}"></ComboBoxItem>
                             <ComboBoxItem Tag="6x6" Content="{DynamicResource Grid-6X6}" IsSelected="True"></ComboBoxItem>
                             <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"></ComboBoxItem>
@@ -80,13 +80,17 @@
                     </StackPanel>
                     <StackPanel Margin="5">
                         <TextBlock Foreground="Black" Text="{DynamicResource Difficulty}"></TextBlock>
-                        <ComboBox IsEditable="False" Background="#20FFFFFF" x:Name="DifficultyLevel" IsEnabled="False">
+                        <ComboBox IsEditable="False" Background="#20FFFFFF" x:Name="DifficultyLevel">
                             <ComboBoxItem Tag="1" IsSelected="True" Content="{DynamicResource Difficulty-Standard}"></ComboBoxItem>
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Margin="5">
                         <Button Click="NewGame" x:Name="NewGameButton" Content="{DynamicResource New-Game}"></Button>
-                            <TextBlock Foreground="Blue" x:Name="GridScoreLabel">??</TextBlock>
+                        <TextBlock Foreground="White" x:Name="GridScoreLabel">??</TextBlock>
+                    </StackPanel>
+                    <!-- progress bar, visible when calculating (at the bottom) -->
+                    <StackPanel>
+                        <ProgressBar x:Name="CreationProgress" IsIndeterminate="True" Visibility="Hidden" Minimum="0" Maximum="100" Height="10"></ProgressBar>
                     </StackPanel>
                 </StackPanel>
             </Border>
@@ -104,17 +108,12 @@
 
         <!-- placeholder for the sudoku grid (center) -->
         <Grid>
-            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="50" Padding="60" Text="{DynamicResource Congratulations}"></TextBlock>
+            <TextBlock Grid.Column="0" Grid.Row="0" FontSize="50" Padding="60" Text="{DynamicResource Congratulations}" Visibility="Hidden"></TextBlock>
             <Border x:Name="GridPlaceholder" Margin="10px" Grid.Column="0" Grid.Row="0"></Border>
         </Grid>
 
-        <!-- progress bar, visible when calculating (at the bottom) -->
-        <StackPanel DockPanel.Dock="Bottom">
-            <ProgressBar x:Name="CreationProgress" IsIndeterminate="True" Visibility="Hidden" Minimum="0" Maximum="100" Height="10"></ProgressBar>
-        </StackPanel>
-
         <!-- sidepanel (right) holding buttons -->
-        <StackPanel DockPanel.Dock="Right">
+        <StackPanel DockPanel.Dock="Right" x:Name="RightPanel">
             <StackPanel.Resources>
                 <DataTemplate x:Key="ButtonTemplate">
                     <ItemsControl ItemsSource="{Binding}">
@@ -180,8 +179,9 @@
             <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
 
             <StackPanel>
-                <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick"
-                                Margin="3" VerticalContentAlignment="Center" Content="{DynamicResource Show-Pencilmarks}"></CheckBox>
+                <TextBlock Text="{DynamicResource Show-Pencilmarks}"/>
+                <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick" Style="{DynamicResource ModernCheckBoxStyle}"
+                                Margin="3" VerticalContentAlignment="Center"></CheckBox>
             </StackPanel>
             <Border BorderThickness="0" BorderBrush="Black" Margin="0, 2" HorizontalAlignment="Stretch" x:Name="PenPencilSelection" Visibility="Hidden">
                 <StackPanel Orientation="Horizontal">

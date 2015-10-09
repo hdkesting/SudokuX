@@ -19,7 +19,7 @@ namespace SudokuX.Solver.SolverStrategies
         /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
-            Debug.WriteLine("Invoking HiddenSingle");
+            //Debug.WriteLine("Invoking HiddenSingle");
             var list1 = grid.CellGroups
                 .SelectMany(g => HiddenSinglesInGroup(g, grid.MinValue, grid.MaxValue))
                 .Distinct()
@@ -48,14 +48,14 @@ namespace SudokuX.Solver.SolverStrategies
                 Cell latest = null;
                 foreach (var cell in group.Cells)
                 {
-                    if (cell.CalculatedValue == val || cell.GivenValue == val)
+                    if (cell.GivenOrCalculatedValue == val)
                     {
                         // already have given this value, it can't be a hidden single
                         latest = null;
                         break; // foreach
                     }
 
-                    if (!cell.HasGivenOrCalculatedValue && cell.AvailableValues.Contains(val))
+                    if (!cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Contains(val))
                     {
                         // found this value as available - but it might be elsewhere also
                         latest = cell;
@@ -66,7 +66,7 @@ namespace SudokuX.Solver.SolverStrategies
                 if (latest != null && found == 1)
                 {
                     // just one possibility found!
-                    Debug.WriteLine("Found hidden single {0} in cell {1} in group {2}", val, latest, group);
+                    //Debug.WriteLine("Found hidden single {0} in cell {1} in group {2}", val, latest, group);
                     yield return new Conclusion(latest, Complexity) { ExactValue = val };
                 }
             }

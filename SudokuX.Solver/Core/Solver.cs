@@ -85,8 +85,8 @@ namespace SudokuX.Solver.Core
                 _measurements.Add(solver.GetType(), measure);
             }
 
-            Debug.WriteLine("Spent time processing {1:N0} conclusion sets: {0:N} ms (avg {2:N} ms)",
-                _swConclusion.ElapsedMilliseconds, _conclusionSets, (double)_swConclusion.ElapsedMilliseconds / _conclusionSets);
+            //Debug.WriteLine("Spent time processing {1:N0} conclusion sets: {0:N} ms (avg {2:N} ms)",
+            //    _swConclusion.ElapsedMilliseconds, _conclusionSets, (double)_swConclusion.ElapsedMilliseconds / _conclusionSets);
 
             return result;
         }
@@ -147,7 +147,7 @@ namespace SudokuX.Solver.Core
                 _conclusionSets++;
                 if (conclusion.ExactValue.HasValue)
                 {
-                    if (!conclusion.TargetCell.HasGivenOrCalculatedValue)
+                    if (!conclusion.TargetCell.GivenOrCalculatedValue.HasValue)
                     {
                         foundone = true;
                         //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
@@ -168,7 +168,7 @@ namespace SudokuX.Solver.Core
 
                     if (!conclusion.TargetCell.AvailableValues.Any())
                     {
-                        Debug.WriteLine("No availables left in targetcell {0}!", conclusion.TargetCell);
+                        //Debug.WriteLine("No availables left in targetcell {0}!", conclusion.TargetCell);
                         DumpGrid(_grid);
                         keepgoing = false;
                     }

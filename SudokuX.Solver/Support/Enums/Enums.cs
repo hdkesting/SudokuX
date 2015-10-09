@@ -98,9 +98,23 @@
         Block,
 
         /// <summary>
-        /// This is a special group.
+        /// This is a special group like a diagonal.
         /// </summary>
-        Special
+        SpecialLine,
+
+        /// <summary>
+        /// This is a special group like a hyper block.
+        /// </summary>
+        SpecialBlock
     }
 
+    /// <summary>
+    /// Difficulty level of a sudoku challenge
+    /// </summary>
+    public enum Difficulty
+    {
+        Easy,
+        Normal,
+        Harder
+    }
 }

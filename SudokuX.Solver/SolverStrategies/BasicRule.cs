@@ -19,19 +19,20 @@ namespace SudokuX.Solver.SolverStrategies
         /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
-            Debug.WriteLine("Invoking BasicRule");
-            // var valuecells = grid.AllCells().Where(c => c.HasValue).ToList();
+            // Debug.WriteLine("Invoking BasicRule");
 
             var result = new List<Conclusion>();
 
-            foreach (var cell in grid.AllCells().Where(c => c.HasGivenOrCalculatedValue))
+            // check all cells with a value
+            // is that still an "available" value in sibling cells? If so, remove that.
+            foreach (var cell in grid.AllCells().Where(c => c.GivenOrCalculatedValue.HasValue))
             {
                 // ReSharper disable once PossibleInvalidOperationException
                 int value = cell.CalculatedValue ?? cell.GivenValue.Value;
 
                 result.AddRange(cell.ContainingGroups
                     .SelectMany(g => g.Cells)
-                    .Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(value))
+                    .Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(value))
                     .Select(sibling => new Conclusion(sibling, Complexity, new[] { value })));
             }
 

@@ -24,10 +24,10 @@ namespace SudokuX.UI.Controls
             {
                 opacity = 0.9;
             }
-            else if ((hl & Highlight.Pencil) != 0)
+            /*else if ((hl & Highlight.Pencil) != 0)
             {
                 opacity = 0.35;
-            }
+            }*/
             else if ((hl & Highlight.Pen) != 0)
             {
                 opacity = 0.8;

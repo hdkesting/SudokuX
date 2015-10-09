@@ -23,15 +23,17 @@ namespace SudokuX.UI.Controls
     public partial class SudokuBoard : UserControl, IDisposable
     {
         private readonly BoardSize _boardSize;
+        private readonly Difficulty _difficulty;
         private readonly Board _gameBoard;
 
         private readonly BackgroundWorker _boardCreator = new BackgroundWorker();
         private ISudokuGrid _creatorGrid;
         private int _counter = 50;
 
-        public SudokuBoard(BoardSize boardSize)
+        public SudokuBoard(BoardSize boardSize, Difficulty difficulty)
         {
             _boardSize = boardSize;
+            _difficulty = difficulty;
             InitializeComponent();
             _gameBoard = new Board(boardSize);
         }
@@ -54,7 +56,7 @@ namespace SudokuX.UI.Controls
 
         public void Create()
         {
-            _boardCreator.DoWork += (sender, args) => CreateChallenge(_boardSize, sender, args);
+            _boardCreator.DoWork += (sender, args) => CreateChallenge(_boardSize, _difficulty, sender, args);
             _boardCreator.RunWorkerCompleted += _boardCreator_RunWorkerCompleted;
             _boardCreator.WorkerReportsProgress = true;
             _boardCreator.ProgressChanged += _boardCreator_ProgressChanged;
@@ -80,8 +82,8 @@ namespace SudokuX.UI.Controls
                     fin(this, EventArgs.Empty);
                 }
 
-                var sb = (Storyboard)this.FindResource("FinishAnimation");
-                sb.Begin();
+                await Task.Delay(600); // give "group filled" flash some time to finish
+                await _gameBoard.FlashAllGroups();
             }
         }
 
@@ -118,7 +120,7 @@ namespace SudokuX.UI.Controls
             }
         }
 
-        private void CreateChallenge(BoardSize boardSize, object sender, DoWorkEventArgs args)
+        private void CreateChallenge(BoardSize boardSize, Difficulty difficulty, object sender, DoWorkEventArgs args)
         {
             EventHandler<ProgressEventArgs> progress =
                 (snd, progressArgs) => ((BackgroundWorker)sender).ReportProgress(progressArgs.PercentageDone);
@@ -127,7 +129,7 @@ namespace SudokuX.UI.Controls
             bool success;
             do
             {
-                creator = new ChallengeCreator(boardSize);
+                creator = new ChallengeCreator(boardSize, difficulty);
                 _creatorGrid = creator.Grid; // block structure (possibly irregular) has been created by now
 
                 AttachBlocks();
@@ -189,7 +191,7 @@ namespace SudokuX.UI.Controls
 
                     var block = challcell.ContainingGroups.First(g => g.GroupType == GroupType.Block);
                     boardcell.BlockOrdinal = block.Ordinal;
-                    boardcell.BelongsToSpecialGroup = challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special);
+                    boardcell.BelongsToSpecialGroup = challcell.ContainingGroups.Any(g => g.GroupType == GroupType.SpecialLine || g.GroupType == GroupType.SpecialBlock);
 
                     double hue = 1.7 / _creatorGrid.GridSize * block.Ordinal;
                     Color color = Utils.FromHsla(hue, 0.5, 0.8);

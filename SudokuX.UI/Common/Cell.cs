@@ -381,6 +381,9 @@ namespace SudokuX.UI.Common
 
         public bool HasPencilMark(string value)
         {
+            if (String.IsNullOrWhiteSpace(value))
+                return false; // "erase"
+
             foreach (var row in _pencilRows)
             {
                 foreach (var pencilValue in row)
@@ -397,6 +400,9 @@ namespace SudokuX.UI.Common
 
         public void SetPencilMark(string value, bool visible, bool isExplicit)
         {
+            if (String.IsNullOrWhiteSpace(value))
+                return; // "erase"
+
             foreach (var row in _pencilRows)
             {
                 foreach (var pencilValue in row)

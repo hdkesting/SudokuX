@@ -129,7 +129,7 @@ namespace SudokuX.Solver.Grids
         /// <returns></returns>
         public bool IsAllKnown()
         {
-            return AllCells().All(c => c.HasGivenOrCalculatedValue);
+            return AllCells().All(c => c.GivenOrCalculatedValue.HasValue);
         }
 
         /// <summary>
@@ -139,9 +139,9 @@ namespace SudokuX.Solver.Grids
         public Validity IsChallengeDone()
         {
             Validity result = Validity.Full;
-            if (AllCells().Any(c => !c.HasGivenOrCalculatedValue && !c.AvailableValues.Any()))
+            if (AllCells().Any(c => !c.GivenOrCalculatedValue.HasValue && !c.AvailableValues.Any()))
             {
-                Debug.WriteLine("IsChallengeDone: No. No availables left in some empty cell.");
+                //Debug.WriteLine("IsChallengeDone: No. No availables left in some empty cell.");
                 return Validity.Invalid;
             }
 
@@ -151,7 +151,7 @@ namespace SudokuX.Solver.Grids
                 int count = values.Distinct().Count();
                 if (count != values.Count)
                 {
-                    Debug.WriteLine("IsChallengeDone: No. Double values given or calculated in group {0} ({1} distinct values out of {2})", cellGroup, count, values.Count);
+                    //Debug.WriteLine("IsChallengeDone: No. Double values given or calculated in group {0} ({1} distinct values out of {2})", cellGroup, count, values.Count);
                     return Validity.Invalid;
                 }
                 if (result == Validity.Full && count != GridSize)
@@ -160,10 +160,10 @@ namespace SudokuX.Solver.Grids
                     result = Validity.Maybe;
                 }
 
-                var avail = cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue).SelectMany(c => c.AvailableValues).Distinct().ToList();
+                var avail = cellGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue).SelectMany(c => c.AvailableValues).Distinct().ToList();
                 if (avail.Count() + count != GridSize)
                 {
-                    Debug.WriteLine("IsChalllengeDone: No. Not enough values left to fill group {0}", cellGroup);
+                    //Debug.WriteLine("IsChalllengeDone: No. Not enough values left to fill group {0}", cellGroup);
                     return Validity.Invalid;
                 }
             }
@@ -182,7 +182,7 @@ namespace SudokuX.Solver.Grids
             {
                 Position pos = new Position(rnd.Next(GridSize), rnd.Next(GridSize));
                 Cell cell = _grid[pos.Row, pos.Column];
-                if (!cell.HasGivenOrCalculatedValue && cell.AvailableValues.Any())
+                if (!cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Any())
                 {
                     return pos;
                 }
@@ -212,7 +212,7 @@ namespace SudokuX.Solver.Grids
         /// <returns></returns>
         public double GetPercentageDone()
         {
-            int countDone = AllCells().Count(c => c.HasGivenOrCalculatedValue);
+            int countDone = AllCells().Count(c => c.GivenOrCalculatedValue.HasValue);
 
             return (1.0 * countDone) / (GridSize * GridSize);
         }

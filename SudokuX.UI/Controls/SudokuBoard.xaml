@@ -50,12 +50,12 @@
                 <DockPanel LastChildFill="true">
                     <Border DockPanel.Dock="Left" BorderBrush="{Binding BorderWest, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
                     <Border DockPanel.Dock="Top" BorderBrush="{Binding BorderNorth, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
-                    <Border DockPanel.Dock="Right" BorderBrush="{Binding BorderEast, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
-                    <Border DockPanel.Dock="Bottom" BorderBrush="{Binding BorderSouth, Converter={StaticResource BorderToBrush}}" BorderThickness="1"/>
+                    <Border DockPanel.Dock="Right" BorderBrush="{Binding BorderEast, Converter={StaticResource BorderToBrush}, ConverterParameter=L}" BorderThickness="1" />
+                    <Border DockPanel.Dock="Bottom" BorderBrush="{Binding BorderSouth, Converter={StaticResource BorderToBrush}, ConverterParameter=L}" BorderThickness="1" />
                     <Button Click="CellButton_OnClick" Tag="{Binding Tag}">
                         <Grid>
                             <!-- mouseover effect -->
-                            <Rectangle RadiusX="7" RadiusY ="7" x:Name ="HoverMask" IsHitTestVisible ="False" Fill ="AliceBlue" Opacity ="0"/>
+                            <Rectangle RadiusX="2" RadiusY ="2" x:Name ="HoverMask" IsHitTestVisible ="False" Fill ="AliceBlue" Opacity ="0"/>
 
                             <!-- invulling -->
                             <Rectangle x:Name ="GlassWindow" IsHitTestVisible ="False" >
@@ -99,7 +99,7 @@
                                 </Rectangle.Fill>
                             </Rectangle>
 
-                            <Border BorderThickness="2" CornerRadius="2">
+                            <Border BorderThickness="2" CornerRadius="0">
                                 <Border.BorderBrush>
                                     <SolidColorBrush x:Name="OuterBorderColor" Color="Transparent"></SolidColorBrush>
                                 </Border.BorderBrush>
@@ -110,13 +110,8 @@
                                                       BlurRadius="5" 
                                                       Color="White"/>
                                 </Border.Effect>
-                                <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="2" CornerRadius="6">
+                                <Border x:Name ="Border" BorderBrush ="DimGray" BorderThickness ="1" CornerRadius="2">
                                     <Border.Background>
-                                        <!--<LinearGradientBrush Opacity ="{Binding Path=Highlighted, Converter={StaticResource HighlightToOpacity}}" StartPoint ="0,0" EndPoint ="0,1">
-                                            <GradientStop Color ="DimGray" Offset ="0"/>
-                                            <GradientStop Color ="White" Offset ="0.5"/>
-                                            <GradientStop Color ="DimGray" Offset ="1"/>
-                                        </LinearGradientBrush>-->
                                         <SolidColorBrush Color="White" Opacity ="{Binding Path=Highlighted, Converter={StaticResource HighlightToOpacity}}"/>
                                     </Border.Background>
                                     <Grid>
@@ -177,11 +172,16 @@
                         <Setter TargetName ="TextBlock" Property ="Effect" Value="{x:Null}"/>
                     </DataTrigger>
                     <DataTrigger Binding ="{Binding IsValid}" Value ="False">
-                        <Setter TargetName ="Border" Property ="BorderBrush" Value="Brown"/>
+                        <Setter TargetName ="Border" Property ="BorderBrush" Value="Red"/>
+                        <Setter TargetName="Border" Property="BorderThickness" Value="3"/>
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
                         <Setter TargetName="Border" Property="BorderBrush" Value="Gold" />
                         <!--<Setter TargetName="BorderShadow" Property="Opacity" Value="1" />-->
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Highlighted}" Value="Pencil">
+                        <Setter TargetName="Border" Property="BorderBrush" Value="Gold" />
+                        <Setter TargetName="Border" Property="BorderThickness" Value="2" />
                     </DataTrigger>
                     <DataTrigger Binding="{Binding IsSelected}" Value="True">
                         <Setter TargetName="Border" Property="Background" Value="Gold"></Setter>

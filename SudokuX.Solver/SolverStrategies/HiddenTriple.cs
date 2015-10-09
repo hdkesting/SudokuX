@@ -43,55 +43,63 @@ namespace SudokuX.Solver.SolverStrategies
         {
             // find triplet values to ignore
             var knownvals =
-                cellGroup.Cells.Where(c => c.HasGivenOrCalculatedValue).Select(c => c.GivenValue ?? c.CalculatedValue).ToList();
+                cellGroup.Cells.Where(c => c.GivenOrCalculatedValue.HasValue).Select(c => c.GivenOrCalculatedValue.Value).ToList();
+
             if (knownvals.Count >= maxValue - minValue - 2)
             {
                 // 3 open cells or less? never mind.
-                return Enumerable.Empty<Conclusion>();
+                //return Enumerable.Empty<Conclusion>();
+                yield break;
             }
 
-            foreach (var triplet in GetTriplets(minValue, maxValue))
+            foreach (var triplet in GetTriplets(minValue, maxValue, knownvals))
             {
-                if (triplet.Any(x => knownvals.Contains(x)))
-                {
-                    // triplet contains a given or calculated value - skip
-                    continue;
-                }
-
                 var cells =
-                    cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Any(v => triplet.Contains(v))).ToList();
+                    cellGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Any(v => triplet.Contains(v))).ToList();
                 if (cells.Count == 3)
                 {
                     // exactly 3 cells with any of the three triplet values - this is a triplet, possibly hidden
                     var result = new List<Conclusion>();
                     for (int i = 0; i < 3; i++)
                     {
-                        var vals = cells[i].AvailableValues.Where(v => !triplet.Contains(v)).ToList();
-                        if (vals.Any())
+                        var extravalues = cells[i].AvailableValues.Where(v => !triplet.Contains(v)).ToList();
+                        if (extravalues.Any())
                         {
-                            result.Add(new Conclusion(cells[i], Complexity, vals));
+                            result.Add(new Conclusion(cells[i], Complexity, extravalues));
                         };
                     }
 
-                    if (result.Any())
-                    {
-                        return result; // return the first real result of this group, no need to check further.
-                    }
+                    foreach (var res in result)
+                        yield return res;
                 }
             }
-
-            return Enumerable.Empty<Conclusion>();
         }
 
-        private IEnumerable<IList<int>> GetTriplets(int minValue, int maxValue)
+        /// <summary>
+        /// Get triplets that do not contain any of the known values.
+        /// </summary>
+        /// <param name="minValue"></param>
+        /// <param name="maxValue"></param>
+        /// <param name="knowVals"></param>
+        /// <returns></returns>
+        private IEnumerable<IList<int>> GetTriplets(int minValue, int maxValue, IList<int> knowVals)
         {
             for (int i1 = minValue; i1 <= maxValue - 2; i1++)
             {
-                for (int i2 = i1 + 1; i2 <= maxValue - 1; i2++)
+                if (!knowVals.Contains(i1))
                 {
-                    for (int i3 = i2 + 1; i3 <= maxValue; i3++)
+                    for (int i2 = i1 + 1; i2 <= maxValue - 1; i2++)
                     {
-                        yield return new[] { i1, i2, i3 };
+                        if (!knowVals.Contains(i2))
+                        {
+                            for (int i3 = i2 + 1; i3 <= maxValue; i3++)
+                            {
+                                if (!knowVals.Contains(i3))
+                                {
+                                    yield return new[] { i1, i2, i3 };
+                                }
+                            }
+                        }
                     }
                 }
             }

@@ -21,17 +21,12 @@ namespace SudokuX.Solver.SolverStrategies
         /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
-            Debug.WriteLine("Invoking LockedCandidates");
             for (int i = grid.MinValue; i <= grid.MaxValue; i++)
             {
                 var conclusions = EvaluateCandidates(i, grid);
-                if (conclusions.Any())
-                {
-                    return conclusions;
-                }
+                foreach (var c in conclusions)
+                    yield return c;
             }
-
-            return Enumerable.Empty<Conclusion>();
         }
 
         /// <summary>
@@ -48,17 +43,18 @@ namespace SudokuX.Solver.SolverStrategies
         private IList<Conclusion> EvaluateCandidates(int digit, ISudokuGrid grid)
         {
             // check all "block" groups
-            foreach (var cellGroup in grid.CellGroups.Where(g => g.GroupType == GroupType.Block))
+            foreach (var cellGroup in grid.CellGroups.Where(g => g.GroupType == GroupType.Block || g.GroupType == GroupType.SpecialBlock))
             {
                 // in what cells is this digit a possible value?
                 var cellswithdigit =
-                    cellGroup.Cells.Where(c => !c.HasGivenOrCalculatedValue && c.AvailableValues.Contains(digit)).ToList();
+                    cellGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit)).ToList();
 
                 // found more than one cell (if one, then it should have been caught as NakedSingle)
                 if (cellswithdigit.Count > 1)
                 {
                     // are there other non-block groups containing all these cells?
                     var groups = GetJointGroups(cellswithdigit).ToList();
+                    groups.Remove(cellGroup); // remove the group we started with
 
                     if (groups.Any())
                     {
@@ -66,7 +62,6 @@ namespace SudokuX.Solver.SolverStrategies
                         var candidates = FindCandidates(digit, groups, cellGroup);
                         if (candidates.Any())
                         {
-                            Debug.WriteLine("LockedCandidates: found it for {0} in group {1}", digit, cellGroup);
                             return candidates;
                         }
                     }
@@ -84,7 +79,7 @@ namespace SudokuX.Solver.SolverStrategies
                 // not in the original group,
                 // doesn't have a value yet
                 // and contains this as a possible value
-                if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.HasGivenOrCalculatedValue && cell.AvailableValues.Contains(digit))
+                if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Contains(digit))
                 {
                     conclusions.Add(new Conclusion(cell, Complexity, new[] { digit }));
                 }
@@ -94,18 +89,18 @@ namespace SudokuX.Solver.SolverStrategies
         }
 
         /// <summary>
-        /// Gets all non-block groups where all these cells belong to.
+        /// Gets all groups where all these cells belong to. This includes the original group.
         /// </summary>
         /// <param name="cells">The cells.</param>
         /// <returns></returns>
         private static IEnumerable<CellGroup> GetJointGroups(IList<Cell> cells)
         {
             var groups = new List<CellGroup>();
-            groups.AddRange(cells.First().ContainingGroups.Where(g => g.GroupType != GroupType.Block));
+            groups.AddRange(cells.First().ContainingGroups);
 
             foreach (Cell cell in cells.Skip(1))
             {
-                groups = groups.Intersect(cell.ContainingGroups.Where(g => g.GroupType != GroupType.Block)).ToList();
+                groups = groups.Intersect(cell.ContainingGroups).ToList();
             }
 
             return groups;
