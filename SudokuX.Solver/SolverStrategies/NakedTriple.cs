@@ -23,14 +23,9 @@ namespace SudokuX.Solver.SolverStrategies
             {
                 var conclusions = FindNakedTriples(group).ToList();
 
-                if (conclusions.Any())
-                {
-                    return conclusions;
-                    // quit after the first group found something, but return the whole list for that group
-                }
+                foreach (var c in conclusions)
+                    yield return c;
             }
-
-            return Enumerable.Empty<Conclusion>();
         }
 
         /// <summary>
@@ -56,11 +51,12 @@ namespace SudokuX.Solver.SolverStrategies
 
             if (possibletriples.Count >= 3)
             {
+                // at this moment it can still be (123), (456), (789) - not what we need
                 foreach (Cell first in possibletriples)
                 {
                     var list = FindSecondAndThird(cellGroup, possibletriples, first).ToList();
                     if (list.Any())
-                        return list; // quit after the first full find
+                        return list; // quit after the first full find - probably not another in this group
                 }
             }
 

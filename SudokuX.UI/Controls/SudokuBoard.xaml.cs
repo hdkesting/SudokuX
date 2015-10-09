@@ -191,7 +191,7 @@ namespace SudokuX.UI.Controls
 
                     var block = challcell.ContainingGroups.First(g => g.GroupType == GroupType.Block);
                     boardcell.BlockOrdinal = block.Ordinal;
-                    boardcell.BelongsToSpecialGroup = challcell.ContainingGroups.Any(g => g.GroupType == GroupType.Special);
+                    boardcell.BelongsToSpecialGroup = challcell.ContainingGroups.Any(g => g.GroupType == GroupType.SpecialLine || g.GroupType == GroupType.SpecialBlock);
 
                     double hue = 1.7 / _creatorGrid.GridSize * block.Ordinal;
                     Color color = Utils.FromHsla(hue, 0.5, 0.8);

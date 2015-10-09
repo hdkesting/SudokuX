@@ -65,6 +65,7 @@ namespace SudokuX.Solver.SolverStrategies
                     // v1 < v2
                     int[] potentialDouble = { v1, v2 };
 
+                    // count the number of cells that contain at least one of the values of the pair
                     int count = group.Cells.Count(cell => !cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Intersect(potentialDouble).Any());
 
                     if (count == 2)

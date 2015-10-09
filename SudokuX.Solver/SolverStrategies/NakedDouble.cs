@@ -22,13 +22,10 @@ namespace SudokuX.Solver.SolverStrategies
             foreach (var group in grid.CellGroups)
             {
                 var list = FindNakedDoubles(group).ToList();
-                if (list.Any())
-                {
-                    return list;
-                }
-            }
 
-            return Enumerable.Empty<Conclusion>();
+                foreach (var c in list)
+                    yield return c;
+            }
         }
 
         /// <summary>
@@ -65,10 +62,6 @@ namespace SudokuX.Solver.SolverStrategies
                         var list = GetExclusions(localcell, localtwin).ToList();
                         if (list.Any())
                         {
-                            //Debug.WriteLine("Naked double: found values {0} and {1} in cells {2} and {3} (group {4})",
-                            //    localcell.AvailableValues[0], localcell.AvailableValues[1],
-                            //    localcell, localtwin,
-                            //    cellGroup);
                             foreach (var conclusion in list)
                             {
                                 yield return conclusion;
@@ -77,7 +70,6 @@ namespace SudokuX.Solver.SolverStrategies
                     }
                 }
             }
-            //return Enumerable.Empty<Conclusion>();
         }
 
         private IEnumerable<Conclusion> GetExclusions(Cell cell1, Cell cell2)

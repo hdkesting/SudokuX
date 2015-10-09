@@ -21,6 +21,7 @@ namespace SudokuX.Solver.Core
         private readonly Stack<SelectedValue> _stack = new Stack<SelectedValue>();
         private readonly Queue<Position> _nextQueue = new Queue<Position>();
         private readonly Solver _solver;
+        private readonly Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
 
         public ChallengeBuilder(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
         {
@@ -29,8 +30,7 @@ namespace SudokuX.Solver.Core
             _rng = rng;
             _solver = new Solver(_grid, solvers);
 
-            _scoreCalculator = NextPositionStrategy.MaxSum;
-
+            _scoreCalculator = NextPositionStrategy.MaxCount;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -57,7 +57,6 @@ namespace SudokuX.Solver.Core
                 };
                 handler(this, e);
             }
-
         }
 
         public int BackTracks { get; private set; }
@@ -65,8 +64,6 @@ namespace SudokuX.Solver.Core
         public int ValueSets { get; private set; }
 
         public int FullResets { get; private set; }
-
-        private readonly Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
 
         /// <summary>
         /// Gets the score calculator for a position list. Higher = better.

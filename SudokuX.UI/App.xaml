@@ -222,6 +222,8 @@
                                 <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
                                     <SplineDoubleKeyFrame KeyTime="00:00:00.3000000" Value="25"/>
                                 </DoubleAnimationUsingKeyFrames>
+                                <DoubleAnimation Storyboard.TargetName="OnText" Storyboard.TargetProperty="Opacity" Duration="0:0:0.3" From="0.0" To="1.0" />
+                                <DoubleAnimation Storyboard.TargetName="OffText" Storyboard.TargetProperty="Opacity" Duration="0:0:0.3" From="1.0" To="0.0" />
                             </Storyboard>
                             <Storyboard x:Key="OnUnchecking">
                                 <DoubleAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)">
@@ -230,15 +232,18 @@
                                 <ThicknessAnimationUsingKeyFrames BeginTime="00:00:00" Storyboard.TargetName="slider" Storyboard.TargetProperty="(FrameworkElement.Margin)">
                                     <SplineThicknessKeyFrame KeyTime="00:00:00.3000000" Value="1,1,1,1"/>
                                 </ThicknessAnimationUsingKeyFrames>
+                                <DoubleAnimation Storyboard.TargetName="OnText" Storyboard.TargetProperty="Opacity" Duration="0:0:0.3" From="1.0" To="0.0" />
+                                <DoubleAnimation Storyboard.TargetName="OffText" Storyboard.TargetProperty="Opacity" Duration="0:0:0.3" From="0.0" To="1.0" />
                             </Storyboard>
                         </ControlTemplate.Resources>
 
                         <DockPanel x:Name="dockPanel">
                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" VerticalAlignment="Center"/>
-                            <Grid Margin="5,5,0,5" Width="50" Background="#FFC0CCD9">
-                                <TextBlock Text="ON" TextWrapping="Wrap" FontWeight="Bold" FontSize="12" HorizontalAlignment="Right" Margin="0,0,3,0"/>
-                                <TextBlock HorizontalAlignment="Left" Margin="2,0,0,0" FontSize="12" FontWeight="Bold" Text="OFF" TextWrapping="Wrap"/>
-                                <Border HorizontalAlignment="Left" x:Name="slider" Width="23" BorderThickness="1,1,1,1" CornerRadius="3,3,3,3" RenderTransformOrigin="0.5,0.5" Margin="1,1,1,1">
+                            <Grid Margin="5,5,5,5" >
+                                <Border Width="50" Height="30" BorderThickness="1" CornerRadius="15" BorderBrush="Black" Background="#FF93995B">
+                                <Border HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="slider" 
+                                        Grid.Column="0"
+                                        Width="20" Height="20" BorderThickness="1,1,1,1" CornerRadius="10" RenderTransformOrigin="0.5,0.5" Margin="3,1,3,1">
                                     <Border.RenderTransform>
                                         <TransformGroup>
                                             <ScaleTransform ScaleX="1" ScaleY="1"/>
@@ -255,12 +260,17 @@
                                     </Border.BorderBrush>
                                     <Border.Background>
                                         <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="#FF8AB4FF" Offset="1"/>
+                                            <GradientStop Color="#FF6A6E39" Offset="1"/>
                                             <GradientStop Color="#FFD1E2FF" Offset="0"/>
                                         </LinearGradientBrush>
                                     </Border.Background>
                                 </Border>
+                                </Border>
                             </Grid>
+                            <StackPanel  Orientation="Vertical">
+                                <TextBlock Text="ON" x:Name="OnText" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Opacity="0"/>
+                                <TextBlock Text="OFF" x:Name="OffText" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="12" />                              
+                            </StackPanel>
                         </DockPanel>
 
                         <ControlTemplate.Triggers>

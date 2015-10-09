@@ -18,7 +18,7 @@ namespace SudokuX.Solver
         /// <param name="solvers">The solvers.</param>
         public GridSolver(IList<ISolverStrategy> solvers)
         {
-            _solvers = solvers;
+            _solvers = solvers.OrderBy(s => s.Complexity).ToList();
             Validity = Validity.Maybe;
         }
 

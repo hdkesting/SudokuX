@@ -21,10 +21,10 @@ namespace SudokuX.Solver.Grids
 
         private void CreateHyperBlocks()
         {
-            _blockNw = new CellGroup(GridSize, 1) { Name = "Hyper NW", GroupType = GroupType.Special };
-            _blockNe = new CellGroup(GridSize, 2) { Name = "Hyper NE", GroupType = GroupType.Special };
-            _blockSe = new CellGroup(GridSize, 3) { Name = "Hyper SE", GroupType = GroupType.Special };
-            _blockSw = new CellGroup(GridSize, 4) { Name = "Hyper SW", GroupType = GroupType.Special };
+            _blockNw = new CellGroup(GridSize, 1) { Name = "Hyper NW", GroupType = GroupType.SpecialBlock };
+            _blockNe = new CellGroup(GridSize, 2) { Name = "Hyper NE", GroupType = GroupType.SpecialBlock };
+            _blockSe = new CellGroup(GridSize, 3) { Name = "Hyper SE", GroupType = GroupType.SpecialBlock };
+            _blockSw = new CellGroup(GridSize, 4) { Name = "Hyper SW", GroupType = GroupType.SpecialBlock };
 
             AddCells(_blockNw, 1, 1);
             AddCells(_blockNe, 5, 1);
