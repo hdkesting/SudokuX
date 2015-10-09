@@ -237,39 +237,41 @@
                             </Storyboard>
                         </ControlTemplate.Resources>
 
+                        <!-- Slider -->
                         <DockPanel x:Name="dockPanel">
                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" VerticalAlignment="Center"/>
                             <Grid Margin="5,5,5,5" >
-                                <Border Width="50" Height="30" BorderThickness="1" CornerRadius="15" BorderBrush="Black" Background="#FF93995B">
-                                <Border HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="slider" 
-                                        Grid.Column="0"
-                                        Width="20" Height="20" BorderThickness="1,1,1,1" CornerRadius="10" RenderTransformOrigin="0.5,0.5" Margin="3,1,3,1">
-                                    <Border.RenderTransform>
-                                        <TransformGroup>
-                                            <ScaleTransform ScaleX="1" ScaleY="1"/>
-                                            <SkewTransform AngleX="0" AngleY="0"/>
-                                            <RotateTransform Angle="0"/>
-                                            <TranslateTransform X="0" Y="0"/>
-                                        </TransformGroup>
-                                    </Border.RenderTransform>
-                                    <Border.BorderBrush>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="#FFFFFFFF" Offset="0"/>
-                                            <GradientStop Color="#FF4490FF" Offset="1"/>
-                                        </LinearGradientBrush>
-                                    </Border.BorderBrush>
-                                    <Border.Background>
-                                        <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                            <GradientStop Color="#FF6A6E39" Offset="1"/>
-                                            <GradientStop Color="#FFD1E2FF" Offset="0"/>
-                                        </LinearGradientBrush>
-                                    </Border.Background>
-                                </Border>
+                                <Border Width="50" Height="30" BorderThickness="1" CornerRadius="15" BorderBrush="Black" Background="#FF93995B" x:Name="track">
+                                    <!-- slider knob -->
+                                    <Border HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="slider" 
+                                            Grid.Column="0"
+                                            Width="20" Height="20" BorderThickness="1,1,1,1" CornerRadius="10" RenderTransformOrigin="0.5,0.5" Margin="3,1,3,1">
+                                        <Border.RenderTransform>
+                                            <TransformGroup>
+                                                <ScaleTransform ScaleX="1" ScaleY="1"/>
+                                                <SkewTransform AngleX="0" AngleY="0"/>
+                                                <RotateTransform Angle="0"/>
+                                                <TranslateTransform X="0" Y="0"/>
+                                            </TransformGroup>
+                                        </Border.RenderTransform>
+                                        <Border.BorderBrush>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="#FFFFFFFF" Offset="0"/>
+                                                <GradientStop Color="#FF4490FF" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Border.BorderBrush>
+                                        <Border.Background>
+                                            <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                                                <GradientStop Color="#FF6A6E39" Offset="1"/>
+                                                <GradientStop Color="#FFD1E2FF" Offset="0"/>
+                                            </LinearGradientBrush>
+                                        </Border.Background>
+                                    </Border>
                                 </Border>
                             </Grid>
                             <StackPanel  Orientation="Vertical">
                                 <TextBlock Text="ON" x:Name="OnText" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="12" Opacity="0"/>
-                                <TextBlock Text="OFF" x:Name="OffText" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="12" />                              
+                                <TextBlock Text="OFF" x:Name="OffText" Grid.Column="1" TextWrapping="Wrap" FontWeight="Bold" FontSize="12" />
                             </StackPanel>
                         </DockPanel>
 
@@ -281,6 +283,7 @@
                                 <Trigger.EnterActions>
                                     <BeginStoryboard Storyboard="{StaticResource OnChecking}" x:Name="OnChecking_BeginStoryboard"/>
                                 </Trigger.EnterActions>
+                                <Setter Property="Background" Value="LightGreen" TargetName="track"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>
