@@ -112,6 +112,15 @@
 			nav a, nav a:visited {
 				color: blue;
 			}
+			
+			a.install {
+			    background-color: yellow;
+				padding: 5px;
+				border-radius: 5px;
+			}
+			a.install:hover {
+				font-size: larger;
+			}
 		</style>
 	</head>
 	<body>
@@ -277,10 +286,10 @@
 		
 		<section id="installeren">
 		<h2>Installeren</h2>
-		<p>Voor de (Windows) installer, <a href="publish.htm">klik hier</a> en gebruik de "launch" link of de "Install" knop. Voer het gedownloade bestand uit.</p>
+		<p>Voor de (Windows) installer, <a href="publish.htm" class="install">klik hier</a> en gebruik de "launch" link of de "Install" knop. Voer het gedownloade bestand uit.</p>
 		<p>Bij het opstarten van het programma wordt automatisch gecontroleerd of er een nieuwe versie is.
 			Is dit het geval, dan wordt aangeboden die nieuwe versie te installeren. </p>
-		<h3 id="#installeren-smartscreen">SmartScreen meldingen</h3>
+		<h3 id="installeren-smartscreen">SmartScreen meldingen</h3>
 		<p><em>Let op:</em> Op Windows 8 en 10 krijg ik bij het (her)installeren een ernstig klinkende "SmartScreen" melding, omdat het door mij geschreven programma niet in de Windows lijst van veilige programma's staat.
 			Zoals dit: <br/>
 			<figure>
