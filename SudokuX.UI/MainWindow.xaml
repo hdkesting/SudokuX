@@ -149,7 +149,7 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="SpringGreen"></Setter>
+                            <Setter TargetName="Border" Property="Background" Value="LightGreen"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Value}" Value=" ">
                             <Setter TargetName="Counter" Property="Visibility" Value="Hidden"></Setter>
