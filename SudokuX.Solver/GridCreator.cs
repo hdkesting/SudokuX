@@ -163,9 +163,10 @@ namespace SudokuX.Solver
         /// Creates a grid of the specified size.
         /// </summary>
         /// <param name="size">The size.</param>
+        /// <param name="generateBlocks">if set to <c>true</c>, generate blocks for irregular grids.</param>
         /// <returns></returns>
         /// <exception cref="System.ComponentModel.InvalidEnumArgumentException">size</exception>
-        public static ISudokuGrid Create(BoardSize size)
+        public static ISudokuGrid Create(BoardSize size, bool generateBlocks = true)
         {
             switch (size)
             {
@@ -176,7 +177,7 @@ namespace SudokuX.Solver
                     return new Grid6X6();
 
                 case BoardSize.Irregular6:
-                    return new Irregular6();
+                    return new Irregular6(generateBlocks);
 
                 case BoardSize.Board9:
                     return new Grid9X9();
@@ -185,7 +186,7 @@ namespace SudokuX.Solver
                     return new Grid9X9WithX();
 
                 case BoardSize.Irregular9:
-                    return new Irregular9();
+                    return new Irregular9(generateBlocks);
 
                 case BoardSize.Hyper9:
                     return new Hyper9();

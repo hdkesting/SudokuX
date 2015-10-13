@@ -10,6 +10,7 @@ using SudokuX.UI.Common;
 using SudokuX.UI.Common.Enums;
 using SudokuX.UI.Controls;
 using System.Threading.Tasks;
+using SudokuX.Solver;
 
 namespace SudokuX.UI
 {
@@ -456,6 +457,22 @@ namespace SudokuX.UI
                     DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Harder, Content = GetTranslation("Difficulty-Harder") });
                 }
             }
+        }
+
+        private void HintButton_Click(object sender, RoutedEventArgs e)
+        {
+            // 1) prepare solver
+            // 2) execute solver, get first positive result
+            // 3) place result & highlight cell
+            var gridcopy = _board.CloneGridForSolver();
+            var creator = new ChallengeCreator(SelectedBoardSize, SelectedDifficulty);
+            var solver = new GridSolver(creator.Solvers);
+            var result = solver.SolveUntilFirstValue(gridcopy);
+            if (result != null)
+            {
+                // do it
+            }
+            // else show error message
         }
 
         private void ShowHelp()

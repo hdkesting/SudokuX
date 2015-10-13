@@ -56,6 +56,54 @@ namespace SudokuX.Solver.Core
         public Dictionary<Type, PerformanceMeasurement> Measurements { get { return _measurements; } }
 
         readonly Stopwatch _swConclusion = new Stopwatch();
+
+        internal Conclusion ProcessSolversUntilFirstValue()
+        {
+            bool foundone = true;
+            bool keepgoing = true;
+
+            int score = 0;
+            Validity val;
+            int max = 0;
+
+            ISolverStrategy basic = new BasicRule();
+
+            while (foundone && keepgoing) // keep looping while there are results
+            {
+                // use the BasicRule, to make sure the validity check makes sense
+                var conclusions = ProcessGrid(basic).ToList();
+                ProcessConclusions(conclusions, ref score, ref keepgoing);
+
+                val = _grid.IsChallengeDone();
+                if (val == Validity.Invalid)
+                {
+                    return null; // not found due to error in grid
+                }
+
+                foundone = false;
+                foreach (var solver in _solvers) // process in supplied order (of complexity)
+                {
+                    conclusions = ProcessGrid(solver).ToList();
+                    foundone = ProcessConclusions(conclusions, ref score, ref keepgoing);
+
+                    var result = conclusions.FirstOrDefault(c => c.ExactValue.HasValue);
+                    if (result != null)
+                    {
+                        return result; // found the first real value!
+                    }
+
+                    if (foundone)
+                    {
+                        max = Math.Max(solver.Complexity, max);
+                        // skip other, more difficult, solvers for now; start again at the simple ones
+                        break; // foreach solver
+                    }
+                }
+            }
+
+            return null; // not found??
+        }
+
         private int _conclusionSets;
 
         private IList<Conclusion> ProcessGrid(ISolverStrategy solver)
