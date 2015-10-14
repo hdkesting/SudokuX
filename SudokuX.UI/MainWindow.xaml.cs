@@ -10,6 +10,7 @@ using SudokuX.UI.Common;
 using SudokuX.UI.Common.Enums;
 using SudokuX.UI.Controls;
 using System.Threading.Tasks;
+using SudokuX.Solver;
 
 namespace SudokuX.UI
 {
@@ -24,6 +25,7 @@ namespace SudokuX.UI
         private int _selectedCellRow, _selectedCellColumn;
         private bool _isPenSelected = true;
         private bool _isFinished;
+        private ResourceDictionary _dict;
 
         public MainWindow()
         {
@@ -186,7 +188,7 @@ namespace SudokuX.UI
 
             if (TooEasy(board.BoardSize))
             {
-                string msg = _dict["ShowPencil-TooEasy"].ToString();
+                string msg = GetTranslation("ShowPencil-TooEasy");
                 ShowPencilmarks.IsChecked = false;
                 MessageBox.Show(msg);
                 return;
@@ -200,7 +202,6 @@ namespace SudokuX.UI
             if (!btn.IsChecked.GetValueOrDefault()) _isPenSelected = true;
         }
 
-        private ResourceDictionary _dict;
         private void SetLanguageDictionary()
         {
             // http://www.codeproject.com/Articles/123460/Simplest-Way-to-Implement-Multilingual-WPF-Applica
@@ -454,6 +455,33 @@ namespace SudokuX.UI
                 if (rangeTuple.Item1 <= Difficulty.Harder && rangeTuple.Item2 >= Difficulty.Harder)
                 {
                     DifficultyLevel.Items.Add(new ComboBoxItem { Tag = Difficulty.Harder, Content = GetTranslation("Difficulty-Harder") });
+                }
+            }
+        }
+
+        private async void HintButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (!_isFinished)
+            {
+                // 1) prepare solver
+                // 2) execute solver, get first positive result
+                // 3) place result & highlight cell
+                var gridcopy = _board.CloneGridForSolver();
+                var solver = new GridSolver(GridCreator.GetGridSolvers(SelectedBoardSize, SelectedDifficulty));
+                var result = solver.SolveUntilFirstValue(gridcopy);
+                if (result != null)
+                {
+                    // do it
+                    var trans = new ValueTranslator(SelectedBoardSize);
+                    HighlightCell(result.TargetCell.Row, result.TargetCell.Column);
+                    await Task.Delay(500);
+                    await SetCellToValue(result.TargetCell.Row, result.TargetCell.Column, trans.ToChar(result.ExactValue.Value - gridcopy.MinValue));
+                }
+                else
+                {
+                    // else show error message
+                    string msg = GetTranslation("Hint-Error");
+                    MessageBox.Show(msg);
                 }
             }
         }

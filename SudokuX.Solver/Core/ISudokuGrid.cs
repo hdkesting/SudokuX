@@ -74,7 +74,7 @@ namespace SudokuX.Solver.Core
         double GetPercentageDone();
 
         /// <summary>
-        /// Clones the board, preserving size and blocks.
+        /// Clones the board, preserving size, blocks and challenge values.
         /// </summary>
         /// <returns></returns>
         ISudokuGrid CloneBoardAsChallenge();

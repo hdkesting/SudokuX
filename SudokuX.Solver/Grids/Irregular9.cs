@@ -11,8 +11,8 @@ namespace SudokuX.Solver.Grids
         /// <summary>
         /// Initializes a new instance of the <see cref="Irregular9"/> class.
         /// </summary>
-        public Irregular9()
-            : base(3, 3)
+        public Irregular9(bool generateBlocks)
+            : base(3, 3, generateBlocks)
         {
         }
 

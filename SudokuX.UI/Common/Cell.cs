@@ -192,7 +192,7 @@ namespace SudokuX.UI.Common
         public bool HasValue
         {
             get { return _hasValue; }
-            set
+            private set
             {
                 if (value != _hasValue)
                 {

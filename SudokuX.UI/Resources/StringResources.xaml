@@ -16,9 +16,11 @@
     <system:String x:Key="Grid-Irr9">9×9 Irregular</system:String>
     <system:String x:Key="Grid-12X12">12×12</system:String>
     <system:String x:Key="Grid-16X16">16×16</system:String>
-    <system:String x:Key="Congratulations">😎 Congratulations 🎆</system:String>
+    <system:String x:Key="Congratulations">-</system:String>
     <system:String x:Key="GridScoreLabel">Grid score: {0} ({1:0.0})</system:String>
     <system:String x:Key="UndoButtonText">↩ Undo</system:String>
+    <system:String x:Key="HintButtonText">😖 Hint</system:String>
+    <system:String x:Key="Hint-Error">I think you made a mistake somewhere!</system:String>
     <system:String x:Key="NumberTypePen">✒ Pen</system:String>
     <system:String x:Key="NumberTypePencil">✏ Pencil</system:String>
     <system:String x:Key="Difficulty">Difficulty:</system:String>

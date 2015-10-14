@@ -176,7 +176,8 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
-            <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
+            <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"/></Button>
+            <Button x:Name="HintButton" Click="HintButton_Click" Margin="0,2"><TextBlock Text="{DynamicResource HintButtonText}" /></Button>
 
             <StackPanel>
                 <TextBlock Text="{DynamicResource Show-Pencilmarks}"/>
