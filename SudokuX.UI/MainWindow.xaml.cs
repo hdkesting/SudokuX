@@ -25,6 +25,7 @@ namespace SudokuX.UI
         private int _selectedCellRow, _selectedCellColumn;
         private bool _isPenSelected = true;
         private bool _isFinished;
+        private ResourceDictionary _dict;
 
         public MainWindow()
         {
@@ -187,7 +188,7 @@ namespace SudokuX.UI
 
             if (TooEasy(board.BoardSize))
             {
-                string msg = _dict["ShowPencil-TooEasy"].ToString();
+                string msg = GetTranslation("ShowPencil-TooEasy");
                 ShowPencilmarks.IsChecked = false;
                 MessageBox.Show(msg);
                 return;
@@ -201,7 +202,6 @@ namespace SudokuX.UI
             if (!btn.IsChecked.GetValueOrDefault()) _isPenSelected = true;
         }
 
-        private ResourceDictionary _dict;
         private void SetLanguageDictionary()
         {
             // http://www.codeproject.com/Articles/123460/Simplest-Way-to-Implement-Multilingual-WPF-Applica
@@ -480,7 +480,7 @@ namespace SudokuX.UI
                 else
                 {
                     // else show error message
-                    string msg = _dict["Hint-Error"].ToString();
+                    string msg = GetTranslation("Hint-Error");
                     MessageBox.Show(msg);
                 }
             }
