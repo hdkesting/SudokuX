@@ -301,11 +301,11 @@ namespace SudokuX.UI.Controls
         public ISudokuGrid CloneGridForSolver()
         {
             // create an empty grid of the correct size
-            var grid = GridCreator.Create(_boardSize, false);
+            var clone = GridCreator.Create(_boardSize, false);
             if (_boardSize.IsIrregular())
             {
                 // for irregular blocks, copy their shape
-                var blocks = grid.CellGroups.Where(g => g.GroupType == GroupType.Block).ToList();
+                var blocks = clone.CellGroups.Where(g => g.GroupType == GroupType.Block).ToList();
 
                 // assign cells to blocks
                 for(int r=0; r<_boardSize.GridSize(); r++)
@@ -314,7 +314,7 @@ namespace SudokuX.UI.Controls
                     {
                         var boardcell = _gameBoard[r, c];
                         var block = blocks.Single(b => b.Ordinal == boardcell.BlockOrdinal);
-                        var gridcell = grid.GetCellByRowColumn(r, c);
+                        var gridcell = clone.GetCellByRowColumn(r, c);
                         gridcell.AddToGroups(block);
                     }
                 }
@@ -329,12 +329,12 @@ namespace SudokuX.UI.Controls
                 for (int c = 0; c < _boardSize.GridSize(); c++)
                 {
                     var boardcell = _gameBoard[r, c];
-                    var avail = boardcell.PossibleValues.Select(pv => translator.ToInt(pv) + grid.MinValue).ToList();
+                    var avail = boardcell.PossibleValues.Select(pv => translator.ToInt(pv) + clone.MinValue).ToList();
 
-                    var gridcell = grid.GetCellByRowColumn(r, c);
+                    var gridcell = clone.GetCellByRowColumn(r, c);
                     if (boardcell.HasValue)
                     {
-                        gridcell.SetGivenValue(boardcell.IntValue.Value + grid.MinValue);
+                        gridcell.SetGivenValue(boardcell.IntValue.Value + clone.MinValue);
                     }
                     else
                     {
@@ -348,7 +348,7 @@ namespace SudokuX.UI.Controls
                 }
             }
 
-            return grid;
+            return clone;
         }
 
     }

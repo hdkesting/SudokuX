@@ -265,7 +265,7 @@ namespace SudokuX.Solver
             throw new InvalidEnumArgumentException("size", (int)boardSize, typeof(BoardSize));
         }
 
-        internal static IList<ISolverStrategy> GetGridSolvers(BoardSize boardSize, Difficulty difficulty)
+        public static IList<ISolverStrategy> GetGridSolvers(BoardSize boardSize, Difficulty difficulty)
         {
 
             if (!Levels.ContainsKey(boardSize)) throw new InvalidEnumArgumentException("boardSize", (int)boardSize, typeof(BoardSize));

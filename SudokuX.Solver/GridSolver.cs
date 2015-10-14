@@ -67,6 +67,11 @@ namespace SudokuX.Solver
         /// </value>
         public Validity Validity { get; private set; }
 
+        /// <summary>
+        /// Solves the grid until the first value can be placed. Returns that value (or <c>null</c> on error).
+        /// </summary>
+        /// <param name="grid">The grid.</param>
+        /// <returns></returns>
         public Conclusion SolveUntilFirstValue(ISudokuGrid grid)
         {
             var solver = new Core.Solver(grid, _solvers);

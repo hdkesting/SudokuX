@@ -20,6 +20,7 @@
     <system:String x:Key="GridScoreLabel">Grid score: {0} ({1:0.0})</system:String>
     <system:String x:Key="UndoButtonText">↩ Undo</system:String>
     <system:String x:Key="HintButtonText">😖 Hint</system:String>
+    <system:String x:Key="Hint-Error">I think you made a mistake somewhere!</system:String>
     <system:String x:Key="NumberTypePen">✒ Pen</system:String>
     <system:String x:Key="NumberTypePencil">✏ Pencil</system:String>
     <system:String x:Key="Difficulty">Difficulty:</system:String>

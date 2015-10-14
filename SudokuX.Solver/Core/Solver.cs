@@ -57,6 +57,10 @@ namespace SudokuX.Solver.Core
 
         readonly Stopwatch _swConclusion = new Stopwatch();
 
+        /// <summary>
+        /// Tries to solve the grid, stops at the first "pen" value that is found.
+        /// </summary>
+        /// <returns>The conclusion, or <c>null</c> if not found (due to error in grid)</returns>
         internal Conclusion ProcessSolversUntilFirstValue()
         {
             bool foundone = true;
