@@ -351,5 +351,20 @@ namespace SudokuX.UI.Controls
             return clone;
         }
 
+        internal ISudokuGrid GetSolution()
+        {
+            return _creatorGrid;
+        }
+
+        /// <summary>
+        /// Gets the cell at the specified position.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="column">The column.</param>
+        /// <returns></returns>
+        internal Common.Cell GetCell(int row, int column)
+        {
+            return _gameBoard[row, column];
+        }
     }
 }

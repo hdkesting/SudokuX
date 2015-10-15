@@ -463,27 +463,64 @@ namespace SudokuX.UI
         {
             if (!_isFinished)
             {
-                // 1) prepare solver
-                // 2) execute solver, get first positive result
-                // 3) place result & highlight cell
-                var gridcopy = _board.CloneGridForSolver();
-                var solver = new GridSolver(GridCreator.GetGridSolvers(SelectedBoardSize, SelectedDifficulty));
-                var result = solver.SolveUntilFirstValue(gridcopy);
-                if (result != null)
+                if (FindAndShowErrors())
                 {
-                    // do it
-                    var trans = new ValueTranslator(SelectedBoardSize);
-                    HighlightCell(result.TargetCell.Row, result.TargetCell.Column);
-                    await Task.Delay(500);
-                    await SetCellToValue(result.TargetCell.Row, result.TargetCell.Column, trans.ToChar(result.ExactValue.Value - gridcopy.MinValue));
-                }
-                else
-                {
-                    // else show error message
                     string msg = GetTranslation("Hint-Error");
                     MessageBox.Show(msg);
+                    _selectionMode = ValueSelectionMode.ButtonFirst;
+                    HighlightButton(" "); // erase button
+                }
+                else
+                { 
+                    // 1) prepare solver
+                    // 2) execute solver, get first positive result
+                    // 3) place result & highlight cell
+                    var gridcopy = _board.CloneGridForSolver();
+                    var solver = new GridSolver(GridCreator.GetGridSolvers(SelectedBoardSize, SelectedDifficulty));
+                    var result = solver.SolveUntilFirstValue(gridcopy);
+                    if (result != null)
+                    {
+                        // do it
+                        var trans = new ValueTranslator(SelectedBoardSize);
+                        HighlightCell(result.TargetCell.Row, result.TargetCell.Column);
+                        await Task.Delay(500);
+                        await SetCellToValue(result.TargetCell.Row, result.TargetCell.Column, trans.ToChar(result.ExactValue.Value - gridcopy.MinValue));
+                    }
+                    // I don't expect errors, as the grid has been checked
                 }
             }
+        }
+
+        /// <summary>
+        /// Finds the errors and highlights them. Returns <c>true</c> when errors are found.
+        /// </summary>
+        /// <returns></returns>
+        private bool FindAndShowErrors()
+        {
+            var invalid = false;
+            // 1) get completed board that was used as challenge
+            // 2) compare placed values with solution, mark differences
+            var solution = _board.GetSolution();
+
+            for(int r=0; r<solution.GridSize; r++)
+            {
+                for(int c=0; c<solution.GridSize; c++)
+                {
+                    var cell = _board.GetCell(r, c);
+
+                    if (cell.HasValue)
+                    {
+                        var solcell = solution.GetCellByRowColumn(r, c);
+                        if (cell.IntValue != solcell.GivenOrCalculatedValue - solution.MinValue)
+                        {
+                            cell.IsMarkedAsInvalid = true;
+                            invalid = true;
+                        }
+                    }
+                }
+            }
+
+            return invalid;
         }
 
         private void ShowHelp()

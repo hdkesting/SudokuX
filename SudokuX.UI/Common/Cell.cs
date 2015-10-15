@@ -22,6 +22,7 @@ namespace SudokuX.UI.Common
         bool _readOnlyValue;
         int? _valueValue;
         bool _isValidValue = true;
+        bool _isMarkedAsInvalid;
         private Highlight _highlighted;
         private bool _isSelected;
         private Color _backColor = Colors.Transparent;
@@ -177,6 +178,7 @@ namespace SudokuX.UI.Common
                         _valueValue = value;
                         HasValue = true;
                     }
+                    if (IsMarkedAsInvalid) IsMarkedAsInvalid = false;
                     OnPropertyChanged();
                     OnPropertyChanged("StringValue");
                 }
@@ -228,7 +230,7 @@ namespace SudokuX.UI.Common
         {
             get
             {
-                return _isValidValue;
+                return _isValidValue && !_isMarkedAsInvalid;
             }
             set
             {
@@ -237,6 +239,23 @@ namespace SudokuX.UI.Common
                     _isValidValue = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this cell is marked as invalid by a validity check. 
+        /// will be reset by clearing or changing the cell's value.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is marked as invalid; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsMarkedAsInvalid
+        {
+            get { return _isMarkedAsInvalid; }
+            set
+            {
+                _isMarkedAsInvalid = value;
+                OnPropertyChanged("IsValid");
             }
         }
 
