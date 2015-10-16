@@ -30,14 +30,14 @@ namespace SudokuX.Solver.SolverStrategies
         }
 
         /// <summary>
-        /// Gets the complexity-score of this solver (2).
+        /// Gets the complexity-score of this solver (1).
         /// </summary>
         /// <value>
         /// The complexity.
         /// </value>
         public int Complexity
         {
-            get { return 2; }
+            get { return 1; }
         }
 
         private IEnumerable<Conclusion> HiddenSinglesInGroup(CellGroup group, int min, int max)

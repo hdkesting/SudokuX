@@ -15,10 +15,19 @@ namespace SudokuX.Solver
     /// </summary>
     public static class GridCreator
     {
+        /// <summary>
+        /// The list of possible levels for each board size, plus the solvers used.
+        /// </summary>
+        /// <remarks>Make sure there is at least a "Difficulty.Normal" version.</remarks>
         private static readonly Dictionary<BoardSize, Dictionary<Difficulty, List<ISolverStrategy>>> Levels = new Dictionary<BoardSize, Dictionary<Difficulty, List<ISolverStrategy>>>
         {
             { BoardSize.Board4, new Dictionary<Difficulty, List<ISolverStrategy>>
                 {
+                    { Difficulty.Easy, new List<ISolverStrategy>
+                        {
+                            new HiddenSingle()
+                        }
+                    },
                     { Difficulty.Normal, new List<ISolverStrategy>
                         {
                             new NakedSingle(),
@@ -29,6 +38,12 @@ namespace SudokuX.Solver
             },
             { BoardSize.Board6, new Dictionary<Difficulty, List<ISolverStrategy>>
                 {
+                    { Difficulty.Easy, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                        }
+                    },
                     { Difficulty.Normal, new List<ISolverStrategy>
                         {
                             new NakedSingle(),
@@ -41,16 +56,32 @@ namespace SudokuX.Solver
             },
             { BoardSize.Irregular6, new Dictionary<Difficulty, List<ISolverStrategy>>
                 {
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Easy, new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle()
+                        }
+                    },
+                    { Difficulty.Normal, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new NakedDouble(),
+                            new HiddenDouble()
                         }
                     }
                 }
             },
             { BoardSize.Board9, new Dictionary<Difficulty, List<ISolverStrategy>>
                 {
+                    { Difficulty.Easy, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble()
+                        }
+                    },
                     { Difficulty.Normal, new List<ISolverStrategy>
                         {
                             new NakedSingle(),
@@ -61,21 +92,21 @@ namespace SudokuX.Solver
                             new NakedTriple(),
                             new XWing(),
                             new SolveWithColors()
-
-                        }
-                    },
-                    { Difficulty.Easy, new List<ISolverStrategy>
-                        {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble()
                         }
                     }
                 }
             },
             { BoardSize.Board9X, new Dictionary<Difficulty, List<ISolverStrategy>>
                 {
+                    { Difficulty.Easy, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble(),
+                            new HiddenDouble(),
+                        }
+                    },
                     { Difficulty.Normal, new List<ISolverStrategy>
                         {
                             new NakedSingle(),
@@ -85,22 +116,32 @@ namespace SudokuX.Solver
                             new HiddenDouble(),
                             new HiddenTriple(),
                             new SolveWithColors()
-
                         }
                     },
-                    { Difficulty.Easy, new List<ISolverStrategy>
+                    { Difficulty.Harder, new List<ISolverStrategy>
                         {
                             new NakedSingle(),
                             new HiddenSingle(),
                             new LockedCandidates(),
                             new NakedDouble(),
                             new HiddenDouble(),
+                            new HiddenTriple(),
+                            new SolveWithColors(),
+                            new XWing()
                         }
                     }
                 }
             },
             { BoardSize.Irregular9, new Dictionary<Difficulty, List<ISolverStrategy>>
                 {
+                    { Difficulty.Easy, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble()
+                        }
+                    },
                     { Difficulty.Normal, new List<ISolverStrategy>
                         {
                             new NakedSingle(),
@@ -115,6 +156,14 @@ namespace SudokuX.Solver
             },
             { BoardSize.Hyper9, new Dictionary<Difficulty, List<ISolverStrategy>>
                 {
+                    { Difficulty.Easy, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble()
+                        }
+                    },
                     { Difficulty.Normal, new List<ISolverStrategy>
                         {
                             new NakedSingle(),
@@ -123,6 +172,17 @@ namespace SudokuX.Solver
                             new NakedDouble(),
                             new HiddenDouble(),
                             new HiddenTriple()
+                        }
+                    },
+                    { Difficulty.Harder, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble(),
+                            new HiddenDouble(),
+                            new HiddenTriple(),
+                            new NakedTriple(),
                         }
                     }
                 }
@@ -139,6 +199,19 @@ namespace SudokuX.Solver
                             new NakedTriple(),
                             new SolveWithColors()
                         }
+                    },
+                    { Difficulty.Harder, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble(),
+                            new HiddenDouble(),
+                            new NakedTriple(),
+                            new SolveWithColors(),
+                            new HiddenTriple(),
+                            new XWing()
+                        }
                     }
                 }
             },
@@ -150,8 +223,17 @@ namespace SudokuX.Solver
                             new HiddenSingle(),
                             new LockedCandidates(),
                             new NakedDouble(),
-                            //new HiddenDouble(), 
-                            //new NakedTriple(),
+                            new SolveWithColors()
+                        }
+                    },
+                    { Difficulty.Harder, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble(),
+                            new HiddenDouble(),
+                            new NakedTriple(),
                             new SolveWithColors()
                         }
                     }
