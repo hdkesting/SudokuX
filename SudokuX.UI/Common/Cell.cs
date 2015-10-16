@@ -162,23 +162,28 @@ namespace SudokuX.UI.Common
             }
             set
             {
-                if ((_valueValue ?? -1) != (value ?? -1))
+                bool changed = false;
+                if ((value ?? -1) < 0)
                 {
-                    if ((value ?? -1) < 0)
-                    {
-                        // clear user-value
-                        _valueValue = null;
-                        HasValue = false;
-                        Highlighted = Highlight.None;
-                        if (ShouldShowPencilMarks) ShowPencilMarks = true;
-                    }
-                    else
-                    {
-                        // set user-value
-                        _valueValue = value;
-                        HasValue = true;
-                    }
-                    if (IsMarkedAsInvalid) IsMarkedAsInvalid = false;
+                    // clear user-value
+                    _valueValue = null;
+                    HasValue = false;
+                    Highlighted = Highlight.None;
+                    ClearUserErasedMarks();
+                    if (ShouldShowPencilMarks) ShowPencilMarks = true;
+                    changed = true;
+                }
+                else if ((_valueValue ?? -1) != (value ?? -1))
+                {
+                    // set user-value
+                    _valueValue = value;
+                    HasValue = true;
+                    changed = true;
+                }
+
+                if (IsMarkedAsInvalid) IsMarkedAsInvalid = false;
+                if (changed)
+                {
                     OnPropertyChanged();
                     OnPropertyChanged("StringValue");
                 }
@@ -379,6 +384,17 @@ namespace SudokuX.UI.Common
                 {
                     _showPencilMarks = value;
                     OnPropertyChanged();
+                }
+            }
+        }
+
+        private void ClearUserErasedMarks()
+        {
+            foreach(var row in PencilRows)
+            {
+                foreach (var value in row)
+                {
+                    value.ExplicitlyVisible = null;
                 }
             }
         }
