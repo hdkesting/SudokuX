@@ -175,10 +175,6 @@
                         <Setter TargetName ="Border" Property ="BorderBrush" Value="Red"/>
                         <Setter TargetName="Border" Property="BorderThickness" Value="3"/>
                     </DataTrigger>
-                    <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                        <Setter TargetName="Border" Property="BorderBrush" Value="Gold" />
-                        <!--<Setter TargetName="BorderShadow" Property="Opacity" Value="1" />-->
-                    </DataTrigger>
                     <DataTrigger Binding="{Binding Highlighted}" Value="Pencil">
                         <Setter TargetName="Border" Property="BorderBrush" Value="Gold" />
                         <Setter TargetName="Border" Property="BorderThickness" Value="2" />
