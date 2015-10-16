@@ -18,7 +18,13 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <returns></returns>
         public static int MaxSum(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Sum();
+            return positions.Select(p =>
+            {
+                var cell = grid.GetCellByRowColumn(p.Row, p.Column);
+                return cell.GivenOrCalculatedValue.HasValue 
+                        ? 0
+                        : cell.AvailableValues.Count;
+            }).Sum();
         }
 
         /// <summary>
@@ -29,7 +35,13 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <returns></returns>
         public static int MinCount(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Min();
+            return positions.Select(p =>
+            {
+                var cell = grid.GetCellByRowColumn(p.Row, p.Column);
+                return cell.GivenOrCalculatedValue.HasValue 
+                        ? 9 
+                        : cell.AvailableValues.Count;
+            }).Min();
         }
 
         /// <summary>
@@ -40,7 +52,11 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <returns></returns>
         public static int MaxCount(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return positions.Select(p => grid.GetCellByRowColumn(p.Row, p.Column).AvailableValues.Count).Max();
+            return positions.Select(p =>
+            {
+                var cell = grid.GetCellByRowColumn(p.Row, p.Column);
+                return cell.GivenOrCalculatedValue.HasValue ? 0 : cell.AvailableValues.Count;
+            }).Max();
         }
 
         /// <summary>
