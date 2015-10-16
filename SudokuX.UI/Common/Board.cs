@@ -27,6 +27,8 @@ namespace SudokuX.UI.Common
         private readonly ValueTranslator _translator;
         private string _activeButtonValue;
 
+        private const int CellHighlightDelay = 50; // ms
+
         //public event EventHandler<EventArgs> BoardIsFinished;
 
         public List<List<Cell>> GridRows { get { return _rows; } }
@@ -423,40 +425,40 @@ namespace SudokuX.UI.Common
 
         private async Task FlashGroup(Group group)
         {
-            const int delay = 50;
-
             // set group highlight
             foreach(var cell in group.ContainedCells)
             {
-                await Task.Delay(delay);
+                await Task.Delay(CellHighlightDelay);
                 cell.Highlighted |= Highlight.Group;
             }
 
-            await Task.Delay(delay);
+            // slight extra pause
+            await Task.Delay(CellHighlightDelay);
 
             // remove group highlight
             foreach (var cell in group.ContainedCells)
             {
-                await Task.Delay(delay);
+                await Task.Delay(CellHighlightDelay);
                 cell.Highlighted = cell.Highlighted & ~Highlight.Group;
             }
         }
 
         public async Task FlashAllGroups()
         {
-            List<Task> tasks = new List<Task>();
-             
-            int i = 0;
+            // wait for the "block done" animation to finish
+            await Task.Delay(GridSize + CellHighlightDelay);
+
             foreach (var family in Groups.GroupBy(g => g.GroupType))
             {
+                List<Task> tasks = new List<Task>();
                 foreach (var grp in family)
                 {
-                    tasks.Add(Task.Delay(i * 600).ContinueWith(_ => FlashGroup(grp)));
+                    tasks.Add(FlashGroup(grp));
                 }
-                i += 1;
-            }
 
-            await Task.WhenAll(tasks);
+                // do animation for this family (and wait for it)
+                await Task.WhenAll(tasks);
+            }
         }
 
         public void Undo()

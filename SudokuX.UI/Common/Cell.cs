@@ -22,6 +22,7 @@ namespace SudokuX.UI.Common
         bool _readOnlyValue;
         int? _valueValue;
         bool _isValidValue = true;
+        bool _isMarkedAsInvalid;
         private Highlight _highlighted;
         private bool _isSelected;
         private Color _backColor = Colors.Transparent;
@@ -161,22 +162,28 @@ namespace SudokuX.UI.Common
             }
             set
             {
-                if ((_valueValue ?? -1) != (value ?? -1))
+                bool changed = false;
+                if ((value ?? -1) < 0)
                 {
-                    if ((value ?? -1) < 0)
-                    {
-                        // clear user-value
-                        _valueValue = null;
-                        HasValue = false;
-                        Highlighted = Highlight.None;
-                        if (ShouldShowPencilMarks) ShowPencilMarks = true;
-                    }
-                    else
-                    {
-                        // set user-value
-                        _valueValue = value;
-                        HasValue = true;
-                    }
+                    // clear user-value
+                    _valueValue = null;
+                    HasValue = false;
+                    Highlighted = Highlight.None;
+                    ClearUserErasedMarks();
+                    if (ShouldShowPencilMarks) ShowPencilMarks = true;
+                    changed = true;
+                }
+                else if ((_valueValue ?? -1) != (value ?? -1))
+                {
+                    // set user-value
+                    _valueValue = value;
+                    HasValue = true;
+                    changed = true;
+                }
+
+                if (IsMarkedAsInvalid) IsMarkedAsInvalid = false;
+                if (changed)
+                {
                     OnPropertyChanged();
                     OnPropertyChanged("StringValue");
                 }
@@ -192,7 +199,7 @@ namespace SudokuX.UI.Common
         public bool HasValue
         {
             get { return _hasValue; }
-            set
+            private set
             {
                 if (value != _hasValue)
                 {
@@ -228,7 +235,7 @@ namespace SudokuX.UI.Common
         {
             get
             {
-                return _isValidValue;
+                return _isValidValue && !_isMarkedAsInvalid;
             }
             set
             {
@@ -237,6 +244,23 @@ namespace SudokuX.UI.Common
                     _isValidValue = value;
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether this cell is marked as invalid by a validity check. 
+        /// will be reset by clearing or changing the cell's value.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this instance is marked as invalid; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsMarkedAsInvalid
+        {
+            get { return _isMarkedAsInvalid; }
+            set
+            {
+                _isMarkedAsInvalid = value;
+                OnPropertyChanged("IsValid");
             }
         }
 
@@ -360,6 +384,17 @@ namespace SudokuX.UI.Common
                 {
                     _showPencilMarks = value;
                     OnPropertyChanged();
+                }
+            }
+        }
+
+        private void ClearUserErasedMarks()
+        {
+            foreach(var row in PencilRows)
+            {
+                foreach (var value in row)
+                {
+                    value.ExplicitlyVisible = null;
                 }
             }
         }

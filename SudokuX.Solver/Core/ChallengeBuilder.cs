@@ -195,7 +195,7 @@ namespace SudokuX.Solver.Core
 
         private void SelectValueForCell(Cell cell)
         {
-            if (cell.AvailableValues.Any())
+            if (!cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Any())
             {
                 // select a random available value
                 var val = cell.AvailableValues[_rng.Next(cell.AvailableValues.Count)];
@@ -207,6 +207,14 @@ namespace SudokuX.Solver.Core
 
                 ResetGrid(_grid);  // earlier conclusions may not be valid anymore, so erase them
                 ValueSets++;
+            }
+            else
+            {
+                // if calculated, set it as "given" value, to keep the symmetry
+                if (cell.CalculatedValue.HasValue)
+                {
+                    cell.SetGivenValue(cell.CalculatedValue.Value);
+                }
             }
         }
 

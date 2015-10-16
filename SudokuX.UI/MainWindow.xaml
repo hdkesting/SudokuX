@@ -149,7 +149,7 @@
                             <Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                            <Setter TargetName="Border" Property="Background" Value="SpringGreen"></Setter>
+                            <Setter TargetName="Border" Property="Background" Value="LightGreen"></Setter>
                         </DataTrigger>
                         <DataTrigger Binding="{Binding Value}" Value=" ">
                             <Setter TargetName="Counter" Property="Visibility" Value="Hidden"></Setter>
@@ -176,7 +176,8 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
-            <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"></TextBlock></Button>
+            <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"/></Button>
+            <Button x:Name="HintButton" Click="HintButton_Click" Margin="0,2"><TextBlock Text="{DynamicResource HintButtonText}" /></Button>
 
             <StackPanel>
                 <TextBlock Text="{DynamicResource Show-Pencilmarks}"/>

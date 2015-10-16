@@ -23,14 +23,21 @@ namespace SudokuX.Solver.Grids
         /// </summary>
         /// <param name="startblockwidth">The starting block width.</param>
         /// <param name="startblockheight">The starting block height.</param>
-        protected IrregularGrid(int startblockwidth, int startblockheight)
+        protected IrregularGrid(int startblockwidth, int startblockheight, bool generateBlocks)
             : base(startblockwidth * startblockheight)
         {
             _blockgrid = new int[GridSize, GridSize];
-            InitializeBlockGrid(startblockwidth, startblockheight);
-            Permute();
+            if (generateBlocks)
+            {
+                InitializeBlockGrid(startblockwidth, startblockheight);
+                Permute();
 
-            AssignBlocks();
+                AssignBlocks();
+            }
+            else
+            {
+                AddGroups();
+            }
         }
 
         /// <summary>
@@ -40,10 +47,7 @@ namespace SudokuX.Solver.Grids
         protected IrregularGrid(IrregularGrid source)
             : base(source.GridSize)
         {
-            for (int i = 0; i < GridSize; i++)
-            {
-                _blocks.Add(new CellGroup(GridSize, i) { Name = "Block " + i, GroupType = GroupType.Block });
-            }
+            AddGroups();
 
             // add cells to blocks
             for (int r = 0; r < GridSize; r++)
@@ -63,13 +67,18 @@ namespace SudokuX.Solver.Grids
             }
         }
 
-        private void AssignBlocks()
+        private void AddGroups()
         {
-            // create blockgroups
             for (int i = 0; i < GridSize; i++)
             {
                 _blocks.Add(new CellGroup(GridSize, i) { Name = "Block " + i, GroupType = GroupType.Block });
             }
+        }
+
+        private void AssignBlocks()
+        {
+            // create blockgroups
+            AddGroups();
 
             // add cells to blocks
             for (int r = 0; r < GridSize; r++)

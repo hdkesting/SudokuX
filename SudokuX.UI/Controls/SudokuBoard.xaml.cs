@@ -14,6 +14,7 @@ using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
 using SudokuX.UI.Common;
+using System.Collections.Generic;
 
 namespace SudokuX.UI.Controls
 {
@@ -291,6 +292,79 @@ namespace SudokuX.UI.Controls
         internal void ToggleAvailableValue(int row, int column, string value)
         {
             _gameBoard.ToggleAvailableValue(row, column, value);
+        }
+
+        /// <summary>
+        /// Clones the grid for the solver: copy blocks, cell values and availables.
+        /// </summary>
+        /// <returns></returns>
+        public ISudokuGrid CloneGridForSolver()
+        {
+            // create an empty grid of the correct size
+            var clone = GridCreator.Create(_boardSize, false);
+            if (_boardSize.IsIrregular())
+            {
+                // for irregular blocks, copy their shape
+                var blocks = clone.CellGroups.Where(g => g.GroupType == GroupType.Block).ToList();
+
+                // assign cells to blocks
+                for(int r=0; r<_boardSize.GridSize(); r++)
+                {
+                    for(int c=0; c<_boardSize.GridSize(); c++)
+                    {
+                        var boardcell = _gameBoard[r, c];
+                        var block = blocks.Single(b => b.Ordinal == boardcell.BlockOrdinal);
+                        var gridcell = clone.GetCellByRowColumn(r, c);
+                        gridcell.AddToGroups(block);
+                    }
+                }
+            }
+
+            var translator = new ValueTranslator(_boardSize);
+            
+            // update all challenge and placed values
+            // update all pencilvalues
+            for (int r = 0; r < _boardSize.GridSize(); r++)
+            {
+                for (int c = 0; c < _boardSize.GridSize(); c++)
+                {
+                    var boardcell = _gameBoard[r, c];
+                    var avail = boardcell.PossibleValues.Select(pv => translator.ToInt(pv) + clone.MinValue).ToList();
+
+                    var gridcell = clone.GetCellByRowColumn(r, c);
+                    if (boardcell.HasValue)
+                    {
+                        gridcell.SetGivenValue(boardcell.IntValue.Value + clone.MinValue);
+                    }
+                    else
+                    {
+                        var removed = gridcell.AvailableValues.Except(avail).ToList();
+
+                        foreach (var toremove in removed)
+                        {
+                            gridcell.EraseAvailable(toremove);
+                        }
+                    }
+                }
+            }
+
+            return clone;
+        }
+
+        internal ISudokuGrid GetSolution()
+        {
+            return _creatorGrid;
+        }
+
+        /// <summary>
+        /// Gets the cell at the specified position.
+        /// </summary>
+        /// <param name="row">The row.</param>
+        /// <param name="column">The column.</param>
+        /// <returns></returns>
+        internal Common.Cell GetCell(int row, int column)
+        {
+            return _gameBoard[row, column];
         }
     }
 }

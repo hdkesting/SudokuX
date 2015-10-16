@@ -1,7 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SudokuX.Solver.Core;
 using SudokuX.Solver.Support.Enums;
+using SudokuX.Solver.Support;
 
 namespace SudokuX.Solver
 {
@@ -64,5 +66,18 @@ namespace SudokuX.Solver
         /// The validity.
         /// </value>
         public Validity Validity { get; private set; }
+
+        /// <summary>
+        /// Solves the grid until the first value can be placed. Returns that value (or <c>null</c> on error).
+        /// </summary>
+        /// <param name="grid">The grid.</param>
+        /// <returns></returns>
+        public Conclusion SolveUntilFirstValue(ISudokuGrid grid)
+        {
+            var solver = new Core.Solver(grid, _solvers);
+
+            Conclusion result = solver.ProcessSolversUntilFirstValue();
+            return result;
+        }
     }
 }
