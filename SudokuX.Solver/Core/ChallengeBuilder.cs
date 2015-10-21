@@ -30,7 +30,7 @@ namespace SudokuX.Solver.Core
             _rng = rng;
             _solver = new Solver(_grid, solvers);
 
-            _scoreCalculator = NextPositionStrategy.MaxCount;
+            _scoreCalculator = NextPositionStrategy.MinCluesUsed;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -57,6 +57,17 @@ namespace SudokuX.Solver.Core
                 };
                 handler(this, e);
             }
+
+#if DEBUG
+            var rectgrid = _grid as Grids.RectangularGrid;
+            if (rectgrid != null)
+            {
+                Trace.WriteLine(rectgrid.ToString(),"Full grid");
+                Trace.WriteLine(rectgrid.ToChallengeString(), "Challenge");
+                Trace.WriteLine(rectgrid.ToString(cell => cell.GivenOrCalculatedValue.HasValue ? "x " : cell.UsedComplexityLevel.ToString()+ " "), "Complexity");
+                Trace.WriteLine(rectgrid.ToString(cell => cell.GivenOrCalculatedValue.HasValue ? "x " : cell.CluesUsed.ToString() + " "), "Clues");
+            }
+#endif
         }
 
         public int BackTracks { get; private set; }
@@ -133,14 +144,6 @@ namespace SudokuX.Solver.Core
                         break;
 
                     case Validity.Maybe:
-                        //if (_grid.GetPercentageDone() > 0.5)
-                        //{
-                        //    _scoreCalculator = NextPositionStrategy.MinCount;
-                        //}
-                        //else
-                        //{
-                        //    _scoreCalculator = NextPositionStrategy.MaxSum;
-                        //}
                         swSelect.Start();
                         SelectExtraGiven();
                         swSelect.Stop();
@@ -193,6 +196,10 @@ namespace SudokuX.Solver.Core
             SelectValueForCell(cell);
         }
 
+        /// <summary>
+        /// Selects the value for cell, stores it on the stack and resets the grid.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
         private void SelectValueForCell(Cell cell)
         {
             if (!cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Any())
@@ -308,7 +315,7 @@ namespace SudokuX.Solver.Core
                 // is it a usefull value?
                 if (top.Remaining.Any())
                 {
-                    // reset the "available" list
+                    // reset the "available" list to the stored list
                     foreach (var oldval in top.Target.AvailableValues.Except(top.Remaining).ToList())
                     {
                         top.Target.EraseAvailable(oldval);
@@ -318,6 +325,8 @@ namespace SudokuX.Solver.Core
                     cell = top.Target;
                 }
             }
+
+            ResetGridCounters();
 
             // select a new value
             if (cell.AvailableValues.Any())
@@ -329,6 +338,15 @@ namespace SudokuX.Solver.Core
             {
                 // no availables left, so go back one more 
                 Rewind();
+            }
+        }
+
+        private void ResetGridCounters()
+        {
+            foreach(var cell in _grid.AllCells())
+            {
+                cell.CluesUsed = 0;
+                cell.UsedComplexityLevel = 0;
             }
         }
 

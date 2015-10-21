@@ -96,20 +96,20 @@ namespace SudokuX.Solver
         {
             var sw = Stopwatch.StartNew();
 
-            var strategy = new ChallengeBuilder(grid, pattern, solvers, rng);
-            strategy.Progress += strategy_Progress;
-            var success = strategy.CreateGrid();
+            var builder = new ChallengeBuilder(grid, pattern, solvers, rng);
+            builder.Progress += builder_Progress;
+            var success = builder.CreateGrid();
 
             sw.Stop();
-            strategy.Progress -= strategy_Progress;
+            builder.Progress -= builder_Progress;
 
-            Debug.WriteLine("Created a grid in {0} ms with {1} backtracks and {2} values set ({3} full resets):", sw.ElapsedMilliseconds, strategy.BackTracks, strategy.ValueSets, strategy.FullResets);
+            Debug.WriteLine("Created a grid in {0} ms with {1} backtracks and {2} values set ({3} full resets):", sw.ElapsedMilliseconds, builder.BackTracks, builder.ValueSets, builder.FullResets);
             DumpGrid(grid);
 
             return success;
         }
 
-        private void strategy_Progress(object sender, ProgressEventArgs e)
+        private void builder_Progress(object sender, ProgressEventArgs e)
         {
             var progress = Progress;
 

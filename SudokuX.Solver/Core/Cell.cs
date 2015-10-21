@@ -145,6 +145,14 @@ namespace SudokuX.Solver.Core
         /// </value>
         public int UsedComplexityLevel { get; set; }
 
+        /// <summary>
+        /// Gets the number of conclusions used on this cell.
+        /// </summary>
+        /// <value>
+        /// The clues used.
+        /// </value>
+        public int CluesUsed { get; internal set; }
+
         private void AddToGroup(CellGroup cellGroup)
         {
             if (cellGroup == null) throw new ArgumentNullException("cellGroup");
@@ -188,7 +196,7 @@ namespace SudokuX.Solver.Core
         }
 
         /// <summary>
-        /// Resets this cell.
+        /// Resets this cell, optionally including a given value.
         /// </summary>
         /// <param name="clearGiven">if set to <c>true</c>, also clear the given (challenge) value.</param>
         public void Reset(bool clearGiven)
@@ -199,6 +207,7 @@ namespace SudokuX.Solver.Core
                 _calculatedValue = null;
                 _available.Clear();
                 _available.AddRange(Enumerable.Range(_min, _max - _min + 1));
+                // do NOT reset "CluesUsed" or "UsedComplexityLevel"
             }
         }
 

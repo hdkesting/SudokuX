@@ -8,6 +8,9 @@ namespace SudokuX.Solver.NextPositionStrategies
     /// <summary>
     /// How should I select the next position where to place a given value? 
     /// </summary>
+    /// <remarks>
+    /// A list of positions is turned into a number. Multiple lists are evaluated, the highest scoring one is used.
+    /// </remarks>
     internal static class NextPositionStrategy
     {
         /// <summary>
@@ -30,16 +33,19 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <summary>
         /// Selects the minimum count of available values from the group.
         /// </summary>
+        /// <remarks>
+        /// Returns a negative number for correct ordering.
+        /// </remarks>
         /// <param name="grid">The grid.</param>
         /// <param name="positions">The positions.</param>
         /// <returns></returns>
         public static int MinCount(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return positions.Select(p =>
+            return -positions.Select(p =>
             {
                 var cell = grid.GetCellByRowColumn(p.Row, p.Column);
                 return cell.GivenOrCalculatedValue.HasValue 
-                        ? 9 
+                        ? 99
                         : cell.AvailableValues.Count;
             }).Min();
         }
@@ -69,5 +75,46 @@ namespace SudokuX.Solver.NextPositionStrategies
         {
             return 1;
         }
+
+        /// <summary>
+        /// Selects the positions with the lowest complexity level (=least amount of conclusions applied).
+        /// </summary>
+        /// <remarks>
+        /// Returns a negative number for correct ordering.
+        /// </remarks>
+        /// <param name="grid">The grid.</param>
+        /// <param name="positions">The positions.</param>
+        /// <returns></returns>
+        public static int MinComplexityLevel(ISudokuGrid grid, IEnumerable<Position> positions)
+        {
+            return -positions.Select(p =>
+                {
+                    var cell = grid.GetCellByRowColumn(p.Row, p.Column);
+                    return cell.GivenOrCalculatedValue.HasValue 
+                                    ? 99
+                                    : cell.UsedComplexityLevel;
+                }).Min();
+        }
+
+        /// <summary>
+        /// Selects the positions with the lowest number of conclusions used on it.
+        /// </summary>
+        /// <remarks>
+        /// Returns a negative number for correct ordering.
+        /// </remarks>
+        /// <param name="grid">The grid.</param>
+        /// <param name="positions">The positions.</param>
+        /// <returns></returns>
+        public static int MinCluesUsed(ISudokuGrid grid, IEnumerable<Position> positions)
+        {
+            return -positions.Select(p =>
+            {
+                var cell = grid.GetCellByRowColumn(p.Row, p.Column);
+                return cell.GivenOrCalculatedValue.HasValue
+                                ? 99
+                                : cell.CluesUsed;
+            }).Min();
+        }
+
     }
 }

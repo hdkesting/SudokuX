@@ -11,7 +11,7 @@ using SudokuX.Solver.SolverStrategies;
 namespace SudokuX.Solver
 {
     /// <summary>
-    /// Creates empty grids.
+    /// Creates empty grids and sets up solvers and such.
     /// </summary>
     public static class GridCreator
     {

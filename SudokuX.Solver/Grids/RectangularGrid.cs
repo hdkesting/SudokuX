@@ -175,6 +175,38 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        public string ToString(Func<Cell, string> cellprinter)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append('+');
+            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
+            sb.AppendLine();
+            for (int br = 0; br < BlockWidth; br++)
+            {
+                for (int rr = 0; rr < BlockHeight; rr++)
+                {
+                    int row = br * BlockHeight + rr;
+                    sb.Append('|');
+                    for (int bc = 0; bc < BlockHeight; bc++)
+                    {
+                        for (int cc = 0; cc < BlockWidth; cc++)
+                        {
+                            int col = bc * BlockWidth + cc;
+                            var cell = GetCellByRowColumn(row, col);
+                            sb.Append(cellprinter(cell));
+                        }
+                        sb.Append('|');
+                    }
+                    sb.AppendLine();
+                }
+                sb.Append('+');
+                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents the calculated solution of this instance.
         /// </summary>
@@ -196,39 +228,16 @@ namespace SudokuX.Solver.Grids
             const string challengechars = "0123456789ABCDEF";
             const string calculatedchars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append('+');
-            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
-            sb.AppendLine();
-            for (int br = 0; br < BlockWidth; br++)
+            return ToString(cell =>
             {
-                for (int rr = 0; rr < BlockHeight; rr++)
-                {
-                    int row = br * BlockHeight + rr;
-                    sb.Append('|');
-                    for (int bc = 0; bc < BlockHeight; bc++)
-                    {
-                        for (int cc = 0; cc < BlockWidth; cc++)
-                        {
-                            int col = bc * BlockWidth + cc;
-                            var cell = GetCellByRowColumn(row, col);
-                            if (cell.GivenValue.HasValue)
-                                sb.Append(challengechars[cell.GivenValue.Value]);
-                            else if (cell.CalculatedValue.HasValue)
-                                sb.Append(calculatedchars[cell.CalculatedValue.Value]);
-                            else
-                                sb.Append('.');
-                        }
-                        sb.Append('|');
-                    }
-                    sb.AppendLine();
-                }
-                sb.Append('+');
-                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
-                sb.AppendLine();
-            }
+                if (cell.GivenValue.HasValue)
+                    return challengechars[cell.GivenValue.Value].ToString();
+                else if (cell.CalculatedValue.HasValue)
+                    return calculatedchars[cell.CalculatedValue.Value].ToString();
+                else
+                    return ".";
+            });
 
-            return sb.ToString();
         }
 
         /// <summary>
@@ -248,37 +257,13 @@ namespace SudokuX.Solver.Grids
              */
             const string chars = "0123456789ABCDEF";
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append('+');
-            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
-            sb.AppendLine();
-            for (int br = 0; br < BlockWidth; br++)
+            return ToString(cell =>
             {
-                for (int rr = 0; rr < BlockHeight; rr++)
-                {
-                    int row = br * BlockHeight + rr;
-                    sb.Append('|');
-                    for (int bc = 0; bc < BlockHeight; bc++)
-                    {
-                        for (int cc = 0; cc < BlockWidth; cc++)
-                        {
-                            int col = bc * BlockWidth + cc;
-                            var cell = GetCellByRowColumn(row, col);
-                            if (cell.GivenValue.HasValue)
-                                sb.Append(chars[cell.GivenValue.Value]);
-                            else
-                                sb.Append('.');
-                        }
-                        sb.Append('|');
-                    }
-                    sb.AppendLine();
-                }
-                sb.Append('+');
-                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
-                sb.AppendLine();
-            }
-
-            return sb.ToString();
+                if (cell.GivenValue.HasValue)
+                    return chars[cell.GivenValue.Value].ToString();
+                else
+                    return ".";
+            });
         }
 
         /// <summary>

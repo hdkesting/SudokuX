@@ -189,6 +189,17 @@ namespace SudokuX.Solver.Core
             return new ProcessResult(score, val);
         }
 
+        public Validity ProcessBasicRule()
+        {
+            ISolverStrategy basic = new BasicRule();
+            var conclusions = ProcessGrid(basic).ToList();
+            int score = 0;
+            bool keepgoing = true;
+            ProcessConclusions(conclusions, ref score, ref keepgoing);
+
+            return _grid.IsChallengeDone();
+        }
+
         private bool ProcessConclusions(List<Conclusion> conclusions, ref int score, ref bool keepgoing)
         {
             bool foundone = false;
@@ -205,6 +216,7 @@ namespace SudokuX.Solver.Core
                         //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
                         conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
                         conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
+                        conclusion.TargetCell.CluesUsed += 1;
                         score += conclusion.ComplexityLevel;
                     }
                 }
@@ -213,8 +225,13 @@ namespace SudokuX.Solver.Core
                     foreach (var value in conclusion.ExcludedValues)
                     {
                         //Debug.WriteLine("Excluding value {1} from cell {0}", conclusion.TargetCell, value);
-                        foundone = conclusion.TargetCell.EraseAvailable(value) | foundone; // always erase
-                        score += conclusion.ComplexityLevel;
+                        var success = conclusion.TargetCell.EraseAvailable(value);
+                        foundone = foundone || success;
+                        if (success)
+                        {
+                            score += conclusion.ComplexityLevel;
+                            conclusion.TargetCell.CluesUsed += 1;
+                        }
                     }
                     conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
 
