@@ -240,6 +240,10 @@ namespace SudokuX.Solver.Core
             }
         }
 
+        /// <summary>
+        /// Empties the specified grid.
+        /// </summary>
+        /// <param name="grid">The grid.</param>
         private void Cleargrid(ISudokuGrid grid)
         {
             foreach (var cell in grid.AllCells().Where(c => c.GivenValue.HasValue))
@@ -247,6 +251,8 @@ namespace SudokuX.Solver.Core
                 cell.Reset(true);
             }
             ResetGrid(_grid);
+            ResetGridCounters();
+
             _nextQueue.Clear();
         }
 
@@ -326,7 +332,7 @@ namespace SudokuX.Solver.Core
                 }
             }
 
-            ResetGridCounters();
+            //ResetGridCounters();
 
             // select a new value
             if (cell.AvailableValues.Any())

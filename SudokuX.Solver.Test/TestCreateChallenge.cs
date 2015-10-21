@@ -197,7 +197,7 @@ namespace SudokuX.Solver.Test
             Debug.WriteLine(sb.ToString());
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
         [TestProperty("Time", "Long")]
         public void CreateChallenge12()
         {
@@ -217,7 +217,7 @@ namespace SudokuX.Solver.Test
         }
 
 
-        [TestMethod, Ignore]
+        [TestMethod]
         [TestProperty("Time", "Long")]
         public void CreateChallenge16()
         {
