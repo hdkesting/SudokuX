@@ -1,10 +1,12 @@
 ﻿using SudokuX.Solver.Core;
+using System;
 
 namespace SudokuX.Solver.Grids
 {
     /// <summary>
     /// Creates a 16x16 grid with square blocks.
     /// </summary>
+    [Serializable]
     public class Grid16X16 : RectangularGrid
     {
         /// <summary>

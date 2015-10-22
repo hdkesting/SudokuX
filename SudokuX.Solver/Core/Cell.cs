@@ -8,6 +8,7 @@ namespace SudokuX.Solver.Core
     /// <summary>
     /// A single cell in the sudoku grid.
     /// </summary>
+    [Serializable]
     public class Cell
     {
         /// <summary>

@@ -11,6 +11,8 @@ namespace SudokuX.Solver.Grids
     /// <summary>
     /// A basic N x N grid, without blocks
     /// </summary>
+    [DebuggerVisualizer(typeof(Visualizers.GridVisualizer))]
+    [Serializable]
     public abstract class BasicGrid : ISudokuGrid
     {
         private readonly List<CellGroup> _rows = new List<CellGroup>();

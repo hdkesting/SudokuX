@@ -4,12 +4,14 @@ using System.Linq;
 using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
+using System.Text;
 
 namespace SudokuX.Solver.Grids
 {
     /// <summary>
     /// Base class for irregular-blocked grids.
     /// </summary>
+    [System.Serializable]
     public abstract class IrregularGrid : BasicGrid
     {
         private readonly List<CellGroup> _blocks = new List<CellGroup>();
@@ -332,5 +334,81 @@ namespace SudokuX.Solver.Grids
         {
             get { return false; }
         }
+
+        public override string ToString()
+        {
+            return ToBlockStructureString() + Environment.NewLine + ToSolutionString();
+        }
+
+        private string ToBlockStructureString()
+        {
+            var sb = new StringBuilder(GridSize * (GridSize + 2));
+
+            var chars = "ABCDEFGHIJKLMNOP";
+
+            sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
+            for (int r=0; r<GridSize; r++)
+            {
+                sb.Append('|');
+                for (int c=0; c<GridSize; c++)
+                {
+                    var cell = this.GetCellByRowColumn(r, c);
+                    var block = cell.ContainingGroups.First(g => g.GroupType == GroupType.Block).Ordinal;
+                    sb.Append(chars[block]);
+                }
+                sb.AppendLine("|");
+            }
+            sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
+
+            return sb.ToString();
+        }
+
+        public string ToString(Func<Cell, string> cellprinter)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
+
+            for (int r = 0; r < GridSize; r++)
+            {
+                sb.Append('|');
+                for (int c = 0; c < GridSize; c++)
+                {
+                    var cell = this.GetCellByRowColumn(r, c);
+                    sb.Append(cellprinter(cell));
+                }
+                sb.AppendLine("|");
+            }
+            sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
+
+            return sb.ToString();
+        }
+
+        public string ToSolutionString()
+        {
+            /*
+             *   +--+--+
+             *   |12|34|
+             *   |34|12|
+             *   +--+--+
+             *   |23|41|
+             *   |41|23|
+             *   +--+--+
+             */
+
+            const string challengechars = "0123456789ABCDEF";
+            const string calculatedchars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
+
+            return ToString(cell =>
+            {
+                if (cell.GivenValue.HasValue)
+                    return challengechars[cell.GivenValue.Value].ToString();
+                else if (cell.CalculatedValue.HasValue)
+                    return calculatedchars[cell.CalculatedValue.Value].ToString();
+                else
+                    return ".";
+            });
+
+        }
+
     }
 }

@@ -5,6 +5,7 @@ namespace SudokuX.Solver.Grids
     /// <summary>
     /// Creates a 9x9 grid with square blocks.
     /// </summary>
+    [System.Serializable]
     public class Grid9X9 : RectangularGrid
     {
         /// <summary>

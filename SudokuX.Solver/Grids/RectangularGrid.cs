@@ -12,6 +12,7 @@ namespace SudokuX.Solver.Grids
     /// <summary>
     /// Base class for grids with rectangular (or even square) blocks.
     /// </summary>
+    [System.Serializable]
     public abstract class RectangularGrid : BasicGrid, IRegularSudokuGrid
     {
         private readonly List<CellGroup> _blocks = new List<CellGroup>();

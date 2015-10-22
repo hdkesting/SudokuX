@@ -7,6 +7,7 @@ namespace SudokuX.Solver.Grids
     /// <summary>
     /// Creates a 9x9 grid with 4 extra "hyper" blocks
     /// </summary>
+    [System.Serializable]
     public class Hyper9 : Grid9X9
     {
         private CellGroup _blockNw, _blockNe, _blockSe, _blockSw;

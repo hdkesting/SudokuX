@@ -274,5 +274,14 @@ namespace SudokuX.Solver.Test
             Assert.AreEqual(Validity.Full, solver.Validity);
             Trace.WriteLine("Board score: " + solver.GridScore);
         }
+
+        [TestMethod, Ignore]
+        public void TestVisualizer()
+        {
+            var grid = new Grids.Irregular6(true);
+
+            // Note: shows *interactive* visualizer (meaning: user should close it)
+            Visualizers.GridVisualizer.TestShowVisualizer(grid);
+        }
     }
 }
