@@ -36,7 +36,7 @@ namespace SudokuX.Solver.SolverStrategies
                     .Select(sibling => new Conclusion(sibling, Complexity, new[] { value })));
             }
 
-            return result;
+            return result.Distinct();
         }
 
         /// <summary>
