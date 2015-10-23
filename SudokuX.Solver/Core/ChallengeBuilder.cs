@@ -269,16 +269,10 @@ namespace SudokuX.Solver.Core
             }
 
             // get a number of random positions and their symmetrics
-            var list = new List<PositionList>();
-            for (int i = 0; i < _grid.GridSize / 2; i++)
-            {
-                var pos = _grid.GetRandomEmptyPosition(_rng);
-                if (pos != null)
-                {
-                    var sublist = _pattern.GetSymmetricPositions(pos, _grid.GridSize);
-                    list.Add(new PositionList(sublist));
-                }
-            }
+            var list = _grid.GetEmptyPositions(_rng)
+                .Take(_grid.GridSize/2)
+                .Select(p => new PositionList(_pattern.GetSymmetricPositions(p, _grid.GridSize)))
+                .ToList();
 
             if (!list.Any())
                 return null;

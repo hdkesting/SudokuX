@@ -174,23 +174,29 @@ namespace SudokuX.Solver.Grids
         }
 
         /// <summary>
-        /// Tries to get a random empty position.
+        /// Gets a list of empty positions.
         /// </summary>
-        /// <param name="rnd">The random.</param>
+        /// <param name="rnd">The random generator.</param>
         /// <returns></returns>
-        public Position GetRandomEmptyPosition(Random rnd)
+        public IEnumerable<Position> GetEmptyPositions(Random rnd)
         {
-            for (int count = 0; count < 20; count++)
+            Position pos = new Position(rnd.Next(GridSize), rnd.Next(GridSize));
+
+            while (true)
             {
-                Position pos = new Position(rnd.Next(GridSize), rnd.Next(GridSize));
                 Cell cell = _grid[pos.Row, pos.Column];
                 if (!cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Any())
                 {
-                    return pos;
+                    yield return pos;
                 }
-            }
 
-            return null;
+                if (pos.Column + 1 < GridSize)
+                    pos = new Position(pos.Row, pos.Column + 1);
+                else if (pos.Row + 1< GridSize)
+                    pos = new Position(pos.Row + 1, 0);
+                else
+                    pos = new Position(0, 0);
+            }
         }
 
         /// <summary>
