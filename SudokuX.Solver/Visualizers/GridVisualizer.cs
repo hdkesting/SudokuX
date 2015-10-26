@@ -27,31 +27,9 @@ namespace SudokuX.Solver.Visualizers
 
             var data = (Grids.BasicGrid)objectProvider.GetObject(); // error if it's not the correct object - fine
 
-            using (Form displayForm = new Form())
+            using (var frm = new GridVisualizerForm(data))
             {
-                displayForm.Text = data.GetType().Name;
-
-                var lb = new Label()
-                {
-                    Font = new System.Drawing.Font("Courier New", 12.0f),
-                    Text = data.ToString(),
-                    Left = 0,
-                    Top = 0,
-                    AutoSize = true
-                };
-                displayForm.Controls.Add(lb);
-
-                displayForm.KeyDown += DisplayForm_KeyDown;
-                windowService.ShowDialog(displayForm);
-            }
-        }
-
-        private void DisplayForm_KeyDown(object sender, KeyEventArgs e)
-        {
-            var form = (Form)sender;
-            if (e.KeyCode == Keys.Escape)
-            {
-                form.DialogResult = DialogResult.OK;
+                windowService.ShowDialog(frm);
             }
         }
 

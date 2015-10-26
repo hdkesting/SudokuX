@@ -306,5 +306,8 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        public abstract string PrintGrid(Func<Cell, string> cellprinter);
+
+        public abstract string ToChallengeString();
     }
 }

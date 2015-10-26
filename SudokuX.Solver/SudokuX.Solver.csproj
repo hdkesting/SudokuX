@@ -105,6 +105,17 @@
     <Compile Include="Core\Solver.cs" />
     <Compile Include="Support\StackExtensions.cs" />
     <Compile Include="Visualizers\GridVisualizer.cs" />
+    <Compile Include="Visualizers\GridVisualizerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Visualizers\GridVisualizerForm.Designer.cs">
+      <DependentUpon>GridVisualizerForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Visualizers\GridVisualizerForm.resx">
+      <DependentUpon>GridVisualizerForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

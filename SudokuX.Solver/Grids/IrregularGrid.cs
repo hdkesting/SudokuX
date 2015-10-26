@@ -337,35 +337,23 @@ namespace SudokuX.Solver.Grids
 
         public override string ToString()
         {
-            return ToBlockStructureString() + Environment.NewLine + ToSolutionString();
+            return ToSolutionString() + Environment.NewLine + ToBlockStructureString();
         }
 
         private string ToBlockStructureString()
         {
-            var sb = new StringBuilder(GridSize * (GridSize + 2));
-
             var chars = "ABCDEFGHIJKLMNOP";
 
-            sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
-            for (int r=0; r<GridSize; r++)
+            return PrintGrid(cell =>
             {
-                sb.Append('|');
-                for (int c=0; c<GridSize; c++)
-                {
-                    var cell = this.GetCellByRowColumn(r, c);
-                    var block = cell.ContainingGroups.First(g => g.GroupType == GroupType.Block).Ordinal;
-                    sb.Append(chars[block]);
-                }
-                sb.AppendLine("|");
-            }
-            sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
-
-            return sb.ToString();
+                var block = cell.ContainingGroups.First(g => g.GroupType == GroupType.Block).Ordinal;
+                return chars[block].ToString();
+            });
         }
 
-        public string ToString(Func<Cell, string> cellprinter)
+        public override string PrintGrid(Func<Cell, string> cellprinter)
         {
-            StringBuilder sb = new StringBuilder();
+            StringBuilder sb = new StringBuilder(GridSize * (GridSize + 2));
             sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
 
             for (int r = 0; r < GridSize; r++)
@@ -398,7 +386,7 @@ namespace SudokuX.Solver.Grids
             const string challengechars = "0123456789ABCDEF";
             const string calculatedchars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
 
-            return ToString(cell =>
+            return PrintGrid(cell =>
             {
                 if (cell.GivenValue.HasValue)
                     return challengechars[cell.GivenValue.Value].ToString();
@@ -407,8 +395,20 @@ namespace SudokuX.Solver.Grids
                 else
                     return ".";
             });
-
         }
 
+        public override string ToChallengeString()
+        {
+            const string challengechars = "0123456789ABCDEF";
+
+            return PrintGrid(cell =>
+            {
+                if (cell.GivenValue.HasValue)
+                    return challengechars[cell.GivenValue.Value].ToString();
+                else
+                    return ".";
+            });
+
+        }
     }
 }

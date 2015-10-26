@@ -57,17 +57,6 @@ namespace SudokuX.Solver.Core
                 };
                 handler(this, e);
             }
-
-#if DEBUG
-            var rectgrid = _grid as Grids.RectangularGrid;
-            if (rectgrid != null)
-            {
-                Trace.WriteLine(rectgrid.ToString(),"Full grid");
-                Trace.WriteLine(rectgrid.ToChallengeString(), "Challenge");
-                Trace.WriteLine(rectgrid.ToString(cell => cell.GivenOrCalculatedValue.HasValue ? "x " : cell.UsedComplexityLevel.ToString()+ " "), "Complexity");
-                Trace.WriteLine(rectgrid.ToString(cell => cell.GivenOrCalculatedValue.HasValue ? "x " : cell.CluesUsed.ToString() + " "), "Clues");
-            }
-#endif
         }
 
         public int BackTracks { get; private set; }
