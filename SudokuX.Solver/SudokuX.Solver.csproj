@@ -66,6 +66,7 @@
     </Compile>
     <Compile Include="Grids\Grid9X9WithX.cs" />
     <Compile Include="Grids\Hyper9.cs" />
+    <Compile Include="Grids\Irregular12.cs" />
     <Compile Include="Grids\Irregular6.cs" />
     <Compile Include="Grids\Irregular9.cs" />
     <Compile Include="Grids\IrregularGrid.cs" />

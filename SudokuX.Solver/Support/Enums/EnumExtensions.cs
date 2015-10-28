@@ -26,6 +26,7 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Board9X:
                     return 9;
                 case BoardSize.Board12:
+                case BoardSize.Irregular12:
                     return 12;
                 case BoardSize.Board16:
                     return 16;
@@ -45,6 +46,7 @@ namespace SudokuX.Solver.Support.Enums
             {
                 case BoardSize.Irregular6:
                 case BoardSize.Irregular9:
+                case BoardSize.Irregular12:
                     return true;
             }
 
@@ -84,6 +86,7 @@ namespace SudokuX.Solver.Support.Enums
 
                 case BoardSize.Board12:
                 case BoardSize.Board16:
+                case BoardSize.Irregular12:
                     return 4;
             }
             throw new InvalidEnumArgumentException("boardSize", (int)boardSize, typeof(BoardSize));
@@ -110,6 +113,7 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Board9X:
                 case BoardSize.Hyper9:
                 case BoardSize.Board12:
+                case BoardSize.Irregular12:
                     return 3;
 
                 case BoardSize.Board16:

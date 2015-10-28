@@ -238,6 +238,20 @@ namespace SudokuX.Solver
                         }
                     }
                 }
+            },
+            { BoardSize.Irregular12, new Dictionary<Difficulty, List<ISolverStrategy>>
+                {
+                    { Difficulty.Normal, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new NakedDouble(),
+                            new HiddenDouble(),
+                            new NakedTriple(),
+                            new HiddenTriple()
+                        }
+                    }
+                }
             }
         };
 
@@ -278,6 +292,9 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board16:
                     return new Grid16X16();
+
+                case BoardSize.Irregular12:
+                    return new Irregular12(generateBlocks);
             }
 
             throw new InvalidEnumArgumentException("size", (int)size, typeof(BoardSize));
@@ -310,6 +327,7 @@ namespace SudokuX.Solver
                 case BoardSize.Board6:
                 case BoardSize.Irregular6:
                 case BoardSize.Irregular9:
+                case BoardSize.Irregular12:
                     return new RandomPattern();
 
                 case BoardSize.Board9:

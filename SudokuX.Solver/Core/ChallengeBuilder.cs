@@ -30,7 +30,8 @@ namespace SudokuX.Solver.Core
             _rng = rng;
             _solver = new Solver(_grid, solvers);
 
-            _scoreCalculator = NextPositionStrategy.MinCluesUsed;
+            // The way to find what next position to fill. Has *some* influence on outcome, but not much.
+            _scoreCalculator = NextPositionStrategy.MaxSum;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;

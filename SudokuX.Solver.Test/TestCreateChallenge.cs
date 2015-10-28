@@ -275,6 +275,24 @@ namespace SudokuX.Solver.Test
             Trace.WriteLine("Board score: " + solver.GridScore);
         }
 
+        [TestMethod]
+        [Ignore]
+        public void CreateIrregular12Challenge()
+        {
+            var creator = new ChallengeCreator(BoardSize.Irregular12, Difficulty.Normal);
+            int seed = 141; // 146 worked?, 282 works (now), the rest (0-281) does NOT
+            while(! creator.CreateChallenge(new Random(seed)))
+            {
+                seed++;
+                Trace.WriteLine("seed = " + seed);
+            }
+
+            var grid = creator.Grid;
+            Assert.IsTrue(grid.IsAllKnown());
+            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+
+        }
+
         [TestMethod, Ignore]
         public void TestVisualizer()
         {
