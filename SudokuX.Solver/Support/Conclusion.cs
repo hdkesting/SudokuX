@@ -109,8 +109,8 @@ namespace SudokuX.Solver.Support
         public override int GetHashCode()
         {
             return TargetCell.GetHashCode()
-                + (ExactValue ?? 21) * 13
-                + ExcludedValues.Sum() * 17;
+                + (ExactValue ?? 21) * 128
+                + ExcludedValues.Count * 2048;
         }
 
         public override string ToString()

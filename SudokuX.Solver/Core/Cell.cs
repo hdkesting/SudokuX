@@ -243,5 +243,10 @@ namespace SudokuX.Solver.Core
         {
             return (_max < 10 ? "123456789" : "0123456789ABCDEF")[value - _min].ToString();
         }
+
+        public override int GetHashCode()
+        {
+            return Row * 32 + Column;
+        }
     }
 }
