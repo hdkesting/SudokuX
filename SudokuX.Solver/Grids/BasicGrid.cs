@@ -306,7 +306,13 @@ namespace SudokuX.Solver.Grids
             }
         }
 
-        public abstract string PrintGrid(Func<Cell, string> cellprinter);
+        /// <summary>
+        /// Prints the grid.
+        /// </summary>
+        /// <param name="cellsize">The max size of a cell.</param>
+        /// <param name="cellprinter">Convert cell into a string.</param>
+        /// <returns></returns>
+        public abstract string PrintGrid(int cellsize, Func<Cell, string> cellprinter);
 
         public abstract string ToChallengeString();
     }

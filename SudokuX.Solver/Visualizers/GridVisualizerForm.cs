@@ -48,11 +48,30 @@ namespace SudokuX.Solver.Visualizers
             }
             else if (sender == radioComplexity)
             {
-                GridLabel.Text = _sudokuGrid.PrintGrid(cell => cell.GivenOrCalculatedValue.HasValue ? "x " : cell.UsedComplexityLevel.ToString() + " ");
+                int max = Math.Max(1, _sudokuGrid.AllCells().Select(c => c.UsedComplexityLevel).Max().ToString().Length);
+
+                GridLabel.Text = _sudokuGrid.PrintGrid(max + 1, cell => cell.GivenOrCalculatedValue.HasValue ? "x" : cell.UsedComplexityLevel.ToString());
             }
             else if (sender == radioClues)
             {
-                GridLabel.Text = _sudokuGrid.PrintGrid(cell => cell.GivenOrCalculatedValue.HasValue ? "x " : cell.CluesUsed.ToString() + " ");
+                int max = Math.Max(1, _sudokuGrid.AllCells().Select(c => c.CluesUsed).Max().ToString().Length);
+                GridLabel.Text = _sudokuGrid.PrintGrid(max + 1, cell => cell.GivenOrCalculatedValue.HasValue ? "x" : cell.CluesUsed.ToString());
+            }
+            else if (sender == radioAvailable)
+            {
+                int max = Math.Max(3, _sudokuGrid.AllCells().Select(c => c.AvailableValues.Count).Max());
+
+                GridLabel.Text = _sudokuGrid.PrintGrid(max + 1,
+                    cell => {
+                        if (cell.GivenValue.HasValue)
+                            return "[" + cell.PrintValue(cell.GivenValue.Value) + "]";
+                        if (cell.CalculatedValue.HasValue)
+                            return "(" + cell.PrintValue(cell.CalculatedValue.Value) + ")";
+
+                        return Enumerable.Range(cell.MinValue, cell.MaxValue-cell.MinValue+1)
+                            .Select(v => cell.AvailableValues.Contains(v) ? cell.PrintValue(v) : ".")
+                            .Aggregate("", (s, av) => s + av);
+                    });
             }
         }
 

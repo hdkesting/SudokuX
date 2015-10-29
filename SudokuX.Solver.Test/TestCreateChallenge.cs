@@ -293,7 +293,8 @@ namespace SudokuX.Solver.Test
 
         }
 
-        [TestMethod, Ignore]
+        [TestMethod]
+        [Ignore]
         public void TestVisualizer()
         {
             var grid = new Grids.Irregular6(true);

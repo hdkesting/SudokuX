@@ -176,11 +176,11 @@ namespace SudokuX.Solver.Grids
             }
         }
 
-        public override string PrintGrid(Func<Cell, string> cellprinter)
+        public override string PrintGrid(int cellsize, Func<Cell, string> cellprinter)
         {
             StringBuilder sb = new StringBuilder();
             sb.Append('+');
-            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
+            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth * cellsize).Append('+');
             sb.AppendLine();
             for (int br = 0; br < BlockWidth; br++)
             {
@@ -194,14 +194,14 @@ namespace SudokuX.Solver.Grids
                         {
                             int col = bc * BlockWidth + cc;
                             var cell = GetCellByRowColumn(row, col);
-                            sb.Append(cellprinter(cell));
+                            sb.Append(cellprinter(cell).PadRight(cellsize));
                         }
                         sb.Append('|');
                     }
                     sb.AppendLine();
                 }
                 sb.Append('+');
-                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
+                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth * cellsize).Append('+');
                 sb.AppendLine();
             }
 
@@ -229,7 +229,7 @@ namespace SudokuX.Solver.Grids
             const string challengechars = "0123456789ABCDEF";
             const string calculatedchars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
 
-            return PrintGrid(cell =>
+            return PrintGrid(1, cell =>
             {
                 if (cell.GivenValue.HasValue)
                     return challengechars[cell.GivenValue.Value].ToString();
@@ -258,7 +258,7 @@ namespace SudokuX.Solver.Grids
              */
             const string chars = "0123456789ABCDEF";
 
-            return PrintGrid(cell =>
+            return PrintGrid(1, cell =>
             {
                 if (cell.GivenValue.HasValue)
                     return chars[cell.GivenValue.Value].ToString();

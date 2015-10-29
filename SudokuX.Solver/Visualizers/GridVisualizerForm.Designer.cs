@@ -33,13 +33,14 @@
             this.radioChallenge = new System.Windows.Forms.RadioButton();
             this.radioComplexity = new System.Windows.Forms.RadioButton();
             this.radioClues = new System.Windows.Forms.RadioButton();
+            this.radioAvailable = new System.Windows.Forms.RadioButton();
             this.SuspendLayout();
             // 
             // GridLabel
             // 
             this.GridLabel.AutoSize = true;
             this.GridLabel.Font = new System.Drawing.Font("Consolas", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.GridLabel.Location = new System.Drawing.Point(13, 44);
+            this.GridLabel.Location = new System.Drawing.Point(12, 68);
             this.GridLabel.Name = "GridLabel";
             this.GridLabel.Size = new System.Drawing.Size(90, 19);
             this.GridLabel.TabIndex = 0;
@@ -97,16 +98,33 @@
             this.radioClues.Click += new System.EventHandler(this.Radio_Click);
             this.radioClues.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Radio_KeyDown);
             // 
+            // radioAvailable
+            // 
+            this.radioAvailable.AutoSize = true;
+            this.radioAvailable.Location = new System.Drawing.Point(13, 37);
+            this.radioAvailable.Name = "radioAvailable";
+            this.radioAvailable.Size = new System.Drawing.Size(68, 17);
+            this.radioAvailable.TabIndex = 5;
+            this.radioAvailable.TabStop = true;
+            this.radioAvailable.Text = "Available";
+            this.radioAvailable.UseVisualStyleBackColor = true;
+            this.radioAvailable.Click += new System.EventHandler(this.Radio_Click);
+            this.radioAvailable.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Radio_KeyDown);
+            // 
             // GridVisualizerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
             this.ClientSize = new System.Drawing.Size(353, 387);
+            this.Controls.Add(this.radioAvailable);
             this.Controls.Add(this.radioClues);
             this.Controls.Add(this.radioComplexity);
             this.Controls.Add(this.radioChallenge);
             this.Controls.Add(this.radioSolution);
             this.Controls.Add(this.GridLabel);
+            this.MinimizeBox = false;
             this.Name = "GridVisualizerForm";
             this.Text = "GridVisualizerForm";
             this.ResumeLayout(false);
@@ -121,5 +139,6 @@
         private System.Windows.Forms.RadioButton radioChallenge;
         private System.Windows.Forms.RadioButton radioComplexity;
         private System.Windows.Forms.RadioButton radioClues;
+        private System.Windows.Forms.RadioButton radioAvailable;
     }
 }

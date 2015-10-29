@@ -344,17 +344,17 @@ namespace SudokuX.Solver.Grids
         {
             var chars = "ABCDEFGHIJKLMNOP";
 
-            return PrintGrid(cell =>
+            return PrintGrid(1, cell =>
             {
                 var block = cell.ContainingGroups.First(g => g.GroupType == GroupType.Block).Ordinal;
                 return chars[block].ToString();
             });
         }
 
-        public override string PrintGrid(Func<Cell, string> cellprinter)
+        public override string PrintGrid(int cellsize, Func<Cell, string> cellprinter)
         {
             StringBuilder sb = new StringBuilder(GridSize * (GridSize + 2));
-            sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
+            sb.Append('+').Append('-', GridSize * cellsize).Append('+').AppendLine();
 
             for (int r = 0; r < GridSize; r++)
             {
@@ -362,11 +362,11 @@ namespace SudokuX.Solver.Grids
                 for (int c = 0; c < GridSize; c++)
                 {
                     var cell = this.GetCellByRowColumn(r, c);
-                    sb.Append(cellprinter(cell));
+                    sb.Append(cellprinter(cell).PadRight(cellsize));
                 }
                 sb.AppendLine("|");
             }
-            sb.Append('+').Append('-', GridSize).Append('+').AppendLine();
+            sb.Append('+').Append('-', GridSize * cellsize).Append('+').AppendLine();
 
             return sb.ToString();
         }
@@ -386,7 +386,7 @@ namespace SudokuX.Solver.Grids
             const string challengechars = "0123456789ABCDEF";
             const string calculatedchars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
 
-            return PrintGrid(cell =>
+            return PrintGrid(1, cell =>
             {
                 if (cell.GivenValue.HasValue)
                     return challengechars[cell.GivenValue.Value].ToString();
@@ -401,7 +401,7 @@ namespace SudokuX.Solver.Grids
         {
             const string challengechars = "0123456789ABCDEF";
 
-            return PrintGrid(cell =>
+            return PrintGrid(1, cell =>
             {
                 if (cell.GivenValue.HasValue)
                     return challengechars[cell.GivenValue.Value].ToString();

@@ -58,6 +58,9 @@ namespace SudokuX.Solver.Core
 
             _available.AddRange(Enumerable.Range(_min, _max - _min + 1));
         }
+        
+        public int MinValue { get { return _min; } }
+        public int MaxValue { get { return _max; } }
 
         /// <summary>
         /// Gets or sets the name of this Cell.
@@ -234,6 +237,11 @@ namespace SudokuX.Solver.Core
             return _groups.SelectMany(g => g.Cells)
                 .Where(c => c != this)
                 .All(c => c.GivenValue != val && c.CalculatedValue != val);
+        }
+
+        public string PrintValue(int value)
+        {
+            return (_max < 10 ? "123456789" : "0123456789ABCDEF")[value - _min].ToString();
         }
     }
 }

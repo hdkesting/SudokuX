@@ -94,6 +94,12 @@ namespace SudokuX.Solver.Support
                 ListsAreEqual(ExcludedValues, other.ExcludedValues);
         }
 
+        public override bool Equals(object obj)
+        {
+            var other = obj as Conclusion;
+            return other == null ? false : Equals(other);
+        }
+
         /// <summary>
         /// Returns a hash code for this instance.
         /// </summary>
@@ -105,6 +111,14 @@ namespace SudokuX.Solver.Support
             return TargetCell.GetHashCode()
                 + (ExactValue ?? 21) * 13
                 + ExcludedValues.Sum() * 17;
+        }
+
+        public override string ToString()
+        {
+            return TargetCell.ToString() +
+                (ExactValue.HasValue
+                    ? " = " + ExactValue
+                    : " -- " + ExcludedValues.Aggregate("", (s, ev) => s + TargetCell.PrintValue(ev) + ", "));
         }
     }
 }
