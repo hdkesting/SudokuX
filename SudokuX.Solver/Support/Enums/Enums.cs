@@ -119,4 +119,21 @@
         Normal,
         Harder
     }
+
+    public enum SolverType
+    {
+        Unknown,
+        Basic,
+        NakedSingle,
+        HiddenSingle,
+        NakedDouble,
+        HiddenDouble,
+        NakedTriple,
+        HiddenTriple,
+        NakedQuad, // not implemented yet
+        HiddenQuad, // niy
+        LockedCandidates,
+        SolveWithColors,
+        XWing
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using SudokuX.Solver.Core;
+using SudokuX.Solver.Support.Enums;
 
 namespace SudokuX.Solver.Support
 {
@@ -15,24 +16,43 @@ namespace SudokuX.Solver.Support
         /// </summary>
         /// <param name="targetCell">The target cell.</param>
         /// <param name="complexityLevel">The complexity level.</param>
-        public Conclusion(Cell targetCell, int complexityLevel)
+        private Conclusion(SolverType solverType, Cell targetCell, int complexityLevel, IEnumerable<Cell> reasonCells)
         {
+            SolverType = solverType;
             TargetCell = targetCell;
             ComplexityLevel = complexityLevel;
             ExcludedValues = new List<int>();
+            ReasonCells = new System.Collections.ObjectModel.ReadOnlyCollection<Cell>(reasonCells.ToList());
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="Conclusion"/> class for excluded values.
+        /// Initializes a new instance of the <see cref="Conclusion" /> class for excluded values.
         /// </summary>
+        /// <param name="solverType">Type of the solver.</param>
         /// <param name="targetCell">The target cell.</param>
         /// <param name="complexityLevel">The complexity level.</param>
         /// <param name="excludedValues">The excluded values.</param>
-        public Conclusion(Cell targetCell, int complexityLevel, IEnumerable<int> excludedValues)
-            : this(targetCell, complexityLevel)
+        /// <param name="reasonCells">The reason for this conclusion.</param>
+        public Conclusion(SolverType solverType, Cell targetCell, int complexityLevel, IEnumerable<int> excludedValues, IEnumerable<Cell> reasonCells)
+            : this(solverType, targetCell, complexityLevel, reasonCells)
         {
             ExcludedValues.AddRange(excludedValues);
         }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Conclusion" /> class for a calculated value.
+        /// </summary>
+        /// <param name="solverType">Type of the solver.</param>
+        /// <param name="targetCell">The target cell.</param>
+        /// <param name="complexityLevel">The complexity level.</param>
+        /// <param name="exactValue">The exact value.</param>
+        /// <param name="reasonCells">The reason for this conclusion.</param>
+        public Conclusion(SolverType solverType, Cell targetCell, int complexityLevel, int exactValue, IEnumerable<Cell> reasonCells)
+            : this(solverType, targetCell, complexityLevel, reasonCells)
+        {
+            ExactValue = exactValue;
+        }
+
 
         /// <summary>
         /// Gets the target cell this conclusion is about.
@@ -57,6 +77,16 @@ namespace SudokuX.Solver.Support
         /// The excluded values.
         /// </value>
         public List<int> ExcludedValues { get; private set; }
+
+        /// <summary>
+        /// Gets the cells that are the reason for this <see cref="Conclusion"/>.
+        /// </summary>
+        /// <value>
+        /// The reason cells.
+        /// </value>
+        public System.Collections.ObjectModel.ReadOnlyCollection<Cell> ReasonCells { get; private set; }
+
+        public Enums.SolverType SolverType { get; set; }
 
         /// <summary>
         /// Gets the complexity level used to arrive at this conclusion.

@@ -112,6 +112,7 @@ namespace SudokuX.Solver.SolverStrategies
         private IEnumerable<Conclusion> BuildConclusions(CellGroup cellGroup, Cell first, Cell second, Cell third,
             IList<int> triple)
         {
+            var reason = new[] { first, second, third };
             foreach (var cell in cellGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c != first && c != second && c != third))
             {
                 // remove triplet values from cells other than that triple
@@ -119,7 +120,7 @@ namespace SudokuX.Solver.SolverStrategies
 
                 if (toomuch.Any())
                 {
-                    var c = new Conclusion(cell, Complexity, toomuch);
+                    var c = new Conclusion(Support.Enums.SolverType.NakedTriple, cell, Complexity, toomuch, reason);
                     yield return c;
                 }
             }

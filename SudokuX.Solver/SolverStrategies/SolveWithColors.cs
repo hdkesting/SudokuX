@@ -105,7 +105,7 @@ namespace SudokuX.Solver.SolverStrategies
                 {
                     var wrongcolor = wrong.First().Key;
                     var correctcell = startpair.Single(c => GetColor(colorgrid, c) != wrongcolor);
-                    result.Add(new Conclusion(correctcell, Complexity) { ExactValue=candidateValue });
+                    result.Add(new Conclusion(Support.Enums.SolverType.SolveWithColors, correctcell, Complexity, candidateValue, startpair));
                     return result; // return just this one
                 }
             }
@@ -126,7 +126,7 @@ namespace SudokuX.Solver.SolverStrategies
                     if (colors.Count == 2)
                     {
                         // this uncolored cell has siblings of both colors. It is no candidate.
-                        result.Add(new Conclusion(cell, Complexity, new[] { candidateValue }));
+                        result.Add(new Conclusion(Support.Enums.SolverType.SolveWithColors, cell, Complexity, new[] { candidateValue }, startpair));
                     }
                 }
             }

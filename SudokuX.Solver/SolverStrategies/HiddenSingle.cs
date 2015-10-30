@@ -67,7 +67,7 @@ namespace SudokuX.Solver.SolverStrategies
                 {
                     // just one possibility found!
                     //Debug.WriteLine("Found hidden single {0} in cell {1} in group {2}", val, latest, group);
-                    yield return new Conclusion(latest, Complexity) { ExactValue = val };
+                    yield return new Conclusion(Support.Enums.SolverType.HiddenSingle, latest, Complexity, val, group.Cells.Where(cc => !cc.GivenOrCalculatedValue.HasValue && cc != latest));
                 }
             }
         }

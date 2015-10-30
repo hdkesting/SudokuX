@@ -81,7 +81,7 @@ namespace SudokuX.Solver.SolverStrategies
                 // and contains this as a possible value
                 if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Contains(digit))
                 {
-                    conclusions.Add(new Conclusion(cell, Complexity, new[] { digit }));
+                    conclusions.Add(new Conclusion(SolverType.LockedCandidates, cell, Complexity, new[] { digit }, sourceGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue)));
                 }
             }
 
