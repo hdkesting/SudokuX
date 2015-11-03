@@ -32,7 +32,7 @@ namespace SudokuX.Solver.Core
             _solver = new Solver(_grid, solvers);
 
             // The way to find what next position to fill. Has *some* influence on outcome, but not much.
-            _scoreCalculator = NextPositionStrategy.MinComplexityLevel;
+            _scoreCalculator = NextPositionStrategy.TotalNumberOfAvailables;
             _scoreUseMax = true;
         }
 
