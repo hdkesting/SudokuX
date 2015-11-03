@@ -52,7 +52,7 @@ namespace SudokuX.Solver.Core
         /// Is this a valid full solution?
         /// </summary>
         /// <returns></returns>
-        Validity IsChallengeDone();
+        Validity CalculateValidity();
 
         /// <summary>
         /// Gets a list of empty positions.

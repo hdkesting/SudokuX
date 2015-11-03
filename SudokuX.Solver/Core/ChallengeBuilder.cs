@@ -22,6 +22,7 @@ namespace SudokuX.Solver.Core
         private readonly Queue<Position> _nextQueue = new Queue<Position>();
         private readonly Solver _solver;
         private readonly Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
+        private readonly bool _scoreUseMax;
 
         public ChallengeBuilder(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
         {
@@ -31,7 +32,8 @@ namespace SudokuX.Solver.Core
             _solver = new Solver(_grid, solvers);
 
             // The way to find what next position to fill. Has *some* influence on outcome, but not much.
-            _scoreCalculator = NextPositionStrategy.MaxSum;
+            _scoreCalculator = NextPositionStrategy.MinComplexityLevel;
+            _scoreUseMax = true;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -274,8 +276,8 @@ namespace SudokuX.Solver.Core
             }
 
             // get the highest scoring one
-            var winner = list.OrderByDescending(x => x.SeverityScore).First();
-
+            var winner = _scoreUseMax ? list.MaxBy(pl => pl.SeverityScore) : list.MinBy(pl => pl.SeverityScore);
+                
             // push winning list of positions onto queue
             foreach (var pos in winner.Positions)
             {

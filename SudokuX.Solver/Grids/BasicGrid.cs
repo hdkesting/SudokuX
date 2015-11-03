@@ -138,7 +138,7 @@ namespace SudokuX.Solver.Grids
         /// Is this a valid full solution?
         /// </summary>
         /// <returns></returns>
-        public Validity IsChallengeDone()
+        public Validity CalculateValidity()
         {
             Validity result = Validity.Full;
             if (AllCells().Any(c => !c.GivenOrCalculatedValue.HasValue && !c.AvailableValues.Any()))
@@ -185,7 +185,7 @@ namespace SudokuX.Solver.Grids
             while (true)
             {
                 Cell cell = _grid[pos.Row, pos.Column];
-                if (!cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Any())
+                if (!cell.GivenOrCalculatedValue.HasValue)
                 {
                     yield return pos;
                 }

@@ -19,7 +19,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
             Debug.WriteLine(((IRegularSudokuGrid)grid).ToChallengeString());
 
             var testgrid = grid.CloneBoardAsChallenge();
@@ -41,7 +41,7 @@ namespace SudokuX.Solver.Test
                 var grid = creator.Grid;
 
                 Assert.IsTrue(grid.IsAllKnown());
-                Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+                Assert.AreEqual(Validity.Full, grid.CalculateValidity());
                 var s = ((IRegularSudokuGrid)grid).ToChallengeString();
                 sb.AppendLine(s);
 
@@ -63,7 +63,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
             Debug.WriteLine(((IRegularSudokuGrid)grid).ToChallengeString());
 
             var testgrid = grid.CloneBoardAsChallenge();
@@ -86,7 +86,7 @@ namespace SudokuX.Solver.Test
                 var grid = creator.Grid;
 
                 Assert.IsTrue(grid.IsAllKnown());
-                Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+                Assert.AreEqual(Validity.Full, grid.CalculateValidity());
                 var s = ((IRegularSudokuGrid)grid).ToChallengeString();
                 sb.AppendLine(s);
 
@@ -108,7 +108,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
             Debug.WriteLine(((IRegularSudokuGrid)grid).ToChallengeString());
 
             var testgrid = grid.CloneBoardAsChallenge();
@@ -135,7 +135,7 @@ namespace SudokuX.Solver.Test
                 var grid = creator.Grid;
 
                 Assert.IsTrue(grid.IsAllKnown());
-                Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+                Assert.AreEqual(Validity.Full, grid.CalculateValidity());
                 var s = ((IRegularSudokuGrid)grid).ToChallengeString();
                 sb.AppendLine(s);
 
@@ -162,7 +162,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
             Debug.WriteLine(((IRegularSudokuGrid)grid).ToChallengeString());
 
             var testgrid = grid.CloneBoardAsChallenge();
@@ -184,7 +184,7 @@ namespace SudokuX.Solver.Test
                 var grid = creator.Grid;
 
                 Assert.IsTrue(grid.IsAllKnown());
-                Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+                Assert.AreEqual(Validity.Full, grid.CalculateValidity());
                 var s = ((IRegularSudokuGrid)grid).ToChallengeString();
                 sb.AppendLine(s);
 
@@ -206,7 +206,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
             Debug.WriteLine(((IRegularSudokuGrid)grid).ToChallengeString());
 
             var testgrid = grid.CloneBoardAsChallenge();
@@ -226,7 +226,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
             Debug.WriteLine(((IRegularSudokuGrid)grid).ToChallengeString());
         }
 
@@ -239,7 +239,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
 
             var testgrid = grid.CloneBoardAsChallenge();
             var solver = new GridSolver(creator.Solvers);
@@ -256,7 +256,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
         }
 
         [TestMethod]
@@ -267,7 +267,7 @@ namespace SudokuX.Solver.Test
             var grid = creator.Grid;
 
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
             var testgrid = grid.CloneBoardAsChallenge();
             var solver = new GridSolver(creator.Solvers);
             solver.Solve(testgrid);
@@ -289,7 +289,7 @@ namespace SudokuX.Solver.Test
 
             var grid = creator.Grid;
             Assert.IsTrue(grid.IsAllKnown());
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
 
         }
 

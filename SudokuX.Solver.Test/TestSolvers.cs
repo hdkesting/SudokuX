@@ -39,7 +39,7 @@ namespace SudokuX.Solver.Test
 
             var grid = Grid6X6.LoadFromString(gridstring);
 
-            Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Maybe, grid.CalculateValidity());
 
             var list = grid.GetCellByRowColumn(0, 0).AvailableValues.ToList();
 
@@ -363,7 +363,7 @@ namespace SudokuX.Solver.Test
             var solver = new Core.Solver(grid,
                 new ISolverStrategy[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
-            Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Maybe, grid.CalculateValidity());
             var res = solver.ProcessSolvers();
             Trace.WriteLine(res.Score);
             DumpGrid(grid);
@@ -394,7 +394,7 @@ namespace SudokuX.Solver.Test
             var solver = new Core.Solver(grid,
                 new ISolverStrategy[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
-            Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Maybe, grid.CalculateValidity());
             var res = solver.ProcessSolvers();
             Trace.WriteLine(res.Score);
             DumpGrid(grid);
@@ -425,7 +425,7 @@ namespace SudokuX.Solver.Test
             var solver = new Core.Solver(grid,
                 new ISolverStrategy[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
-            Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Maybe, grid.CalculateValidity());
             var res = solver.ProcessSolvers();
             Trace.WriteLine(res.Score);
             DumpGrid(grid);
@@ -460,7 +460,7 @@ namespace SudokuX.Solver.Test
                     new NakedTriple(), new LockedCandidates()
                 });
             // needs an X(Y)-Wing
-            Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Maybe, grid.CalculateValidity());
             var res = solver.ProcessSolvers();
             Trace.WriteLine(res.Score);
             DumpGrid(grid);
@@ -500,10 +500,10 @@ E  .  1  8   .  3  .  .   .  .  .  A   .  .  F  .
             var solver = new Core.Solver(grid,
                 new ISolverStrategy[] { new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble() });
 
-            Assert.AreEqual(Validity.Maybe, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Maybe, grid.CalculateValidity());
             solver.ProcessSolvers();
             DumpGrid(grid);
-            Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
         }
 
         private static void DumpGrid(ISudokuGrid grid)

@@ -19,15 +19,13 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <param name="grid">The grid.</param>
         /// <param name="positions">The positions.</param>
         /// <returns></returns>
-        public static int MaxSum(ISudokuGrid grid, IEnumerable<Position> positions)
+        public static int TotalNumberOfAvailables(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return positions.Select(p =>
-            {
-                var cell = grid.GetCellByRowColumn(p.Row, p.Column);
-                return cell.GivenOrCalculatedValue.HasValue 
-                        ? 0
-                        : cell.AvailableValues.Count;
-            }).Sum();
+            return positions
+                .Select(p => grid.GetCellByRowColumn(p.Row, p.Column))
+                .Where(c => !c.GivenOrCalculatedValue.HasValue)
+                .Select(c => c.AvailableValues.Count)
+                .Sum();
         }
 
         /// <summary>
@@ -39,16 +37,15 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <param name="grid">The grid.</param>
         /// <param name="positions">The positions.</param>
         /// <returns></returns>
-        public static int MinCount(ISudokuGrid grid, IEnumerable<Position> positions)
+        public static int MinNumberOfAvailables(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return -positions.Select(p =>
-            {
-                var cell = grid.GetCellByRowColumn(p.Row, p.Column);
-                return cell.GivenOrCalculatedValue.HasValue 
-                        ? 99
-                        : cell.AvailableValues.Count;
-            }).Min();
+            return positions
+                .Select(p => grid.GetCellByRowColumn(p.Row, p.Column))
+                .Where(c => !c.GivenOrCalculatedValue.HasValue)
+                .Select(c => c.AvailableValues.Count)
+                .Min();
         }
+
 
         /// <summary>
         /// Selects the maximum count of available values from the group.
@@ -56,13 +53,13 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <param name="grid">The grid.</param>
         /// <param name="positions">The positions.</param>
         /// <returns></returns>
-        public static int MaxCount(ISudokuGrid grid, IEnumerable<Position> positions)
+        public static int MaxNumberOfAvailables(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return positions.Select(p =>
-            {
-                var cell = grid.GetCellByRowColumn(p.Row, p.Column);
-                return cell.GivenOrCalculatedValue.HasValue ? 0 : cell.AvailableValues.Count;
-            }).Max();
+            return positions
+                .Select(p => grid.GetCellByRowColumn(p.Row, p.Column))
+                .Where(c => !c.GivenOrCalculatedValue.HasValue)
+                .Select(c => c.AvailableValues.Count)
+                .Max();
         }
 
         /// <summary>
@@ -87,13 +84,11 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <returns></returns>
         public static int MinComplexityLevel(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return -positions.Select(p =>
-                {
-                    var cell = grid.GetCellByRowColumn(p.Row, p.Column);
-                    return cell.GivenOrCalculatedValue.HasValue 
-                                    ? 99
-                                    : cell.UsedComplexityLevel;
-                }).Min();
+            return positions
+                .Select(p => grid.GetCellByRowColumn(p.Row, p.Column))
+                .Where(c => !c.GivenOrCalculatedValue.HasValue)
+                .Select(c => c.UsedComplexityLevel)
+                .Min();
         }
 
         /// <summary>
@@ -107,13 +102,11 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <returns></returns>
         public static int MinCluesUsed(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return -positions.Select(p =>
-            {
-                var cell = grid.GetCellByRowColumn(p.Row, p.Column);
-                return cell.GivenOrCalculatedValue.HasValue
-                                ? 99
-                                : cell.CluesUsed;
-            }).Min();
+            return positions
+                .Select(p => grid.GetCellByRowColumn(p.Row, p.Column))
+                .Where(c => !c.GivenOrCalculatedValue.HasValue)
+                .Select(c => c.CluesUsed)
+                .Min();
         }
 
     }

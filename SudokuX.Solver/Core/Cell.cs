@@ -211,7 +211,9 @@ namespace SudokuX.Solver.Core
                 _calculatedValue = null;
                 _available.Clear();
                 _available.AddRange(Enumerable.Range(_min, _max - _min + 1));
-                // do NOT reset "CluesUsed" or "UsedComplexityLevel"
+                // DO reset the next values, all conclusions will be done again
+                CluesUsed = 0;
+                UsedComplexityLevel = 0;
             }
         }
 

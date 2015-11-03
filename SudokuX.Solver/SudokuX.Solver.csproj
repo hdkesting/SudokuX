@@ -83,6 +83,7 @@
     <Compile Include="Support\EnumerableExtensions.cs" />
     <Compile Include="Support\Enums\EnumExtensions.cs" />
     <Compile Include="Support\Enums\Enums.cs" />
+    <Compile Include="Support\MoreLinq.cs" />
     <Compile Include="Support\PerformanceMeasurement.cs" />
     <Compile Include="Support\Position.cs" />
     <Compile Include="Support\PositionList.cs" />
