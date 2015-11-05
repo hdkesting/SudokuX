@@ -34,9 +34,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 3; }
+            get { return 3f; }
         }
 
         private IEnumerable<Conclusion> FindNakedDoubles(CellGroup cellGroup)

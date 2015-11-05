@@ -2,6 +2,7 @@
 using System.Linq;
 using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
+using System;
 
 namespace SudokuX.Solver.NextPositionStrategies
 {
@@ -84,11 +85,12 @@ namespace SudokuX.Solver.NextPositionStrategies
         /// <returns></returns>
         public static int MinComplexityLevel(ISudokuGrid grid, IEnumerable<Position> positions)
         {
-            return positions
+            var v = positions
                 .Select(p => grid.GetCellByRowColumn(p.Row, p.Column))
                 .Where(c => !c.GivenOrCalculatedValue.HasValue)
                 .Select(c => c.UsedComplexityLevel)
                 .Min();
+            return (int)Math.Ceiling(v);
         }
 
         /// <summary>

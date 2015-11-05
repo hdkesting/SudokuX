@@ -18,6 +18,7 @@ namespace SudokuX.Solver.Core
         private readonly ISudokuGrid _grid;
         private readonly IList<ISolverStrategy> _solvers;
         private readonly Dictionary<Type, PerformanceMeasurement> _measurements = new Dictionary<Type, PerformanceMeasurement>();
+        private readonly HashSet<SolverType> _usedSolvers = new HashSet<SolverType>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Solver"/> class.
@@ -55,6 +56,14 @@ namespace SudokuX.Solver.Core
         /// </value>
         public Dictionary<Type, PerformanceMeasurement> Measurements { get { return _measurements; } }
 
+        /// <summary>
+        /// Gets the solvers really used in this challenge.
+        /// </summary>
+        /// <value>
+        /// The used solvers.
+        /// </value>
+        public IList<SolverType> UsedSolvers { get { return _usedSolvers.ToList(); } }
+
         readonly Stopwatch _swConclusion = new Stopwatch();
 
         /// <summary>
@@ -66,11 +75,12 @@ namespace SudokuX.Solver.Core
             bool foundone = true;
             bool keepgoing = true;
 
-            int score = 0;
+            float score = 0;
             Validity val;
-            int max = 0;
+            float max = 0f;
 
             ISolverStrategy basic = new BasicRule();
+            _usedSolvers.Clear();
 
             while (foundone && keepgoing) // keep looping while there are results
             {
@@ -151,11 +161,12 @@ namespace SudokuX.Solver.Core
             bool foundone = true;
             bool keepgoing = true;
 
-            int score = 0;
+            float score = 0;
             Validity val;
-            int max = 0;
+            float max = 0f;
 
             ISolverStrategy basic = new BasicRule();
+            _usedSolvers.Clear();
 
             while (foundone && keepgoing) // keep looping while there are results
             {
@@ -193,14 +204,14 @@ namespace SudokuX.Solver.Core
         {
             ISolverStrategy basic = new BasicRule();
             var conclusions = ProcessGrid(basic).ToList();
-            int score = 0;
+            float score = 0;
             bool keepgoing = true;
             ProcessConclusions(conclusions, ref score, ref keepgoing);
 
             return _grid.CalculateValidity();
         }
 
-        private bool ProcessConclusions(List<Conclusion> conclusions, ref int score, ref bool keepgoing)
+        private bool ProcessConclusions(List<Conclusion> conclusions, ref float score, ref bool keepgoing)
         {
             bool foundone = false;
 
@@ -243,6 +254,7 @@ namespace SudokuX.Solver.Core
                     }
                 }
                 _swConclusion.Stop();
+                _usedSolvers.Add(conclusion.SolverType);
             }
             return foundone;
         }

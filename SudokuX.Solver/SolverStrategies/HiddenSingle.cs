@@ -35,9 +35,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 1; }
+            get { return 1.0f; }
         }
 
         private IEnumerable<Conclusion> HiddenSinglesInGroup(CellGroup group, int min, int max)

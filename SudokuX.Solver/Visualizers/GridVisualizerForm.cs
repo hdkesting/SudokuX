@@ -59,7 +59,7 @@ namespace SudokuX.Solver.Visualizers
             }
             else if (sender == radioAvailable)
             {
-                int max = Math.Max(3, _sudokuGrid.AllCells().Select(c => c.AvailableValues.Count).Max());
+                int max = _sudokuGrid.GridSize;
 
                 GridLabel.Text = _sudokuGrid.PrintGrid(max + 1,
                     cell => {

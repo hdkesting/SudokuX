@@ -69,6 +69,14 @@ namespace SudokuX.Solver.Core
         public int FullResets { get; private set; }
 
         /// <summary>
+        /// Gets the solvers really used in this challenge.
+        /// </summary>
+        /// <value>
+        /// The used solvers.
+        /// </value>
+        public IList<SolverType> UsedSolvers { get { return _solver.UsedSolvers.OrderBy(s => s).ToList(); } }
+
+        /// <summary>
         /// Gets the score calculator for a position list. Higher = better.
         /// </summary>
         /// <value>

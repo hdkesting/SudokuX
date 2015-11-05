@@ -34,9 +34,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 6; }
+            get { return 6f; }
         }
 
         private IEnumerable<Conclusion> FindHiddenTriples(CellGroup cellGroup, int minValue, int maxValue)

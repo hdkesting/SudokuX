@@ -35,9 +35,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 6; }
+            get { return 6f; }
         }
 
         private IList<Conclusion> EvaluateCandidates(int digit, ISudokuGrid grid)

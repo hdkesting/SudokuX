@@ -13,9 +13,9 @@ namespace SudokuX.Solver.SolverStrategies
     /// </summary>
     public class XYWing : ISolverStrategy
     {
-        public int Complexity
+        public float Complexity
         {
-            get { return 9; }
+            get { return 9f; }
         }
 
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)

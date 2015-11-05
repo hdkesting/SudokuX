@@ -16,7 +16,7 @@ namespace SudokuX.Solver.Support
         /// </summary>
         /// <param name="targetCell">The target cell.</param>
         /// <param name="complexityLevel">The complexity level.</param>
-        private Conclusion(SolverType solverType, Cell targetCell, int complexityLevel, IEnumerable<Cell> reasonCells)
+        private Conclusion(SolverType solverType, Cell targetCell, float complexityLevel, IEnumerable<Cell> reasonCells)
         {
             SolverType = solverType;
             TargetCell = targetCell;
@@ -33,7 +33,7 @@ namespace SudokuX.Solver.Support
         /// <param name="complexityLevel">The complexity level.</param>
         /// <param name="excludedValues">The excluded values.</param>
         /// <param name="reasonCells">The reason for this conclusion.</param>
-        public Conclusion(SolverType solverType, Cell targetCell, int complexityLevel, IEnumerable<int> excludedValues, IEnumerable<Cell> reasonCells)
+        public Conclusion(SolverType solverType, Cell targetCell, float complexityLevel, IEnumerable<int> excludedValues, IEnumerable<Cell> reasonCells)
             : this(solverType, targetCell, complexityLevel, reasonCells)
         {
             ExcludedValues.AddRange(excludedValues);
@@ -47,7 +47,7 @@ namespace SudokuX.Solver.Support
         /// <param name="complexityLevel">The complexity level.</param>
         /// <param name="exactValue">The exact value.</param>
         /// <param name="reasonCells">The reason for this conclusion.</param>
-        public Conclusion(SolverType solverType, Cell targetCell, int complexityLevel, int exactValue, IEnumerable<Cell> reasonCells)
+        public Conclusion(SolverType solverType, Cell targetCell, float complexityLevel, int exactValue, IEnumerable<Cell> reasonCells)
             : this(solverType, targetCell, complexityLevel, reasonCells)
         {
             ExactValue = exactValue;
@@ -94,7 +94,7 @@ namespace SudokuX.Solver.Support
         /// <value>
         /// The complexity level.
         /// </value>
-        public int ComplexityLevel { get; private set; }
+        public float ComplexityLevel { get; private set; }
 
         /// <summary>
         /// Returns a value indicating whether the to lists contain the same values, not necessarily in the same order.

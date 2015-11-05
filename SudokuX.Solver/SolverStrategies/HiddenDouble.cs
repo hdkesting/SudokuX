@@ -36,9 +36,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 4; }
+            get { return 4f; }
         }
 
         private IEnumerable<Conclusion> FindHiddenDoubles(CellGroup group, int min, int max)

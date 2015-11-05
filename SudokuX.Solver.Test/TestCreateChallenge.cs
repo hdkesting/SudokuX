@@ -5,6 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using SudokuX.Solver.Core;
 using SudokuX.Solver.SolverStrategies;
 using SudokuX.Solver.Support.Enums;
+using System.Linq;
 
 namespace SudokuX.Solver.Test
 {
@@ -110,6 +111,7 @@ namespace SudokuX.Solver.Test
             Assert.IsTrue(grid.IsAllKnown());
             Assert.AreEqual(Validity.Full, grid.CalculateValidity());
             Debug.WriteLine(((IRegularSudokuGrid)grid).ToChallengeString());
+            Debug.WriteLine("Solvers: " + String.Join("; ", creator.UsedSolvers));
 
             var testgrid = grid.CloneBoardAsChallenge();
             var solver = new GridSolver(creator.Solvers);
@@ -130,7 +132,7 @@ namespace SudokuX.Solver.Test
             var sb = new StringBuilder();
             for (int i = 1; i <= 30; i++)
             {
-                var creator = new ChallengeCreator(BoardSize.Board9, Difficulty.Normal);
+                var creator = new ChallengeCreator(BoardSize.Board9, Difficulty.Harder);
                 creator.CreateChallenge(new Random(i));
                 var grid = creator.Grid;
 
@@ -144,6 +146,7 @@ namespace SudokuX.Solver.Test
                 solver.Solve(testgrid);
                 Assert.AreEqual(Validity.Full, solver.Validity);
                 sb.AppendLine("Board score: " + solver.GridScore + " / " + solver.WeightedGridScore.ToString("0.0") + " - i=" + i);
+                sb.AppendLine("Solvers: " + String.Join(", ", creator.UsedSolvers));
 
                 testgrid = grid.CloneBoardAsChallenge();
                 solver = new GridSolver(new ISolverStrategy[] { new NakedSingle() });

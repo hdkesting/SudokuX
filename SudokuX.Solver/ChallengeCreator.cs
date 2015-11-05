@@ -55,6 +55,14 @@ namespace SudokuX.Solver
         }
 
         /// <summary>
+        /// Gets the solvers really used in this challenge.
+        /// </summary>
+        /// <value>
+        /// The used solvers.
+        /// </value>
+        public IList<SolverType> UsedSolvers { get; private set; }
+
+        /// <summary>
         /// Sets up the symmetry pattern and the solvers used (and thus the complexity level).
         /// </summary>
         /// <exception cref="System.InvalidOperationException">Unsupported board size.</exception>
@@ -104,6 +112,7 @@ namespace SudokuX.Solver
             builder.Progress -= builder_Progress;
 
             Debug.WriteLine("Created a grid in {0} ms with {1} backtracks and {2} values set ({3} full resets):", sw.ElapsedMilliseconds, builder.BackTracks, builder.ValueSets, builder.FullResets);
+            UsedSolvers = builder.UsedSolvers;
             DumpGrid(grid);
 
             return success;

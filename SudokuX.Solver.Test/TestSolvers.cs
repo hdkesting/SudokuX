@@ -452,21 +452,22 @@ namespace SudokuX.Solver.Test
 ";
 
             var grid = Grid9X9.LoadFromString(challenge);
+            Assert.AreEqual(Validity.Maybe, grid.CalculateValidity());
 
             var solver = new Core.Solver(grid,
                 new ISolverStrategy[]
                 {
                     new NakedSingle(), new HiddenSingle(), new NakedDouble(), new HiddenDouble(),
-                    new NakedTriple(), new LockedCandidates()
+                    new NakedTriple(), new HiddenTriple(), new LockedCandidates(), new SolveWithColors(),
+                    new XWing(), new XYWing()
                 });
-            // needs an X(Y)-Wing
-            Assert.AreEqual(Validity.Maybe, grid.CalculateValidity());
             var res = solver.ProcessSolvers();
             Trace.WriteLine(res.Score);
+            Trace.WriteLine("Solvers: " + String.Join(", ", solver.UsedSolvers));
             DumpGrid(grid);
             var s = grid.ToStatusString();
             Trace.WriteLine(s);
-            //Assert.AreEqual(Validity.Full, grid.IsChallengeDone());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
 
         }
 

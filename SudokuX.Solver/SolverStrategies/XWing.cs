@@ -18,9 +18,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 8; }
+            get { return 8f; }
         }
 
         /// <summary>

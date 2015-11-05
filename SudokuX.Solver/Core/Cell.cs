@@ -147,7 +147,7 @@ namespace SudokuX.Solver.Core
         /// <value>
         /// The used severity level.
         /// </value>
-        public int UsedComplexityLevel { get; set; }
+        public float UsedComplexityLevel { get; set; }
 
         /// <summary>
         /// Gets the number of conclusions used on this cell.

@@ -19,8 +19,8 @@ namespace SudokuX.Solver.Core
         /// Gets the complexity-score of this solver.
         /// </summary>
         /// <value>
-        /// The complexity.
+        /// The complexity score.
         /// </value>
-        int Complexity { get; }
+        float Complexity { get; }
     }
 }

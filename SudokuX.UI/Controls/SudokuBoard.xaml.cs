@@ -51,7 +51,7 @@ namespace SudokuX.UI.Controls
 
         public BoardSize BoardSize { get { return _boardSize; } }
 
-        public int GridScore { get; set; }
+        public float GridScore { get; set; }
 
         public double WeightedGridScore { get; set; }
 
