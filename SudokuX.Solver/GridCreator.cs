@@ -91,7 +91,22 @@ namespace SudokuX.Solver
                             new HiddenDouble(),
                             new NakedTriple(),
                             new XWing(),
-                            new SolveWithColors()
+                            new SolveWithColors(),
+                            new XYWing()
+                        }
+                    },
+                    { Difficulty.Harder, new List<ISolverStrategy>
+                        {
+                            new NakedSingle(),
+                            new HiddenSingle(),
+                            new LockedCandidates(),
+                            new NakedDouble(),
+                            new HiddenDouble(),
+                            new NakedTriple(),
+                            new HiddenTriple(),
+                            new XWing(),
+                            new SolveWithColors(),
+                            new XYWing()
                         }
                     }
                 }
@@ -127,7 +142,8 @@ namespace SudokuX.Solver
                             new HiddenDouble(),
                             new HiddenTriple(),
                             new SolveWithColors(),
-                            new XWing()
+                            new XWing(),
+                            new XYWing()
                         }
                     }
                 }
@@ -149,7 +165,8 @@ namespace SudokuX.Solver
                             new LockedCandidates(),
                             new NakedDouble(),
                             new HiddenDouble(),
-                            new HiddenTriple()
+                            new HiddenTriple(),
+                            new XYWing()
                         }
                     }
                 }
@@ -183,6 +200,7 @@ namespace SudokuX.Solver
                             new HiddenDouble(),
                             new HiddenTriple(),
                             new NakedTriple(),
+                            new XYWing(),
                         }
                     }
                 }

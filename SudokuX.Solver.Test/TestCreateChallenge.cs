@@ -128,7 +128,7 @@ namespace SudokuX.Solver.Test
         public void CreateChallenge9_multi()
         {
             var sb = new StringBuilder();
-            for (int i = 21; i <= 30; i++)
+            for (int i = 1; i <= 30; i++)
             {
                 var creator = new ChallengeCreator(BoardSize.Board9, Difficulty.Normal);
                 creator.CreateChallenge(new Random(i));

@@ -80,6 +80,7 @@
     <Compile Include="SolverStrategies\SolveWithColors.cs" />
     <Compile Include="SolverStrategies\HiddenTriple.cs" />
     <Compile Include="SolverStrategies\XWing.cs" />
+    <Compile Include="SolverStrategies\XYWing.cs" />
     <Compile Include="Support\EnumerableExtensions.cs" />
     <Compile Include="Support\Enums\EnumExtensions.cs" />
     <Compile Include="Support\Enums\Enums.cs" />

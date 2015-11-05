@@ -134,6 +134,7 @@
         HiddenQuad, // niy
         LockedCandidates,
         SolveWithColors,
-        XWing
+        XWing,
+        XYWing
     }
 }
