@@ -301,7 +301,7 @@ namespace SudokuX.UI.Controls
         public ISudokuGrid CloneGridForSolver()
         {
             // create an empty grid of the correct size
-            var clone = GridCreator.Create(_boardSize, false);
+            var clone = GridConfigurator.Create(_boardSize, false);
             if (_boardSize.IsIrregular())
             {
                 // for irregular blocks, copy their shape

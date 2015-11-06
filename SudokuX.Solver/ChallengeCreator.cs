@@ -30,7 +30,7 @@ namespace SudokuX.Solver
         {
             _boardSize = boardSize;
             _difficulty = difficulty;
-            _grid = GridCreator.Create(_boardSize);
+            _grid = GridConfigurator.Create(_boardSize);
 
             Setup();
         }
@@ -68,8 +68,8 @@ namespace SudokuX.Solver
         /// <exception cref="System.InvalidOperationException">Unsupported board size.</exception>
         private void Setup()
         {
-            _pattern = GridCreator.GetGridPattern(_boardSize, _difficulty);
-            _solvers = GridCreator.GetGridSolvers(_boardSize, _difficulty);
+            _pattern = GridConfigurator.GetGridPattern(_boardSize, _difficulty);
+            _solvers = GridConfigurator.GetGridSolvers(_boardSize, _difficulty);
         }
 
         /// <summary>

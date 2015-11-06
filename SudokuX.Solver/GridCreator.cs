@@ -11,9 +11,9 @@ using SudokuX.Solver.SolverStrategies;
 namespace SudokuX.Solver
 {
     /// <summary>
-    /// Creates empty grids and sets up solvers and such.
+    /// Configures empty grids and sets up solvers and such.
     /// </summary>
-    public static class GridCreator
+    public static class GridConfigurator
     {
         /// <summary>
         /// The list of possible levels for each board size, plus the solvers used.
