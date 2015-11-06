@@ -53,7 +53,7 @@
     <Compile Include="Core\Cell.cs" />
     <Compile Include="Core\CellGroup.cs" />
     <Compile Include="ChallengeCreator.cs" />
-    <Compile Include="GridCreator.cs" />
+    <Compile Include="GridConfigurator.cs" />
     <Compile Include="GridPatterns\Rotational2Pattern.cs" />
     <Compile Include="GridSolver.cs" />
     <Compile Include="Grids\BasicGrid.cs" />
