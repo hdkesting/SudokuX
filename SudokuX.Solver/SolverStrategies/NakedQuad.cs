@@ -16,7 +16,7 @@ namespace SudokuX.Solver.SolverStrategies
     {
         public float Complexity
         {
-            get { return 7f; }
+            get { return 8f; }
         }
 
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)

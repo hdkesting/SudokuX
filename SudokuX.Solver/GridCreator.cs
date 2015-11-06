@@ -19,264 +19,268 @@ namespace SudokuX.Solver
         /// The list of possible levels for each board size, plus the solvers used.
         /// </summary>
         /// <remarks>Make sure there is at least a "Difficulty.Normal" version.</remarks>
-        private static readonly Dictionary<BoardSize, Dictionary<Difficulty, List<ISolverStrategy>>> Levels = new Dictionary<BoardSize, Dictionary<Difficulty, List<ISolverStrategy>>>
+        private static readonly Dictionary<BoardSize, Dictionary<Difficulty, List<SolverType>>> Levels = new Dictionary<BoardSize, Dictionary<Difficulty, List<SolverType>>>
         {
-            { BoardSize.Board4, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Board4, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Easy, new List<ISolverStrategy>
+                    { Difficulty.Easy, new List<SolverType>
                         {
-                            new HiddenSingle()
+                            SolverType.HiddenSingle
                         }
                     },
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle()
+                            SolverType.HiddenSingle,
+                            SolverType.NakedSingle
                         }
                     }
                 }
             },
-            { BoardSize.Board6, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Board6, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Easy, new List<ISolverStrategy>
+                    { Difficulty.Easy, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle
                         }
                     },
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new NakedDouble(),
-                            new HiddenDouble()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble
                         }
                     }
                 }
             },
-            { BoardSize.Irregular6, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Irregular6, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Easy, new List<ISolverStrategy>
+                    { Difficulty.Easy, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle
                         }
                     },
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new NakedDouble(),
-                            new HiddenDouble()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble
                         }
                     }
                 }
             },
-            { BoardSize.Board9, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Board9, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Easy, new List<ISolverStrategy>
+                    { Difficulty.Easy, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble
                         }
                     },
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new NakedTriple(),
-                            new XWing(),
-                            new SolveWithColors(),
-                            new XYWing()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.XWing,
+                            SolverType.SolveWithColors,
+                            SolverType.XYWing
                         }
                     },
-                    { Difficulty.Harder, new List<ISolverStrategy>
+                    { Difficulty.Harder, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new NakedTriple(),
-                            new HiddenTriple(),
-                            new XWing(),
-                            new SolveWithColors(),
-                            new XYWing(),
-                            new HiddenQuad(),
-                            new NakedQuad()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.XWing,
+                            SolverType.SolveWithColors,
+                            SolverType.XWing,
+                            SolverType.SolveWithColors,
+                            SolverType.XYWing,
+                            SolverType.HiddenQuad,
+                            SolverType.NakedQuad
                         }
                     }
                 }
             },
-            { BoardSize.Board9X, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Board9X, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Easy, new List<ISolverStrategy>
+                    { Difficulty.Easy, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble
                         }
                     },
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new HiddenTriple(),
-                            new SolveWithColors()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.HiddenTriple,
+                            SolverType.SolveWithColors
                         }
                     },
-                    { Difficulty.Harder, new List<ISolverStrategy>
+                    { Difficulty.Harder, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new HiddenTriple(),
-                            new SolveWithColors(),
-                            new XWing(),
-                            new XYWing(),
-                            new HiddenQuad(),
-                            new NakedQuad()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.XWing,
+                            SolverType.XYWing,
+                            SolverType.HiddenQuad,
+                            SolverType.NakedQuad
                         }
                     }
                 }
             },
-            { BoardSize.Irregular9, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Irregular9, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Easy, new List<ISolverStrategy>
+                    { Difficulty.Easy, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble
                         }
                     },
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new HiddenTriple(),
-                            new XYWing()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.XYWing
                         }
                     }
                 }
             },
-            { BoardSize.Hyper9, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Hyper9, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Easy, new List<ISolverStrategy>
+                    { Difficulty.Easy, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble
                         }
                     },
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new HiddenTriple()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.HiddenTriple
                         }
                     },
-                    { Difficulty.Harder, new List<ISolverStrategy>
+                    { Difficulty.Harder, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new HiddenTriple(),
-                            new NakedTriple(),
-                            new XYWing(),
-                            new HiddenQuad(),
-                            new NakedQuad(),
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.XWing,
+                            SolverType.XYWing,
+                            SolverType.NakedQuad,
+                            SolverType.HiddenQuad
                         }
                     }
                 }
             },
-            { BoardSize.Board12, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Board12, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            //new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new NakedTriple(),
-                            new SolveWithColors()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.SolveWithColors
                         }
                     },
-                    { Difficulty.Harder, new List<ISolverStrategy>
+                    { Difficulty.Harder, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new NakedTriple(),
-                            new SolveWithColors(),
-                            new HiddenTriple(),
-                            new XWing(),
-                            new HiddenQuad(),
-                            new NakedQuad()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.HiddenTriple,
+                            SolverType.XWing,
+                            SolverType.HiddenQuad,
+                            SolverType.NakedQuad
                         }
                     }
                 }
             },
-            { BoardSize.Board16, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Board16, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new SolveWithColors()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble
                         }
                     },
-                    { Difficulty.Harder, new List<ISolverStrategy>
+                    { Difficulty.Harder, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new LockedCandidates(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new NakedTriple(),
-                            new SolveWithColors(),
-                            new HiddenQuad(),
-                            new NakedQuad()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.HiddenQuad,
+                            SolverType.NakedQuad
                         }
                     }
                 }
             },
-            { BoardSize.Irregular12, new Dictionary<Difficulty, List<ISolverStrategy>>
+            { BoardSize.Irregular12, new Dictionary<Difficulty, List<SolverType>>
                 {
-                    { Difficulty.Normal, new List<ISolverStrategy>
+                    { Difficulty.Normal, new List<SolverType>
                         {
-                            new NakedSingle(),
-                            new HiddenSingle(),
-                            new NakedDouble(),
-                            new HiddenDouble(),
-                            new NakedTriple(),
-                            new HiddenTriple()
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple
                         }
                     }
                 }
@@ -385,9 +389,44 @@ namespace SudokuX.Solver
 
             // get solvers for this difficulty (if present)
             if (sizedef.ContainsKey(difficulty))
-                return sizedef[difficulty];
+                return sizedef[difficulty].Select(GetSolver).ToList();
 
             throw new InvalidEnumArgumentException("difficulty", (int)difficulty, typeof(Difficulty));
+        }
+
+        public static ISolverStrategy GetSolver(SolverType solverType)
+        {
+            switch(solverType)
+            {
+                case SolverType.Basic:
+                    throw new InvalidOperationException("Do not use the BasicRule directly, it's built-in.");
+                case SolverType.NakedSingle:
+                    return new NakedSingle();
+                case SolverType.HiddenSingle:
+                    return new HiddenSingle();
+                case SolverType.NakedDouble:
+                    return new NakedDouble();
+                case SolverType.HiddenDouble:
+                    return new HiddenDouble();
+                case SolverType.NakedTriple:
+                    return new NakedTriple();
+                case SolverType.HiddenTriple:
+                    return new NakedTriple();
+                case SolverType.NakedQuad:
+                    return new NakedQuad();
+                case SolverType.HiddenQuad:
+                    return new HiddenQuad();
+                case SolverType.LockedCandidates:
+                    return new LockedCandidates();
+                case SolverType.SolveWithColors:
+                    return new SolveWithColors();
+                case SolverType.XWing:
+                    return new XWing();
+                case SolverType.XYWing:
+                    return new XYWing();
+            }
+
+            throw new InvalidEnumArgumentException("solverType", (int)solverType, typeof(SolverType));
         }
     }
 }
