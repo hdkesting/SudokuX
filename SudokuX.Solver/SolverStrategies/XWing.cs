@@ -69,15 +69,15 @@ namespace SudokuX.Solver.SolverStrategies
             foreach (var pair in groups.GetAllPairs())
             {
                 // find the groups in the "other" direction for the matching cells
-                var cellsInSourceGroup1 = pair.Item1.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit));
-                var cellsInSourceGroup2 = pair.Item2.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit));
+                var cellsInSourceGroup1 = pair[0].Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit));
+                var cellsInSourceGroup2 = pair[1].Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit));
 
                 var cross1 =
-                    pair.Item1.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
+                    pair[0].Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
                         .Select(c => c.ContainingGroups.First(g => g.GroupType == second))
                         .ToList();
                 var cross2 =
-                    pair.Item2.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
+                    pair[1].Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
                         .Select(c => c.ContainingGroups.First(g => g.GroupType == second))
                         .ToList();
 
@@ -88,7 +88,7 @@ namespace SudokuX.Solver.SolverStrategies
                     var reason = cellsInSourceGroup1.Union(cellsInSourceGroup2).ToList();
 
                     var res = cross1.SelectMany(g => g.Cells)
-                        .Where(c => !c.GivenOrCalculatedValue.HasValue && !c.ContainingGroups.Contains(pair.Item1) && !c.ContainingGroups.Contains(pair.Item2))
+                        .Where(c => !c.GivenOrCalculatedValue.HasValue && !c.ContainingGroups.Contains(pair[0]) && !c.ContainingGroups.Contains(pair[1]))
                         .Where(c => c.AvailableValues.Contains(digit))
                         .ToList();
 

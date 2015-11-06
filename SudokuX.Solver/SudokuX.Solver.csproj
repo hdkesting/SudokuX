@@ -77,6 +77,8 @@
     <Compile Include="Core\IGridPattern.cs" />
     <Compile Include="NextPositionStrategies\NextPositionStrategy.cs" />
     <Compile Include="SolverStrategies\BasicRule.cs" />
+    <Compile Include="SolverStrategies\HiddenQuad.cs" />
+    <Compile Include="SolverStrategies\NakedQuad.cs" />
     <Compile Include="SolverStrategies\SolveWithColors.cs" />
     <Compile Include="SolverStrategies\HiddenTriple.cs" />
     <Compile Include="SolverStrategies\XWing.cs" />

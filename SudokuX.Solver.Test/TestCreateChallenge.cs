@@ -104,7 +104,7 @@ namespace SudokuX.Solver.Test
         [TestMethod]
         public void CreateChallenge9()
         {
-            var creator = new ChallengeCreator(BoardSize.Board9, Difficulty.Normal);
+            var creator = new ChallengeCreator(BoardSize.Board9, Difficulty.Harder);
             creator.CreateChallenge(new Random(28)); // success depends very much on the "right" choice here - which is not correct
             var grid = creator.Grid;
 

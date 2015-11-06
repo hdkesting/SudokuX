@@ -130,8 +130,8 @@
         HiddenDouble,
         NakedTriple,
         HiddenTriple,
-        NakedQuad, // not implemented yet
-        HiddenQuad, // niy
+        NakedQuad,
+        HiddenQuad,
         LockedCandidates,
         SolveWithColors,
         XWing,

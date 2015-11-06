@@ -48,7 +48,6 @@ namespace SudokuX.Solver.SolverStrategies
             if (knownvals.Count >= maxValue - minValue - 2)
             {
                 // 3 open cells or less? never mind.
-                //return Enumerable.Empty<Conclusion>();
                 yield break;
             }
 
@@ -85,25 +84,6 @@ namespace SudokuX.Solver.SolverStrategies
         /// <returns></returns>
         private IEnumerable<IList<int>> GetTriplets(int minValue, int maxValue, IList<int> knowVals)
         {
-            //for (int i1 = minValue; i1 <= maxValue - 2; i1++)
-            //{
-            //    if (!knowVals.Contains(i1))
-            //    {
-            //        for (int i2 = i1 + 1; i2 <= maxValue - 1; i2++)
-            //        {
-            //            if (!knowVals.Contains(i2))
-            //            {
-            //                for (int i3 = i2 + 1; i3 <= maxValue; i3++)
-            //                {
-            //                    if (!knowVals.Contains(i3))
-            //                    {
-            //                        yield return new[] { i1, i2, i3 };
-            //                    }
-            //                }
-            //            }
-            //        }
-            //    }
-            //}
             return EnumerableExtensions.GetSubsets(minValue, maxValue, 3)
                 .Where(l => l.All(i => !knowVals.Contains(i)));
         }
