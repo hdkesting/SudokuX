@@ -36,9 +36,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 4; }
+            get { return 4f; }
         }
 
         private IEnumerable<Conclusion> FindHiddenDoubles(CellGroup group, int min, int max)
@@ -76,8 +76,9 @@ namespace SudokuX.Solver.SolverStrategies
                                         .Where(cell => !cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Intersect(potentialDouble).Any())
                                         .ToArray();
 
-                        var concl1 = new Conclusion(pair[0], Complexity, pair[0].AvailableValues.Except(potentialDouble));
-                        var concl2 = new Conclusion(pair[1], Complexity, pair[1].AvailableValues.Except(potentialDouble));
+                        var reasons = group.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c != pair[0] && c != pair[1]).ToList();
+                        var concl1 = new Conclusion(Support.Enums.SolverType.HiddenDouble, pair[0], Complexity, pair[0].AvailableValues.Except(potentialDouble), reasons);
+                        var concl2 = new Conclusion(Support.Enums.SolverType.HiddenDouble, pair[1], Complexity, pair[1].AvailableValues.Except(potentialDouble), reasons);
 
                         if (concl1.ExcludedValues.Any() || concl2.ExcludedValues.Any())
                         {

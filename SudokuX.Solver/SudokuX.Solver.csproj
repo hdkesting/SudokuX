@@ -38,8 +38,11 @@
     <DocumentationFile>bin\Release\SudokuX.Solver.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.DebuggerVisualizers, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -50,7 +53,7 @@
     <Compile Include="Core\Cell.cs" />
     <Compile Include="Core\CellGroup.cs" />
     <Compile Include="ChallengeCreator.cs" />
-    <Compile Include="GridCreator.cs" />
+    <Compile Include="GridConfigurator.cs" />
     <Compile Include="GridPatterns\Rotational2Pattern.cs" />
     <Compile Include="GridSolver.cs" />
     <Compile Include="Grids\BasicGrid.cs" />
@@ -63,6 +66,7 @@
     </Compile>
     <Compile Include="Grids\Grid9X9WithX.cs" />
     <Compile Include="Grids\Hyper9.cs" />
+    <Compile Include="Grids\Irregular12.cs" />
     <Compile Include="Grids\Irregular6.cs" />
     <Compile Include="Grids\Irregular9.cs" />
     <Compile Include="Grids\IrregularGrid.cs" />
@@ -73,12 +77,16 @@
     <Compile Include="Core\IGridPattern.cs" />
     <Compile Include="NextPositionStrategies\NextPositionStrategy.cs" />
     <Compile Include="SolverStrategies\BasicRule.cs" />
+    <Compile Include="SolverStrategies\HiddenQuad.cs" />
+    <Compile Include="SolverStrategies\NakedQuad.cs" />
     <Compile Include="SolverStrategies\SolveWithColors.cs" />
     <Compile Include="SolverStrategies\HiddenTriple.cs" />
     <Compile Include="SolverStrategies\XWing.cs" />
+    <Compile Include="SolverStrategies\XYWing.cs" />
     <Compile Include="Support\EnumerableExtensions.cs" />
     <Compile Include="Support\Enums\EnumExtensions.cs" />
     <Compile Include="Support\Enums\Enums.cs" />
+    <Compile Include="Support\MoreLinq.cs" />
     <Compile Include="Support\PerformanceMeasurement.cs" />
     <Compile Include="Support\Position.cs" />
     <Compile Include="Support\PositionList.cs" />
@@ -101,6 +109,18 @@
     <Compile Include="SolverStrategies\NakedTriple.cs" />
     <Compile Include="Core\Solver.cs" />
     <Compile Include="Support\StackExtensions.cs" />
+    <Compile Include="Visualizers\GridVisualizer.cs" />
+    <Compile Include="Visualizers\GridVisualizerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Visualizers\GridVisualizerForm.Designer.cs">
+      <DependentUpon>GridVisualizerForm.cs</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Visualizers\GridVisualizerForm.resx">
+      <DependentUpon>GridVisualizerForm.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

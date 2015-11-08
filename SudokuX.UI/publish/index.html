@@ -18,6 +18,9 @@
 				font-family: "Segoe UI", Arial, sans-serif;
 				color: darkblue;
 			}
+			h2:before {
+				content: "❇ "
+			}
 			figcaption {
 				font-variant: small-caps;
 	            color: darkred;
@@ -50,12 +53,13 @@
 				background-color: #dddddd;
 			}
 			
+@media (min-width: 1000px){			
 			section#inhoud {
 				position: fixed;
 				top: 50px;
 				left: 0px;
 			}
-			
+		}	
 			span.mark{
 				color: white;
 				background-color: darkred;
@@ -143,6 +147,7 @@
 						<li><a href="#spelen-start">Nieuw spel</a></li>
 						<li><a href="#spelen-plaatsen">Getal plaatsen</a></li>
 						<li><a href="#spelen-mogelijkheden">Mogelijkheden</a></li>
+						<li><a href="#spelen-hint">Hint</a></li>
 					</ul>
 				</li>
 				<li><a href="#toetsen">Toetsenbord</a></li>
@@ -254,7 +259,7 @@
 				<figcaption>Het getalblok</figcaption>
 				<img src="number_block.png" />
 			</figure>
-			<p>Het witte cijfertje geeft aan hoevaak dit getal nog geplaatst moet worden.</p>
+			<p>Het kleine witte cijfertje rechtsonder geeft aan hoevaak dit getal nog geplaatst moet worden.</p>
 			
 			<h3 id="spelen-mogelijkheden">Toon mogelijkheden</h3>
 			<p>Een nuttig hulpmiddel is het tonen van de getallen die nog op de open posities mogelijk zijn. Deze worden automatisch bijgehouden op basis van de geplaatste getallen.</p>
@@ -270,6 +275,10 @@
 				<img src="pencilmarks-on.png"/>
 			</figure>
 			<p>Hiermee is te kiezen of er "echte" getallen geplaatst worden (pen) of de mogelijkheden verwijderd worden (potlood).</p>
+			
+			<h3 id="spelen-hint">Hint</h3>
+			<p>Als je vast komt te zitten, kan je op de "Hint" knop drukken. Hierna wordt eerst gecontroleerd of de ingevulde getallen overeenkomen met de oplossing. Zo niet, dan worden deze velden gemarkeerd. Je kan de waarden wissen of het veld van een ander getal voorzien.<br/>
+			Als de ingevulde getallen kloppen, wordt een getal ingevuld. Mogelijk geeft dit genoeg informatie om verder te komen. Zo niet, dan kan de hint nogmaals gebruikt worden.</p>
 		</section>
 		
 		<section id="toetsen">
@@ -293,7 +302,7 @@
 				<figcaption>Nieuwe versie gevonden</figcaption>
 				<img src="Update-Available.png" />
 			</figure>
-
+		<p>Wordt deze nieuwe versie niet direct geaccepteerd, dan verschijnt dit venster pas als er weer een nieuwe versie gepubliceerd is. Of deïnstalleer de huidige versie en installeer opnieuw (dat is altijd de meest recente versie).</p>
 		<h3 id="installeren-smartscreen">SmartScreen meldingen</h3>
 		<p><em>Let op:</em> Op Windows 8 en 10 krijg ik bij het (her)installeren een ernstig klinkende "SmartScreen" melding, omdat het door mij geschreven programma niet in de Windows lijst van veilige programma's staat.
 			Zoals dit: <br/>
@@ -313,10 +322,10 @@
 		</p>
 		</section>
 		
-		<section id="flair">
+		<footer id="flair">
 		<a href="http://stackoverflow.com/users/121309/hans-kesting">
 <img src="http://stackoverflow.com/users/flair/121309.png?theme=clean" width="208" height="58" alt="profile for Hans Kesting at Stack Overflow, Q&amp;A for professional and enthusiast programmers" title="profile for Hans Kesting at Stack Overflow, Q&amp;A for professional and enthusiast programmers">
 </a>
-		</section>
+		</footer>
 	</body>
 </html>

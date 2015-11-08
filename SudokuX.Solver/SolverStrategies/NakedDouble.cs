@@ -34,9 +34,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 3; }
+            get { return 3f; }
         }
 
         private IEnumerable<Conclusion> FindNakedDoubles(CellGroup cellGroup)
@@ -88,12 +88,13 @@ namespace SudokuX.Solver.SolverStrategies
                     .Distinct()
                     .ToList();
 
+            var reason = new[] { cell1, cell2 };
             foreach (var sibling in cells)
             {
                 var todo = sibling.AvailableValues.Intersect(values).ToList();
                 if (todo.Any())
                 {
-                    yield return new Conclusion(sibling, Complexity, todo);
+                    yield return new Conclusion(Support.Enums.SolverType.NakedDouble, sibling, Complexity, todo, reason);
                 }
             }
         }

@@ -33,10 +33,10 @@ namespace SudokuX.Solver.SolverStrategies
                 result.AddRange(cell.ContainingGroups
                     .SelectMany(g => g.Cells)
                     .Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(value))
-                    .Select(sibling => new Conclusion(sibling, Complexity, new[] { value })));
+                    .Select(sibling => new Conclusion(Support.Enums.SolverType.Basic, sibling, Complexity, new[] { value }, new[] { cell })));
             }
 
-            return result;
+            return result.Distinct();
         }
 
         /// <summary>
@@ -45,9 +45,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 0; }
+            get { return 0f; }
         }
     }
 }

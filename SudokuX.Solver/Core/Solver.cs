@@ -18,6 +18,7 @@ namespace SudokuX.Solver.Core
         private readonly ISudokuGrid _grid;
         private readonly IList<ISolverStrategy> _solvers;
         private readonly Dictionary<Type, PerformanceMeasurement> _measurements = new Dictionary<Type, PerformanceMeasurement>();
+        private readonly HashSet<SolverType> _usedSolvers = new HashSet<SolverType>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Solver"/> class.
@@ -55,6 +56,14 @@ namespace SudokuX.Solver.Core
         /// </value>
         public Dictionary<Type, PerformanceMeasurement> Measurements { get { return _measurements; } }
 
+        /// <summary>
+        /// Gets the solvers really used in this challenge.
+        /// </summary>
+        /// <value>
+        /// The used solvers.
+        /// </value>
+        public IList<SolverType> UsedSolvers { get { return _usedSolvers.ToList(); } }
+
         readonly Stopwatch _swConclusion = new Stopwatch();
 
         /// <summary>
@@ -66,11 +75,12 @@ namespace SudokuX.Solver.Core
             bool foundone = true;
             bool keepgoing = true;
 
-            int score = 0;
+            float score = 0;
             Validity val;
-            int max = 0;
+            float max = 0f;
 
             ISolverStrategy basic = new BasicRule();
+            _usedSolvers.Clear();
 
             while (foundone && keepgoing) // keep looping while there are results
             {
@@ -78,7 +88,7 @@ namespace SudokuX.Solver.Core
                 var conclusions = ProcessGrid(basic).ToList();
                 ProcessConclusions(conclusions, ref score, ref keepgoing);
 
-                val = _grid.IsChallengeDone();
+                val = _grid.CalculateValidity();
                 if (val == Validity.Invalid)
                 {
                     return null; // not found due to error in grid
@@ -151,11 +161,12 @@ namespace SudokuX.Solver.Core
             bool foundone = true;
             bool keepgoing = true;
 
-            int score = 0;
+            float score = 0;
             Validity val;
-            int max = 0;
+            float max = 0f;
 
             ISolverStrategy basic = new BasicRule();
+            _usedSolvers.Clear();
 
             while (foundone && keepgoing) // keep looping while there are results
             {
@@ -163,7 +174,7 @@ namespace SudokuX.Solver.Core
                 var conclusions = ProcessGrid(basic).ToList();
                 ProcessConclusions(conclusions, ref score, ref keepgoing);
 
-                val = _grid.IsChallengeDone();
+                val = _grid.CalculateValidity();
                 if (val == Validity.Invalid)
                 {
                     return new ProcessResult(0, Validity.Invalid);
@@ -184,12 +195,23 @@ namespace SudokuX.Solver.Core
                 }
             }
 
-            val = _grid.IsChallengeDone();
+            val = _grid.CalculateValidity();
             Trace.WriteLine(String.Format("Solvers processed, max={0}, result={1}, score={2}", max, val, score));
             return new ProcessResult(score, val);
         }
 
-        private bool ProcessConclusions(List<Conclusion> conclusions, ref int score, ref bool keepgoing)
+        public Validity ProcessBasicRule()
+        {
+            ISolverStrategy basic = new BasicRule();
+            var conclusions = ProcessGrid(basic).ToList();
+            float score = 0;
+            bool keepgoing = true;
+            ProcessConclusions(conclusions, ref score, ref keepgoing);
+
+            return _grid.CalculateValidity();
+        }
+
+        private bool ProcessConclusions(List<Conclusion> conclusions, ref float score, ref bool keepgoing)
         {
             bool foundone = false;
 
@@ -205,6 +227,7 @@ namespace SudokuX.Solver.Core
                         //Debug.WriteLine("Found value {1} for cell {0}", conclusion.TargetCell, conclusion.ExactValue.Value);
                         conclusion.TargetCell.SetCalculatedValue(conclusion.ExactValue.Value);
                         conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
+                        conclusion.TargetCell.CluesUsed += 1;
                         score += conclusion.ComplexityLevel;
                     }
                 }
@@ -213,8 +236,13 @@ namespace SudokuX.Solver.Core
                     foreach (var value in conclusion.ExcludedValues)
                     {
                         //Debug.WriteLine("Excluding value {1} from cell {0}", conclusion.TargetCell, value);
-                        foundone = conclusion.TargetCell.EraseAvailable(value) | foundone; // always erase
-                        score += conclusion.ComplexityLevel;
+                        var success = conclusion.TargetCell.EraseAvailable(value);
+                        foundone = foundone | success;
+                        if (success)
+                        {
+                            score += conclusion.ComplexityLevel;
+                            conclusion.TargetCell.CluesUsed += 1;
+                        }
                     }
                     conclusion.TargetCell.UsedComplexityLevel += conclusion.ComplexityLevel;
 
@@ -226,6 +254,7 @@ namespace SudokuX.Solver.Core
                     }
                 }
                 _swConclusion.Stop();
+                _usedSolvers.Add(conclusion.SolverType);
             }
             return foundone;
         }

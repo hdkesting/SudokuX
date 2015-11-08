@@ -7,6 +7,7 @@ namespace SudokuX.Solver.Grids
     /// <summary>
     /// Creates a 9x9 grid with square blocks and diagonals.
     /// </summary>
+    [System.Serializable]
     public class Grid9X9WithX : Grid9X9
     {
         private CellGroup _diagonal1, _diagonal2;

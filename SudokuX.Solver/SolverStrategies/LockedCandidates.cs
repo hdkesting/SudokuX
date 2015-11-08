@@ -35,9 +35,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 6; }
+            get { return 6f; }
         }
 
         private IList<Conclusion> EvaluateCandidates(int digit, ISudokuGrid grid)
@@ -81,7 +81,7 @@ namespace SudokuX.Solver.SolverStrategies
                 // and contains this as a possible value
                 if (!cell.ContainingGroups.Contains(sourceGroup) && !cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Contains(digit))
                 {
-                    conclusions.Add(new Conclusion(cell, Complexity, new[] { digit }));
+                    conclusions.Add(new Conclusion(SolverType.LockedCandidates, cell, Complexity, new[] { digit }, sourceGroup.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue)));
                 }
             }
 

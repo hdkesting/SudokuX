@@ -5,6 +5,7 @@ namespace SudokuX.Solver.Grids
     /// <summary>
     /// Creates a 6x6 grid with irregular blocks.
     /// </summary>
+    [System.Serializable]
     public class Irregular6 : IrregularGrid
     {
         /// <summary>

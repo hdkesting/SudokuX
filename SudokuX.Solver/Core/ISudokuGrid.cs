@@ -52,14 +52,14 @@ namespace SudokuX.Solver.Core
         /// Is this a valid full solution?
         /// </summary>
         /// <returns></returns>
-        Validity IsChallengeDone();
+        Validity CalculateValidity();
 
         /// <summary>
-        /// Gets a random empty position.
+        /// Gets a list of empty positions.
         /// </summary>
-        /// <param name="rnd">The random.</param>
+        /// <param name="rnd">The random generator.</param>
         /// <returns></returns>
-        Position GetRandomEmptyPosition(Random rnd);
+        IEnumerable<Position> GetEmptyPositions(Random rnd);
 
         /// <summary>
         /// Enumerates all the cells.

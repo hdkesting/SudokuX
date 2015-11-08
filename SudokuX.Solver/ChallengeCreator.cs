@@ -30,7 +30,7 @@ namespace SudokuX.Solver
         {
             _boardSize = boardSize;
             _difficulty = difficulty;
-            _grid = GridCreator.Create(_boardSize);
+            _grid = GridConfigurator.Create(_boardSize);
 
             Setup();
         }
@@ -55,13 +55,21 @@ namespace SudokuX.Solver
         }
 
         /// <summary>
+        /// Gets the solvers really used in this challenge.
+        /// </summary>
+        /// <value>
+        /// The used solvers.
+        /// </value>
+        public IList<SolverType> UsedSolvers { get; private set; }
+
+        /// <summary>
         /// Sets up the symmetry pattern and the solvers used (and thus the complexity level).
         /// </summary>
         /// <exception cref="System.InvalidOperationException">Unsupported board size.</exception>
         private void Setup()
         {
-            _pattern = GridCreator.GetGridPattern(_boardSize, _difficulty);
-            _solvers = GridCreator.GetGridSolvers(_boardSize, _difficulty);
+            _pattern = GridConfigurator.GetGridPattern(_boardSize, _difficulty);
+            _solvers = GridConfigurator.GetGridSolvers(_boardSize, _difficulty);
         }
 
         /// <summary>
@@ -96,20 +104,21 @@ namespace SudokuX.Solver
         {
             var sw = Stopwatch.StartNew();
 
-            var strategy = new ChallengeBuilder(grid, pattern, solvers, rng);
-            strategy.Progress += strategy_Progress;
-            var success = strategy.CreateGrid();
+            var builder = new ChallengeBuilder(grid, pattern, solvers, rng);
+            builder.Progress += builder_Progress;
+            var success = builder.CreateGrid();
 
             sw.Stop();
-            strategy.Progress -= strategy_Progress;
+            builder.Progress -= builder_Progress;
 
-            Debug.WriteLine("Created a grid in {0} ms with {1} backtracks and {2} values set ({3} full resets):", sw.ElapsedMilliseconds, strategy.BackTracks, strategy.ValueSets, strategy.FullResets);
+            Debug.WriteLine("Created a grid in {0} ms with {1} backtracks and {2} values set ({3} full resets):", sw.ElapsedMilliseconds, builder.BackTracks, builder.ValueSets, builder.FullResets);
+            UsedSolvers = builder.UsedSolvers;
             DumpGrid(grid);
 
             return success;
         }
 
-        private void strategy_Progress(object sender, ProgressEventArgs e)
+        private void builder_Progress(object sender, ProgressEventArgs e)
         {
             var progress = Progress;
 

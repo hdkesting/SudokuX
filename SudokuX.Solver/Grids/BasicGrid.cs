@@ -11,6 +11,8 @@ namespace SudokuX.Solver.Grids
     /// <summary>
     /// A basic N x N grid, without blocks
     /// </summary>
+    [DebuggerVisualizer(typeof(Visualizers.GridVisualizer))]
+    [Serializable]
     public abstract class BasicGrid : ISudokuGrid
     {
         private readonly List<CellGroup> _rows = new List<CellGroup>();
@@ -136,7 +138,7 @@ namespace SudokuX.Solver.Grids
         /// Is this a valid full solution?
         /// </summary>
         /// <returns></returns>
-        public Validity IsChallengeDone()
+        public Validity CalculateValidity()
         {
             Validity result = Validity.Full;
             if (AllCells().Any(c => !c.GivenOrCalculatedValue.HasValue && !c.AvailableValues.Any()))
@@ -172,23 +174,29 @@ namespace SudokuX.Solver.Grids
         }
 
         /// <summary>
-        /// Tries to get a random empty position.
+        /// Gets a list of empty positions.
         /// </summary>
-        /// <param name="rnd">The random.</param>
+        /// <param name="rnd">The random generator.</param>
         /// <returns></returns>
-        public Position GetRandomEmptyPosition(Random rnd)
+        public IEnumerable<Position> GetEmptyPositions(Random rnd)
         {
-            for (int count = 0; count < 20; count++)
-            {
-                Position pos = new Position(rnd.Next(GridSize), rnd.Next(GridSize));
-                Cell cell = _grid[pos.Row, pos.Column];
-                if (!cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Any())
-                {
-                    return pos;
-                }
-            }
+            Position pos = new Position(rnd.Next(GridSize), rnd.Next(GridSize));
 
-            return null;
+            while (true)
+            {
+                Cell cell = _grid[pos.Row, pos.Column];
+                if (!cell.GivenOrCalculatedValue.HasValue)
+                {
+                    yield return pos;
+                }
+
+                if (pos.Column + 1 < GridSize)
+                    pos = new Position(pos.Row, pos.Column + 1);
+                else if (pos.Row + 1< GridSize)
+                    pos = new Position(pos.Row + 1, 0);
+                else
+                    pos = new Position(0, 0);
+            }
         }
 
         /// <summary>
@@ -298,5 +306,14 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        /// <summary>
+        /// Prints the grid.
+        /// </summary>
+        /// <param name="cellsize">The max size of a cell.</param>
+        /// <param name="cellprinter">Convert cell into a string.</param>
+        /// <returns></returns>
+        public abstract string PrintGrid(int cellsize, Func<Cell, string> cellprinter);
+
+        public abstract string ToChallengeString();
     }
 }

@@ -12,7 +12,7 @@ namespace SudokuX.Solver.Support
         /// </summary>
         /// <param name="score">The score.</param>
         /// <param name="validity">The validity.</param>
-        public ProcessResult(int score, Validity validity)
+        public ProcessResult(float score, Validity validity)
             : this()
         {
             Score = score;
@@ -25,7 +25,7 @@ namespace SudokuX.Solver.Support
         /// <value>
         /// The score.
         /// </value>
-        public int Score { get; private set; }
+        public float Score { get; private set; }
 
         /// <summary>
         /// Gets the validity.

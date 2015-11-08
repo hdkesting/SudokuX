@@ -19,10 +19,7 @@ namespace SudokuX.Solver.SolverStrategies
         {
             var list = grid.AllCells().ToList()
                 .Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Count() == 1)
-                .Select(c =>
-                {
-                    return new Conclusion(c, Complexity) { ExactValue = c.AvailableValues.Single() };
-                })
+                .Select(c => new Conclusion(Support.Enums.SolverType.NakedSingle, c, Complexity, c.AvailableValues.Single(), new[] { c }))
                 .ToList();
 
             return list;
@@ -34,9 +31,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 1; }
+            get { return 1.5f; }
         }
     }
 }

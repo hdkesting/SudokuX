@@ -51,7 +51,7 @@ namespace SudokuX.UI.Controls
 
         public BoardSize BoardSize { get { return _boardSize; } }
 
-        public int GridScore { get; set; }
+        public float GridScore { get; set; }
 
         public double WeightedGridScore { get; set; }
 
@@ -301,7 +301,7 @@ namespace SudokuX.UI.Controls
         public ISudokuGrid CloneGridForSolver()
         {
             // create an empty grid of the correct size
-            var clone = GridCreator.Create(_boardSize, false);
+            var clone = GridConfigurator.Create(_boardSize, false);
             if (_boardSize.IsIrregular())
             {
                 // for irregular blocks, copy their shape

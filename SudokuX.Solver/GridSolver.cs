@@ -57,7 +57,7 @@ namespace SudokuX.Solver
         /// <value>
         /// The grid score.
         /// </value>
-        public int GridScore { get; private set; }
+        public float GridScore { get; private set; }
 
         /// <summary>
         /// Gets the validity of the solved grid.

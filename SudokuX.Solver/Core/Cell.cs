@@ -8,6 +8,7 @@ namespace SudokuX.Solver.Core
     /// <summary>
     /// A single cell in the sudoku grid.
     /// </summary>
+    [Serializable]
     public class Cell
     {
         /// <summary>
@@ -57,6 +58,9 @@ namespace SudokuX.Solver.Core
 
             _available.AddRange(Enumerable.Range(_min, _max - _min + 1));
         }
+        
+        public int MinValue { get { return _min; } }
+        public int MaxValue { get { return _max; } }
 
         /// <summary>
         /// Gets or sets the name of this Cell.
@@ -143,7 +147,15 @@ namespace SudokuX.Solver.Core
         /// <value>
         /// The used severity level.
         /// </value>
-        public int UsedComplexityLevel { get; set; }
+        public float UsedComplexityLevel { get; set; }
+
+        /// <summary>
+        /// Gets the number of conclusions used on this cell.
+        /// </summary>
+        /// <value>
+        /// The clues used.
+        /// </value>
+        public int CluesUsed { get; internal set; }
 
         private void AddToGroup(CellGroup cellGroup)
         {
@@ -188,7 +200,7 @@ namespace SudokuX.Solver.Core
         }
 
         /// <summary>
-        /// Resets this cell.
+        /// Resets this cell, optionally including a given value.
         /// </summary>
         /// <param name="clearGiven">if set to <c>true</c>, also clear the given (challenge) value.</param>
         public void Reset(bool clearGiven)
@@ -199,6 +211,9 @@ namespace SudokuX.Solver.Core
                 _calculatedValue = null;
                 _available.Clear();
                 _available.AddRange(Enumerable.Range(_min, _max - _min + 1));
+                // DO reset the next values, all conclusions will be done again
+                CluesUsed = 0;
+                UsedComplexityLevel = 0;
             }
         }
 
@@ -224,6 +239,16 @@ namespace SudokuX.Solver.Core
             return _groups.SelectMany(g => g.Cells)
                 .Where(c => c != this)
                 .All(c => c.GivenValue != val && c.CalculatedValue != val);
+        }
+
+        public string PrintValue(int value)
+        {
+            return (_max < 10 ? "123456789" : "0123456789ABCDEF")[value - _min].ToString();
+        }
+
+        public override int GetHashCode()
+        {
+            return Row * 32 + Column;
         }
     }
 }

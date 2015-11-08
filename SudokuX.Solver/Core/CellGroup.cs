@@ -7,6 +7,7 @@ namespace SudokuX.Solver.Core
     /// <summary>
     /// A full group of cells: a row, column, block (rectangular or not)  or diagonal.
     /// </summary>
+    [System.Serializable]
     public class CellGroup
     {
         private readonly List<Cell> _containedCells;

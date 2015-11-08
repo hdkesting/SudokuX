@@ -12,6 +12,7 @@ namespace SudokuX.Solver.Grids
     /// <summary>
     /// Base class for grids with rectangular (or even square) blocks.
     /// </summary>
+    [System.Serializable]
     public abstract class RectangularGrid : BasicGrid, IRegularSudokuGrid
     {
         private readonly List<CellGroup> _blocks = new List<CellGroup>();
@@ -175,6 +176,38 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        public override string PrintGrid(int cellsize, Func<Cell, string> cellprinter)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append('+');
+            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth * cellsize).Append('+');
+            sb.AppendLine();
+            for (int br = 0; br < BlockWidth; br++)
+            {
+                for (int rr = 0; rr < BlockHeight; rr++)
+                {
+                    int row = br * BlockHeight + rr;
+                    sb.Append('|');
+                    for (int bc = 0; bc < BlockHeight; bc++)
+                    {
+                        for (int cc = 0; cc < BlockWidth; cc++)
+                        {
+                            int col = bc * BlockWidth + cc;
+                            var cell = GetCellByRowColumn(row, col);
+                            sb.Append(cellprinter(cell).PadRight(cellsize));
+                        }
+                        sb.Append('|');
+                    }
+                    sb.AppendLine();
+                }
+                sb.Append('+');
+                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth * cellsize).Append('+');
+                sb.AppendLine();
+            }
+
+            return sb.ToString();
+        }
+
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents the calculated solution of this instance.
         /// </summary>
@@ -196,46 +229,23 @@ namespace SudokuX.Solver.Grids
             const string challengechars = "0123456789ABCDEF";
             const string calculatedchars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append('+');
-            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
-            sb.AppendLine();
-            for (int br = 0; br < BlockWidth; br++)
+            return PrintGrid(1, cell =>
             {
-                for (int rr = 0; rr < BlockHeight; rr++)
-                {
-                    int row = br * BlockHeight + rr;
-                    sb.Append('|');
-                    for (int bc = 0; bc < BlockHeight; bc++)
-                    {
-                        for (int cc = 0; cc < BlockWidth; cc++)
-                        {
-                            int col = bc * BlockWidth + cc;
-                            var cell = GetCellByRowColumn(row, col);
-                            if (cell.GivenValue.HasValue)
-                                sb.Append(challengechars[cell.GivenValue.Value]);
-                            else if (cell.CalculatedValue.HasValue)
-                                sb.Append(calculatedchars[cell.CalculatedValue.Value]);
-                            else
-                                sb.Append('.');
-                        }
-                        sb.Append('|');
-                    }
-                    sb.AppendLine();
-                }
-                sb.Append('+');
-                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
-                sb.AppendLine();
-            }
+                if (cell.GivenValue.HasValue)
+                    return challengechars[cell.GivenValue.Value].ToString();
+                else if (cell.CalculatedValue.HasValue)
+                    return calculatedchars[cell.CalculatedValue.Value].ToString();
+                else
+                    return ".";
+            });
 
-            return sb.ToString();
         }
 
         /// <summary>
         /// Returns a <see cref="System.String" /> that represents the challenge of this instance (blanks for calculated values).
         /// </summary>
         /// <returns></returns>
-        public string ToChallengeString()
+        public override string ToChallengeString()
         {
             /*
              *   +--+--+
@@ -248,37 +258,13 @@ namespace SudokuX.Solver.Grids
              */
             const string chars = "0123456789ABCDEF";
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append('+');
-            for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
-            sb.AppendLine();
-            for (int br = 0; br < BlockWidth; br++)
+            return PrintGrid(1, cell =>
             {
-                for (int rr = 0; rr < BlockHeight; rr++)
-                {
-                    int row = br * BlockHeight + rr;
-                    sb.Append('|');
-                    for (int bc = 0; bc < BlockHeight; bc++)
-                    {
-                        for (int cc = 0; cc < BlockWidth; cc++)
-                        {
-                            int col = bc * BlockWidth + cc;
-                            var cell = GetCellByRowColumn(row, col);
-                            if (cell.GivenValue.HasValue)
-                                sb.Append(chars[cell.GivenValue.Value]);
-                            else
-                                sb.Append('.');
-                        }
-                        sb.Append('|');
-                    }
-                    sb.AppendLine();
-                }
-                sb.Append('+');
-                for (int x = 0; x < BlockHeight; x++) sb.Append('-', BlockWidth).Append('+');
-                sb.AppendLine();
-            }
-
-            return sb.ToString();
+                if (cell.GivenValue.HasValue)
+                    return chars[cell.GivenValue.Value].ToString();
+                else
+                    return ".";
+            });
         }
 
         /// <summary>
@@ -288,7 +274,7 @@ namespace SudokuX.Solver.Grids
         /// <returns></returns>
         public string ToStatusString()
         {
-            var maxlength = AllCells().Select(c => c.GivenOrCalculatedValue.HasValue ? 0 : c.AvailableValues.Count).Max();
+            var maxlength = AllCells().Select(c => c.GivenOrCalculatedValue.HasValue ? 1 : c.AvailableValues.Count).Max();
 
             const string chars = "0123456789ABCDEF";
 

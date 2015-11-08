@@ -22,6 +22,7 @@ namespace SudokuX.Solver.Core
         private readonly Queue<Position> _nextQueue = new Queue<Position>();
         private readonly Solver _solver;
         private readonly Func<ISudokuGrid, IEnumerable<Position>, int> _scoreCalculator;
+        private readonly bool _scoreUseMax;
 
         public ChallengeBuilder(ISudokuGrid grid, IGridPattern pattern, IList<ISolverStrategy> solvers, Random rng)
         {
@@ -30,7 +31,9 @@ namespace SudokuX.Solver.Core
             _rng = rng;
             _solver = new Solver(_grid, solvers);
 
-            _scoreCalculator = NextPositionStrategy.MaxCount;
+            // The way to find what next position to fill. Has *some* influence on outcome, but not much.
+            _scoreCalculator = NextPositionStrategy.TotalNumberOfAvailables;
+            _scoreUseMax = true;
         }
 
         public event EventHandler<ProgressEventArgs> Progress;
@@ -64,6 +67,14 @@ namespace SudokuX.Solver.Core
         public int ValueSets { get; private set; }
 
         public int FullResets { get; private set; }
+
+        /// <summary>
+        /// Gets the solvers really used in this challenge.
+        /// </summary>
+        /// <value>
+        /// The used solvers.
+        /// </value>
+        public IList<SolverType> UsedSolvers { get { return _solver.UsedSolvers.OrderBy(s => s).ToList(); } }
 
         /// <summary>
         /// Gets the score calculator for a position list. Higher = better.
@@ -133,14 +144,6 @@ namespace SudokuX.Solver.Core
                         break;
 
                     case Validity.Maybe:
-                        //if (_grid.GetPercentageDone() > 0.5)
-                        //{
-                        //    _scoreCalculator = NextPositionStrategy.MinCount;
-                        //}
-                        //else
-                        //{
-                        //    _scoreCalculator = NextPositionStrategy.MaxSum;
-                        //}
                         swSelect.Start();
                         SelectExtraGiven();
                         swSelect.Stop();
@@ -193,6 +196,10 @@ namespace SudokuX.Solver.Core
             SelectValueForCell(cell);
         }
 
+        /// <summary>
+        /// Selects the value for cell, stores it on the stack and resets the grid.
+        /// </summary>
+        /// <param name="cell">The cell.</param>
         private void SelectValueForCell(Cell cell)
         {
             if (!cell.GivenOrCalculatedValue.HasValue && cell.AvailableValues.Any())
@@ -233,6 +240,10 @@ namespace SudokuX.Solver.Core
             }
         }
 
+        /// <summary>
+        /// Empties the specified grid.
+        /// </summary>
+        /// <param name="grid">The grid.</param>
         private void Cleargrid(ISudokuGrid grid)
         {
             foreach (var cell in grid.AllCells().Where(c => c.GivenValue.HasValue))
@@ -240,6 +251,8 @@ namespace SudokuX.Solver.Core
                 cell.Reset(true);
             }
             ResetGrid(_grid);
+            ResetGridCounters();
+
             _nextQueue.Clear();
         }
 
@@ -256,16 +269,10 @@ namespace SudokuX.Solver.Core
             }
 
             // get a number of random positions and their symmetrics
-            var list = new List<PositionList>();
-            for (int i = 0; i < _grid.GridSize / 2; i++)
-            {
-                var pos = _grid.GetRandomEmptyPosition(_rng);
-                if (pos != null)
-                {
-                    var sublist = _pattern.GetSymmetricPositions(pos, _grid.GridSize);
-                    list.Add(new PositionList(sublist));
-                }
-            }
+            var list = _grid.GetEmptyPositions(_rng)
+                .Take(_grid.GridSize/2)
+                .Select(p => new PositionList(_pattern.GetSymmetricPositions(p, _grid.GridSize)))
+                .ToList();
 
             if (!list.Any())
                 return null;
@@ -277,8 +284,8 @@ namespace SudokuX.Solver.Core
             }
 
             // get the highest scoring one
-            var winner = list.OrderByDescending(x => x.SeverityScore).First();
-
+            var winner = _scoreUseMax ? list.MaxBy(pl => pl.SeverityScore) : list.MinBy(pl => pl.SeverityScore);
+                
             // push winning list of positions onto queue
             foreach (var pos in winner.Positions)
             {
@@ -308,7 +315,7 @@ namespace SudokuX.Solver.Core
                 // is it a usefull value?
                 if (top.Remaining.Any())
                 {
-                    // reset the "available" list
+                    // reset the "available" list to the stored list
                     foreach (var oldval in top.Target.AvailableValues.Except(top.Remaining).ToList())
                     {
                         top.Target.EraseAvailable(oldval);
@@ -318,6 +325,8 @@ namespace SudokuX.Solver.Core
                     cell = top.Target;
                 }
             }
+
+            //ResetGridCounters();
 
             // select a new value
             if (cell.AvailableValues.Any())
@@ -329,6 +338,15 @@ namespace SudokuX.Solver.Core
             {
                 // no availables left, so go back one more 
                 Rewind();
+            }
+        }
+
+        private void ResetGridCounters()
+        {
+            foreach(var cell in _grid.AllCells())
+            {
+                cell.CluesUsed = 0;
+                cell.UsedComplexityLevel = 0;
             }
         }
 

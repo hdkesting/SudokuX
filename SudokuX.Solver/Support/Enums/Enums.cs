@@ -48,7 +48,9 @@
         /// <summary>
         /// A 9x9 board with 4 extra blocks
         /// </summary>
-        Hyper9
+        Hyper9,
+
+        Irregular12
     }
 
     /// <summary>
@@ -116,5 +118,23 @@
         Easy,
         Normal,
         Harder
+    }
+
+    public enum SolverType
+    {
+        Unknown,
+        Basic,
+        NakedSingle,
+        HiddenSingle,
+        NakedDouble,
+        HiddenDouble,
+        NakedTriple,
+        HiddenTriple,
+        NakedQuad,
+        HiddenQuad,
+        LockedCandidates,
+        SolveWithColors,
+        XWing,
+        XYWing
     }
 }

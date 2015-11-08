@@ -433,7 +433,7 @@ namespace SudokuX.UI
         private void BoardSize_Selected(object sender, RoutedEventArgs e)
         {
             // new board size has been selected, adjust difficulty dropdown accordingly
-            var rangeTuple = Solver.GridCreator.GetLevelRange(SelectedBoardSize);
+            var rangeTuple = Solver.GridConfigurator.GetLevelRange(SelectedBoardSize);
 
             if (DifficultyLevel != null)
             {
@@ -476,7 +476,7 @@ namespace SudokuX.UI
                     // 2) execute solver, get first positive result
                     // 3) place result & highlight cell
                     var gridcopy = _board.CloneGridForSolver();
-                    var solver = new GridSolver(GridCreator.GetGridSolvers(SelectedBoardSize, SelectedDifficulty));
+                    var solver = new GridSolver(GridConfigurator.GetGridSolvers(SelectedBoardSize, SelectedDifficulty));
                     var result = solver.SolveUntilFirstValue(gridcopy);
                     if (result != null)
                     {

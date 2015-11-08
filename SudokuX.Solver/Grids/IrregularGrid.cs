@@ -4,12 +4,14 @@ using System.Linq;
 using SudokuX.Solver.Core;
 using SudokuX.Solver.Support;
 using SudokuX.Solver.Support.Enums;
+using System.Text;
 
 namespace SudokuX.Solver.Grids
 {
     /// <summary>
     /// Base class for irregular-blocked grids.
     /// </summary>
+    [System.Serializable]
     public abstract class IrregularGrid : BasicGrid
     {
         private readonly List<CellGroup> _blocks = new List<CellGroup>();
@@ -331,6 +333,82 @@ namespace SudokuX.Solver.Grids
         public override bool IsRegular
         {
             get { return false; }
+        }
+
+        public override string ToString()
+        {
+            return ToSolutionString() + Environment.NewLine + ToBlockStructureString();
+        }
+
+        private string ToBlockStructureString()
+        {
+            var chars = "ABCDEFGHIJKLMNOP";
+
+            return PrintGrid(1, cell =>
+            {
+                var block = cell.ContainingGroups.First(g => g.GroupType == GroupType.Block).Ordinal;
+                return chars[block].ToString();
+            });
+        }
+
+        public override string PrintGrid(int cellsize, Func<Cell, string> cellprinter)
+        {
+            StringBuilder sb = new StringBuilder(GridSize * (GridSize + 2));
+            sb.Append('+').Append('-', GridSize * cellsize).Append('+').AppendLine();
+
+            for (int r = 0; r < GridSize; r++)
+            {
+                sb.Append('|');
+                for (int c = 0; c < GridSize; c++)
+                {
+                    var cell = this.GetCellByRowColumn(r, c);
+                    sb.Append(cellprinter(cell).PadRight(cellsize));
+                }
+                sb.AppendLine("|");
+            }
+            sb.Append('+').Append('-', GridSize * cellsize).Append('+').AppendLine();
+
+            return sb.ToString();
+        }
+
+        public string ToSolutionString()
+        {
+            /*
+             *   +--+--+
+             *   |12|34|
+             *   |34|12|
+             *   +--+--+
+             *   |23|41|
+             *   |41|23|
+             *   +--+--+
+             */
+
+            const string challengechars = "0123456789ABCDEF";
+            const string calculatedchars = "⓪①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮";
+
+            return PrintGrid(1, cell =>
+            {
+                if (cell.GivenValue.HasValue)
+                    return challengechars[cell.GivenValue.Value].ToString();
+                else if (cell.CalculatedValue.HasValue)
+                    return calculatedchars[cell.CalculatedValue.Value].ToString();
+                else
+                    return ".";
+            });
+        }
+
+        public override string ToChallengeString()
+        {
+            const string challengechars = "0123456789ABCDEF";
+
+            return PrintGrid(1, cell =>
+            {
+                if (cell.GivenValue.HasValue)
+                    return challengechars[cell.GivenValue.Value].ToString();
+                else
+                    return ".";
+            });
+
         }
     }
 }

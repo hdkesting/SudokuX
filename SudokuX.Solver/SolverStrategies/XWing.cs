@@ -18,9 +18,9 @@ namespace SudokuX.Solver.SolverStrategies
         /// <value>
         /// The complexity.
         /// </value>
-        public int Complexity
+        public float Complexity
         {
-            get { return 8; }
+            get { return 8f; }
         }
 
         /// <summary>
@@ -35,6 +35,14 @@ namespace SudokuX.Solver.SolverStrategies
                 var result = FindXWing(digit, grid, GroupType.Row, GroupType.Column);
                 if (result.Any())
                     return result;
+
+                // would this work?
+                //result = FindXWing(digit, grid, GroupType.SpecialLine, GroupType.Row);
+                //if (result.Any())
+                //    return result;
+                //result = FindXWing(digit, grid, GroupType.SpecialLine, GroupType.Column);
+                //if (result.Any())
+                //    return result;
 
                 result = FindXWing(digit, grid, GroupType.Column, GroupType.Row);
                 if (result.Any())
@@ -60,13 +68,16 @@ namespace SudokuX.Solver.SolverStrategies
             // check every possible pair
             foreach (var pair in groups.GetAllPairs())
             {
-                // find the "other" groups for the matching cells
+                // find the groups in the "other" direction for the matching cells
+                var cellsInSourceGroup1 = pair[0].Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit));
+                var cellsInSourceGroup2 = pair[1].Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit));
+
                 var cross1 =
-                    pair.Item1.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
+                    pair[0].Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
                         .Select(c => c.ContainingGroups.First(g => g.GroupType == second))
                         .ToList();
                 var cross2 =
-                    pair.Item2.Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
+                    pair[1].Cells.Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Contains(digit))
                         .Select(c => c.ContainingGroups.First(g => g.GroupType == second))
                         .ToList();
 
@@ -74,13 +85,15 @@ namespace SudokuX.Solver.SolverStrategies
                 if (cross1.All(g => cross2.Contains(g)))
                 {
                     // yes, it's an X-Wing. Now do I have useful conclusions?
+                    var reason = cellsInSourceGroup1.Union(cellsInSourceGroup2).ToList();
+
                     var res = cross1.SelectMany(g => g.Cells)
-                        .Where(c => !c.ContainingGroups.Contains(pair.Item1) && !c.ContainingGroups.Contains(pair.Item2))
+                        .Where(c => !c.GivenOrCalculatedValue.HasValue && !c.ContainingGroups.Contains(pair[0]) && !c.ContainingGroups.Contains(pair[1]))
                         .Where(c => c.AvailableValues.Contains(digit))
                         .ToList();
 
                     if (res.Any())
-                        return res.Select(c => new Conclusion(c, Complexity, new[] { digit }))
+                        return res.Select(c => new Conclusion(SolverType.XWing, c, Complexity, new[] { digit }, reason))
                                     .ToList();
                 }
             }
