@@ -1,4 +1,4 @@
-﻿using System.ComponentModel;
+﻿using System;
 
 namespace SudokuX.Solver.Support.Enums
 {
@@ -24,6 +24,7 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Board9:
                 case BoardSize.Irregular9:
                 case BoardSize.Board9X:
+                case BoardSize.Hyper9:
                     return 9;
                 case BoardSize.Board12:
                 case BoardSize.Irregular12:
@@ -32,7 +33,7 @@ namespace SudokuX.Solver.Support.Enums
                     return 16;
             }
 
-            throw new InvalidEnumArgumentException("boardSize", (int)boardSize, typeof(BoardSize));
+            throw new ArgumentException("Invalid boardsize for GridSize: " + boardSize, "boardSize");
         }
 
         /// <summary>
@@ -89,7 +90,8 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Irregular12:
                     return 4;
             }
-            throw new InvalidEnumArgumentException("boardSize", (int)boardSize, typeof(BoardSize));
+
+            throw new ArgumentException("Invalid boardsize for BlockWidth: " + boardSize, "boardSize");
 
         }
 
@@ -119,8 +121,8 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Board16:
                     return 4;
             }
-            throw new InvalidEnumArgumentException("boardSize", (int)boardSize, typeof(BoardSize));
 
+            throw new ArgumentException("Invalid boardsize for BlockHeight: " + boardSize, "boardSize");
         }
     }
 }
