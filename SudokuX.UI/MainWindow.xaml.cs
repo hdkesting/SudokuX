@@ -481,6 +481,11 @@ namespace SudokuX.UI
                     if (result != null)
                     {
                         // do it
+                        if (!_isPenSelected)
+                        {
+                            PenButton.IsChecked = true;
+                            PenPencil_OnClick(PenButton, null);
+                        }
                         var trans = new ValueTranslator(SelectedBoardSize);
                         HighlightCell(result.TargetCell.Row, result.TargetCell.Column);
                         await Task.Delay(500);
