@@ -297,6 +297,17 @@ namespace SudokuX.Solver.Test
         }
 
         [TestMethod]
+        public void Create8x8Mix()
+        {
+            var creator = new ChallengeCreator(BoardSize.Board8Mix, Difficulty.Normal);
+            creator.CreateChallenge();
+            var grid = creator.Grid;
+
+            Assert.IsTrue(grid.IsAllKnown());
+            Assert.AreEqual(Validity.Full, grid.CalculateValidity());
+        }
+
+        [TestMethod]
         [Ignore]
         public void TestVisualizer()
         {

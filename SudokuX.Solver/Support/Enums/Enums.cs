@@ -63,7 +63,12 @@
         /// <summary>
         /// An 8x8 board of 2x4 blocks
         /// </summary>
-        Board8Column
+        Board8Column,
+
+        /// <summary>
+        /// An 8x8 board with a mix of horizontal and vertical 2x4 blocks.
+        /// </summary>
+        Board8Mix
     }
 
     /// <summary>

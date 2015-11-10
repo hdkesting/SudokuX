@@ -2,6 +2,7 @@
 
 namespace SudokuX.Solver.Grids
 {
+    [System.Serializable]
     public class Grid8X8Row : RectangularGrid
     {
         public Grid8X8Row() 

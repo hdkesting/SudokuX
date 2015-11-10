@@ -63,6 +63,7 @@
     <Compile Include="Grids\Grid4x4.cs" />
     <Compile Include="Grids\Grid6X6.cs" />
     <Compile Include="Grids\Grid8X8Column.cs" />
+    <Compile Include="Grids\Grid8X8Mix.cs" />
     <Compile Include="Grids\Grid8X8Row.cs" />
     <Compile Include="Grids\Grid9X9.cs">
       <SubType>Code</SubType>

@@ -23,6 +23,7 @@ namespace SudokuX.Solver.Support.Enums
                     return 6;
                 case BoardSize.Board8Column:
                 case BoardSize.Board8Row:
+                case BoardSize.Board8Mix:
                     return 8;
                 case BoardSize.Board9:
                 case BoardSize.Irregular9:
@@ -90,6 +91,7 @@ namespace SudokuX.Solver.Support.Enums
                     return 3;
 
                 case BoardSize.Board8Row:
+                case BoardSize.Board8Mix:
                 case BoardSize.Board12:
                 case BoardSize.Board16:
                 case BoardSize.Irregular12:
@@ -114,6 +116,7 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Board6:
                 case BoardSize.Irregular6:
                 case BoardSize.Board8Row:
+                case BoardSize.Board8Mix:
                     return 2;
 
                 case BoardSize.Board9:

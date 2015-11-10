@@ -315,6 +315,21 @@ namespace SudokuX.Solver
                         }
                     }
                 }
+            },
+            { BoardSize.Board8Mix, new Dictionary<Difficulty, List<SolverType>>
+                {
+                    { Difficulty.Normal, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple
+                        }
+                    }
+                }
             }
         };
 
@@ -366,6 +381,9 @@ namespace SudokuX.Solver
 
                 case BoardSize.Board8Row:
                     return new Grid8X8Row();
+
+                case BoardSize.Board8Mix:
+                    return new Grid8X8Mix();
             }
 
             throw new InvalidEnumArgumentException("size", (int)size, typeof(BoardSize));
@@ -397,6 +415,7 @@ namespace SudokuX.Solver
                 case BoardSize.Board4:
                 case BoardSize.Board6:
                 case BoardSize.Irregular6:
+                case BoardSize.Board8Mix:
                 case BoardSize.Irregular9:
                 case BoardSize.Irregular12:
                     return new RandomPattern();
