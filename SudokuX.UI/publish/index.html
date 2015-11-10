@@ -125,6 +125,10 @@
 			a.install:hover {
 				font-size: larger;
 			}
+			
+			.examples img {
+				max-width: 380px;
+			}
 		</style>
 	</head>
 	<body>
@@ -169,7 +173,7 @@
 			<img src="full_window.png" alt="Full game window" width="700"/>
 		</figure>
 		<p>
-			De onderdelen van het scherm:
+			De onderdelen van het scherm:</p>
 			<ol type="1" class="mark">
 				<li>Stel het bord-type (waar onder afmeting) in, voor een nieuw spel</li>
 				<li>Stel de moeilijkheidsgraad in (nog niet volledig werkzaam)</li>
@@ -184,7 +188,7 @@
 				<li>Indien aan, toon in elke cel de mogelijke waarden (zoals hier)</li>
 				<li>Kies tussen <em>pen</em> (echte getallen plaatsen) en <em>potlood</em> (mogelijkheden schrappen)</li>
 			</ol>
-		</p>
+		
 		<p><h3 id="inleiding-doel">Het bekende doel van een sudoku puzzel</h3>
 			<blockquote>Zorg ervoor dat in elke rij, elke kolom en elk blok alle mogelijke cijfers (of tekens) precies éénmaal voorkomen.</blockquote>
 		</p>
@@ -192,31 +196,35 @@
 		
 		<section id="mogelijkheden">
 		<h2>Mogelijkheden</h2>
-		<p>Naast de standaard 9&times;9 sudoku zijn er nog andere afmetingen mogelijk:
+		<p>Naast de standaard 9&times;9 sudoku zijn er nog andere afmetingen mogelijk:</p>
 			<ul>
 				<li>4&times;4</li>
 				<li>6&times;6</li>
+				<li>8&times;8</li>
 				<li>9&times;9</li>
 				<li>12&times;12</li>
 				<li>16&times;16</li>
 			</ul>
-			Groter dan dat wordt te onoverzichtelijk.
-		</p>
+		<p>Groter dan dat wordt te onoverzichtelijk.</p>
 		<p>De 9&times;9 puzzel gebruikt cijfers (1-9). De kleinere puzzels kunnen symbolen gebruiken in plaats van cijfers (voor de variatie).
 			Voor de grotere puzzels zijn 10 cijfers niet genoeg, dus wordt doorgeteld in letters ("A", "B" etc). De exacte waarde maakt toch niet uit.
 		</p>
-		<p>Maar naast afmetingen zijn er nog meer variaties mogelijk:
+		<p>Maar naast afmetingen zijn er nog meer variaties mogelijk:</p>
 			<ul>
 				<li>Regelmatig (rechthoekige blokken), de standaard</li>
 				<li>Onregelmatig (rijen en kolommen tellen normaal, maar de blokken zijn meestal niet rechthoekig. Let op de kleuren)</li>
 				<li>Met diagonaal: ook op de diagonalen moeten alle cijfers staan</li>
 				<li>"Hyper": er zijn extra blokken aangegeven (donkerder) waar <em>ook</em> alle cijfers in voor moeten komen</li>
 			</ul>
-		</p>
-		<p>
+		
+		<div class="examples">
 			<figure>
 				<figcaption>Een 6&times;6 grid met onregelmatige blokken</figcaption>
-				<img src="6x6_irregular.png" alt="6x6 grid met onregelmatige blokken"/>
+				<img src="6x6_irregular.png" alt="6x6 grid met onregelmatige blokken" />
+			</figure>
+			<figure>
+				<figcaption>Een 8&times;8 grid met wisselende blokken</figcaption>
+				<img src="8x8_mix.png" alt="8x8 grid met verschillende blokken" />
 			</figure>
 			<figure>
 				<figcaption>Een 9&times;9 grid met extra diagonalen</figcaption>
@@ -224,9 +232,9 @@
 			</figure>
 			<figure>
 				<figcaption>Een 9&times;9 grid met hyper blokken</figcaption>
-				<img src="9x9_hyper.png" alt="9x9 grid met extra blokken"/>
+				<img src="9x9_hyper.png" alt="9x9 grid met extra blokken" />
 			</figure>		
-		</p>
+		</div>
 		</section>
 		
 		<section id="spelen">
@@ -278,7 +286,7 @@
 			
 			<h3 id="spelen-hint">Hint</h3>
 			<p>Als je vast komt te zitten, kan je op de "Hint" knop drukken. Hierna wordt eerst gecontroleerd of de ingevulde getallen overeenkomen met de oplossing. Zo niet, dan worden deze velden gemarkeerd. Je kan de waarden wissen of het veld van een ander getal voorzien.<br/>
-			Als de ingevulde getallen kloppen, wordt een getal ingevuld. Mogelijk geeft dit genoeg informatie om verder te komen. Zo niet, dan kan de hint nogmaals gebruikt worden.</p>
+			Als de ingevulde getallen kloppen, wordt één getal ingevuld. Mogelijk geeft dit genoeg informatie om verder te komen. Zo niet, dan kan de hint nogmaals gebruikt worden.</p>
 		</section>
 		
 		<section id="toetsen">
