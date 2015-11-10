@@ -14,7 +14,7 @@ namespace SudokuX.Solver.Grids
     [System.Serializable]
     public abstract class IrregularGrid : BasicGrid
     {
-        private readonly List<CellGroup> _blocks = new List<CellGroup>();
+        protected readonly List<CellGroup> _blocks = new List<CellGroup>();
 
         private readonly Random _rng = new Random();
 

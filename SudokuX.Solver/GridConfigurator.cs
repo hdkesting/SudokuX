@@ -13,6 +13,7 @@ namespace SudokuX.Solver
     /// <summary>
     /// Configures empty grids and sets up solvers and such.
     /// </summary>
+    /// <seealso cref="EnumExtensions"/>
     public static class GridConfigurator
     {
         /// <summary>
@@ -284,6 +285,51 @@ namespace SudokuX.Solver
                         }
                     }
                 }
+            },
+            { BoardSize.Board8Column, new Dictionary<Difficulty, List<SolverType>>
+                {
+                    { Difficulty.Normal, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple
+                        }
+                    }
+                }
+            },
+            { BoardSize.Board8Row, new Dictionary<Difficulty, List<SolverType>>
+                {
+                    { Difficulty.Normal, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple
+                        }
+                    }
+                }
+            },
+            { BoardSize.Board8Mix, new Dictionary<Difficulty, List<SolverType>>
+                {
+                    { Difficulty.Normal, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple
+                        }
+                    }
+                }
             }
         };
 
@@ -325,8 +371,19 @@ namespace SudokuX.Solver
                 case BoardSize.Board16:
                     return new Grid16X16();
 
+#if DEBUG
                 case BoardSize.Irregular12:
                     return new Irregular12(generateBlocks);
+#endif
+
+                case BoardSize.Board8Column:
+                    return new Grid8X8Column();
+
+                case BoardSize.Board8Row:
+                    return new Grid8X8Row();
+
+                case BoardSize.Board8Mix:
+                    return new Grid8X8Mix();
             }
 
             throw new InvalidEnumArgumentException("size", (int)size, typeof(BoardSize));
@@ -358,6 +415,7 @@ namespace SudokuX.Solver
                 case BoardSize.Board4:
                 case BoardSize.Board6:
                 case BoardSize.Irregular6:
+                case BoardSize.Board8Mix:
                 case BoardSize.Irregular9:
                 case BoardSize.Irregular12:
                     return new RandomPattern();
@@ -374,6 +432,11 @@ namespace SudokuX.Solver
                 case BoardSize.Board12:
                 case BoardSize.Board16:
                     return new Rotational4Pattern();
+
+                case BoardSize.Board8Column:
+                    return new VerticalMirroredPattern();
+                case BoardSize.Board8Row:
+                    return new HorizontalMirrorPattern();
             }
 
             throw new InvalidEnumArgumentException("size", (int)boardSize, typeof(BoardSize));
