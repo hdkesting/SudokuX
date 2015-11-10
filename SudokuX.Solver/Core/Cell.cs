@@ -161,9 +161,12 @@ namespace SudokuX.Solver.Core
         {
             if (cellGroup == null) throw new ArgumentNullException("cellGroup");
             // this cell belongs to that group
-            _groups.Add(cellGroup);
-            // that group contains this cell
-            cellGroup.Cells.Add(this);
+            if (!_groups.Contains(cellGroup))
+            {
+                _groups.Add(cellGroup);
+                // that group contains this cell
+                cellGroup.Cells.Add(this);
+            }
         }
 
         /// <summary>

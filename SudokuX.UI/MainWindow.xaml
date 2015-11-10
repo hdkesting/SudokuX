@@ -72,6 +72,7 @@
                             <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"/>
                             <ComboBoxItem Tag="8x8R" Content="{DynamicResource Grid-8X8R}"/>
                             <ComboBoxItem Tag="8x8C" Content="{DynamicResource Grid-8X8C}"/>
+                            <ComboBoxItem Tag="8x8M" Content="{DynamicResource Grid-8X8M}"/>
                             <ComboBoxItem Tag="9x9" Content="{DynamicResource Grid-9X9}"/>
                             <ComboBoxItem Tag="9Diag" Content="{DynamicResource Grid-9Diag}"/>
                             <ComboBoxItem Tag="Hyp9" Content="{DynamicResource Grid-Hyp9}"/>

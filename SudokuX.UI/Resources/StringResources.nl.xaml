@@ -12,6 +12,7 @@
     <system:String x:Key="Grid-Irr6">6×6 Onregelmatig</system:String>
     <system:String x:Key="Grid-8X8R">8×8 Rĳen</system:String>
     <system:String x:Key="Grid-8X8C">8×8 Kolommen</system:String>
+    <system:String x:Key="Grid-8X8M">8×8 Mix</system:String>
     <system:String x:Key="Grid-9X9">9 × 9</system:String>
     <system:String x:Key="Grid-9Diag">9×9 + Diagonaal</system:String>
     <system:String x:Key="Grid-Irr9">9×9 Onregelmatig</system:String>

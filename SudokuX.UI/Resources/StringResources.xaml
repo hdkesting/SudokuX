@@ -12,6 +12,7 @@
     <system:String x:Key="Grid-Irr6">6×6 Irregular</system:String>
     <system:String x:Key="Grid-8X8R">8×8 Rows</system:String>
     <system:String x:Key="Grid-8X8C">8×8 Columns</system:String>
+    <system:String x:Key="Grid-8X8M">8×8 Mix</system:String>
     <system:String x:Key="Grid-9X9">9×9</system:String>
     <system:String x:Key="Grid-9Diag">9×9 + Diagonal</system:String>
     <system:String x:Key="Grid-Hyp9">Hyper 9×9</system:String>

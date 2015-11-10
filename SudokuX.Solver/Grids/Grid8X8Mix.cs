@@ -40,14 +40,14 @@ namespace SudokuX.Solver.Grids
         private void SetupBlocks()
         {
             /*
-                AAAACCDD
-                AAAACCDD
-                BBBBCCDD
-                BBBBCCDD
-                EEFFGGGG
-                EEFFGGGG
-                EEFFHHHH
-                EEFFHHHH
+                AAAA CC DD
+                AAAA CC DD
+                BBBB CC DD
+                BBBB CC DD
+                EE FF GGGG
+                EE FF GGGG
+                EE FF HHHH
+                EE FF HHHH
             */
             AttachBlock(0, 0, 0, 4, 2); // A
             AttachBlock(1, 2, 0, 4, 2); // B

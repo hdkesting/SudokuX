@@ -38,6 +38,7 @@ namespace SudokuX.UI.Common
 
                 case BoardSize.Board8Column:
                 case BoardSize.Board8Row:
+                case BoardSize.Board8Mix:
                     _chars = "01234567";
                     _max = 7;
                     break;

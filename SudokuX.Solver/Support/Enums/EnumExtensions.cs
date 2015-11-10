@@ -52,6 +52,7 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Irregular6:
                 case BoardSize.Irregular9:
                 case BoardSize.Irregular12:
+                case BoardSize.Board8Mix:
                     return true;
             }
 
