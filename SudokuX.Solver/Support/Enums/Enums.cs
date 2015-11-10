@@ -50,7 +50,20 @@
         /// </summary>
         Hyper9,
 
-        Irregular12
+        /// <summary>
+        /// An irregular 12x12 grid. DOES NOT WORK.
+        /// </summary>
+        Irregular12,
+
+        /// <summary>
+        /// An 8x8 board of 4x2 blocks
+        /// </summary>
+        Board8Row,
+
+        /// <summary>
+        /// An 8x8 board of 2x4 blocks
+        /// </summary>
+        Board8Column
     }
 
     /// <summary>

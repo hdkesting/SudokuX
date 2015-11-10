@@ -51,6 +51,10 @@ namespace SudokuX.UI
                         return Solver.Support.Enums.BoardSize.Board4;
                     case "6x6":
                         return Solver.Support.Enums.BoardSize.Board6;
+                    case "8x8R":
+                        return Solver.Support.Enums.BoardSize.Board8Row;
+                    case "8x8C":
+                        return Solver.Support.Enums.BoardSize.Board8Column;
                     case "9x9":
                         return Solver.Support.Enums.BoardSize.Board9;
                     case "9Diag":

@@ -24,15 +24,24 @@ namespace SudokuX.UI.Common
                     _chars = "🍔🍨🍰🍇";
                     _max = 3;
                     break;
+
                 case BoardSize.Board6:
                     //_chars = "123456";
                     _chars = "🚀✈⛅⛄🐞🐘";
                     _max = 5;
                     break;
+
                 case BoardSize.Irregular6:
                     _chars = "123456";
                     _max = 5;
                     break;
+
+                case BoardSize.Board8Column:
+                case BoardSize.Board8Row:
+                    _chars = "01234567";
+                    _max = 7;
+                    break;
+
                 case BoardSize.Board9:
                 case BoardSize.Irregular9:
                 case BoardSize.Board9X:
@@ -40,14 +49,17 @@ namespace SudokuX.UI.Common
                     _chars = "123456789";
                     _max = 8;
                     break;
+
                 case BoardSize.Board12:
                     _chars = "123456789ABC";
                     _max = 11;
                     break;
+
                 case BoardSize.Board16:
                     _chars = "0123456789ABCDEF";
                     _max = 15;
                     break;
+
                 default:
                     throw new InvalidEnumArgumentException("size", (int)size, typeof(BoardSize));
             }

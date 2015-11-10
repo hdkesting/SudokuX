@@ -21,6 +21,9 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Board6:
                 case BoardSize.Irregular6:
                     return 6;
+                case BoardSize.Board8Column:
+                case BoardSize.Board8Row:
+                    return 8;
                 case BoardSize.Board9:
                 case BoardSize.Irregular9:
                 case BoardSize.Board9X:
@@ -75,6 +78,7 @@ namespace SudokuX.Solver.Support.Enums
             switch (boardSize)
             {
                 case BoardSize.Board4:
+                case BoardSize.Board8Column:
                     return 2;
 
                 case BoardSize.Irregular6:
@@ -85,6 +89,7 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Hyper9:
                     return 3;
 
+                case BoardSize.Board8Row:
                 case BoardSize.Board12:
                 case BoardSize.Board16:
                 case BoardSize.Irregular12:
@@ -108,6 +113,7 @@ namespace SudokuX.Solver.Support.Enums
                 case BoardSize.Board4:
                 case BoardSize.Board6:
                 case BoardSize.Irregular6:
+                case BoardSize.Board8Row:
                     return 2;
 
                 case BoardSize.Board9:
@@ -119,6 +125,7 @@ namespace SudokuX.Solver.Support.Enums
                     return 3;
 
                 case BoardSize.Board16:
+                case BoardSize.Board8Column:
                     return 4;
             }
 

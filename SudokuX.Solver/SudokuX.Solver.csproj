@@ -54,6 +54,7 @@
     <Compile Include="Core\CellGroup.cs" />
     <Compile Include="ChallengeCreator.cs" />
     <Compile Include="GridConfigurator.cs" />
+    <Compile Include="GridPatterns\HorizontalMirrorPattern.cs" />
     <Compile Include="GridPatterns\Rotational2Pattern.cs" />
     <Compile Include="GridSolver.cs" />
     <Compile Include="Grids\BasicGrid.cs" />
@@ -61,6 +62,8 @@
     <Compile Include="Grids\Grid16X16.cs" />
     <Compile Include="Grids\Grid4x4.cs" />
     <Compile Include="Grids\Grid6X6.cs" />
+    <Compile Include="Grids\Grid8X8Column.cs" />
+    <Compile Include="Grids\Grid8X8Row.cs" />
     <Compile Include="Grids\Grid9X9.cs">
       <SubType>Code</SubType>
     </Compile>
