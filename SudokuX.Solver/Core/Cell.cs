@@ -58,8 +58,21 @@ namespace SudokuX.Solver.Core
 
             _available.AddRange(Enumerable.Range(_min, _max - _min + 1));
         }
-        
+
+        /// <summary>
+        /// Gets the minimum value.
+        /// </summary>
+        /// <value>
+        /// The minimum value.
+        /// </value>
         public int MinValue { get { return _min; } }
+
+        /// <summary>
+        /// Gets the maximum value.
+        /// </summary>
+        /// <value>
+        /// The maximum value.
+        /// </value>
         public int MaxValue { get { return _max; } }
 
         /// <summary>
@@ -244,11 +257,22 @@ namespace SudokuX.Solver.Core
                 .All(c => c.GivenValue != val && c.CalculatedValue != val);
         }
 
+        /// <summary>
+        /// Prints the value.
+        /// </summary>
+        /// <param name="value">The 0-based internal value.</param>
+        /// <returns></returns>
         public string PrintValue(int value)
         {
             return (_max < 10 ? "123456789" : "0123456789ABCDEF")[value - _min].ToString();
         }
 
+        /// <summary>
+        /// Returns a hash code for this instance.
+        /// </summary>
+        /// <returns>
+        /// A hash code for this instance, suitable for use in hashing algorithms and data structures like a hash table. 
+        /// </returns>
         public override int GetHashCode()
         {
             return Row * 32 + Column;

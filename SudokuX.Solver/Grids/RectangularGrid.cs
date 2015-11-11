@@ -176,6 +176,12 @@ namespace SudokuX.Solver.Grids
             }
         }
 
+        /// <summary>
+        /// Prints the grid.
+        /// </summary>
+        /// <param name="cellsize">The max size of a cell.</param>
+        /// <param name="cellprinter">Convert cell into a string.</param>
+        /// <returns></returns>
         public override string PrintGrid(int cellsize, Func<Cell, string> cellprinter)
         {
             StringBuilder sb = new StringBuilder();

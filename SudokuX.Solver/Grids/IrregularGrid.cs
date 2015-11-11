@@ -14,6 +14,9 @@ namespace SudokuX.Solver.Grids
     [System.Serializable]
     public abstract class IrregularGrid : BasicGrid
     {
+        /// <summary>
+        /// The list of blocks.
+        /// </summary>
         protected readonly List<CellGroup> _blocks = new List<CellGroup>();
 
         private readonly Random _rng = new Random();
@@ -21,10 +24,11 @@ namespace SudokuX.Solver.Grids
         private readonly int[,] _blockgrid;
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="IrregularGrid"/> class.
+        /// Initializes a new instance of the <see cref="IrregularGrid" /> class.
         /// </summary>
         /// <param name="startblockwidth">The starting block width.</param>
         /// <param name="startblockheight">The starting block height.</param>
+        /// <param name="generateBlocks">if set to <c>true</c>, generate block structure.</param>
         protected IrregularGrid(int startblockwidth, int startblockheight, bool generateBlocks)
             : base(startblockwidth * startblockheight)
         {
@@ -335,6 +339,12 @@ namespace SudokuX.Solver.Grids
             get { return false; }
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return ToSolutionString() + Environment.NewLine + ToBlockStructureString();
@@ -351,6 +361,12 @@ namespace SudokuX.Solver.Grids
             });
         }
 
+        /// <summary>
+        /// Prints the grid.
+        /// </summary>
+        /// <param name="cellsize">The max size of a cell.</param>
+        /// <param name="cellprinter">Convert cell into a string.</param>
+        /// <returns></returns>
         public override string PrintGrid(int cellsize, Func<Cell, string> cellprinter)
         {
             StringBuilder sb = new StringBuilder(GridSize * (GridSize + 2));
@@ -371,6 +387,10 @@ namespace SudokuX.Solver.Grids
             return sb.ToString();
         }
 
+        /// <summary>
+        /// To the solution string.
+        /// </summary>
+        /// <returns></returns>
         public string ToSolutionString()
         {
             /*
@@ -397,6 +417,10 @@ namespace SudokuX.Solver.Grids
             });
         }
 
+        /// <summary>
+        /// To the challenge string.
+        /// </summary>
+        /// <returns></returns>
         public override string ToChallengeString()
         {
             const string challengechars = "0123456789ABCDEF";

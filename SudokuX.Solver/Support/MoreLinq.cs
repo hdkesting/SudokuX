@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace SudokuX.Solver.Support
 {
+    /// <summary>
+    /// Extra LINQ Extensions
+    /// </summary>
+    /// <remarks>https://code.google.com/p/morelinq/source/browse/MoreLinq/</remarks>
     public static class MoreLinq
     {
-        // https://code.google.com/p/morelinq/source/browse/MoreLinq/MaxBy.cs
-
         internal static void ThrowIfNull<T>(this T argument, string name) where T : class
         {
             if (argument == null)

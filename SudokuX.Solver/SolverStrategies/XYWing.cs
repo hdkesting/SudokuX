@@ -13,11 +13,22 @@ namespace SudokuX.Solver.SolverStrategies
     /// </summary>
     public class XYWing : ISolverStrategy
     {
+        /// <summary>
+        /// Gets the complexity-score of this solver.
+        /// </summary>
+        /// <value>
+        /// The complexity score.
+        /// </value>
         public float Complexity
         {
             get { return 9f; }
         }
 
+        /// <summary>
+        /// Processes the grid and returns any helpful conclusions.
+        /// </summary>
+        /// <param name="grid">The grid to process.</param>
+        /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             foreach (var firstcell in grid.AllCells().Where(c => !c.GivenOrCalculatedValue.HasValue && c.AvailableValues.Count == 2))

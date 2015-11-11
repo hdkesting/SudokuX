@@ -12,10 +12,12 @@ namespace SudokuX.Solver.Support
     public class Conclusion : IEquatable<Conclusion>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="Conclusion"/> class for a calculated value.
+        /// Initializes a new instance of the <see cref="Conclusion" /> class for a calculated value.
         /// </summary>
+        /// <param name="solverType">Type of the solver.</param>
         /// <param name="targetCell">The target cell.</param>
         /// <param name="complexityLevel">The complexity level.</param>
+        /// <param name="reasonCells">The reason cells.</param>
         private Conclusion(SolverType solverType, Cell targetCell, float complexityLevel, IEnumerable<Cell> reasonCells)
         {
             SolverType = solverType;
@@ -86,7 +88,13 @@ namespace SudokuX.Solver.Support
         /// </value>
         public System.Collections.ObjectModel.ReadOnlyCollection<Cell> ReasonCells { get; private set; }
 
-        public Enums.SolverType SolverType { get; set; }
+        /// <summary>
+        /// Gets or sets the type of the solver.
+        /// </summary>
+        /// <value>
+        /// The type of the solver.
+        /// </value>
+        public SolverType SolverType { get; set; }
 
         /// <summary>
         /// Gets the complexity level used to arrive at this conclusion.
@@ -124,6 +132,13 @@ namespace SudokuX.Solver.Support
                 ListsAreEqual(ExcludedValues, other.ExcludedValues);
         }
 
+        /// <summary>
+        /// Determines whether the specified <see cref="System.Object" />, is equal to this instance.
+        /// </summary>
+        /// <param name="obj">The <see cref="System.Object" /> to compare with this instance.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified <see cref="System.Object" /> is equal to this instance; otherwise, <c>false</c>.
+        /// </returns>
         public override bool Equals(object obj)
         {
             var other = obj as Conclusion;
@@ -143,6 +158,12 @@ namespace SudokuX.Solver.Support
                 + ExcludedValues.Count * 2048;
         }
 
+        /// <summary>
+        /// Returns a <see cref="System.String" /> that represents this instance.
+        /// </summary>
+        /// <returns>
+        /// A <see cref="System.String" /> that represents this instance.
+        /// </returns>
         public override string ToString()
         {
             return TargetCell.ToString() +
