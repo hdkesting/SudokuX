@@ -137,7 +137,6 @@ namespace SudokuX.UI
         {
             _board.HighlightValue(null);
             ResetButtonsAndCellSelections();
-            _board.DeselectAllCells();
 
             _isFinished = true;
         }

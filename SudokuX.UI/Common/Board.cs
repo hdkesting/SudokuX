@@ -237,7 +237,8 @@ namespace SudokuX.UI.Common
         {
             foreach (var cell in EnumerateAllCells())
             {
-                cell.Highlighted = Highlight.None;
+                // remove pen and pencil highlights
+                cell.Highlighted &= ~(Highlight.Pen | Highlight.Pencil);
                 cell.IsSelected = false;
             }
         }
@@ -446,7 +447,7 @@ namespace SudokuX.UI.Common
         public async Task FlashAllGroups()
         {
             // wait for the "block done" animation to finish
-            await Task.Delay(GridSize + CellHighlightDelay);
+            await Task.Delay((GridSize + 1) * CellHighlightDelay * 2);
 
             foreach (var family in Groups.GroupBy(g => g.GroupType))
             {
