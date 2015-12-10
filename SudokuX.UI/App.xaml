@@ -241,7 +241,7 @@
                         <DockPanel x:Name="dockPanel">
                             <ContentPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" Content="{TemplateBinding Content}" ContentStringFormat="{TemplateBinding ContentStringFormat}" ContentTemplate="{TemplateBinding ContentTemplate}" RecognizesAccessKey="True" VerticalAlignment="Center"/>
                             <Grid Margin="5,5,5,5" >
-                                <Border Width="50" Height="30" BorderThickness="1" CornerRadius="15" BorderBrush="Black" Background="#FF93995B" x:Name="track">
+                                <Border Width="50" Height="30" BorderThickness="1" CornerRadius="15" BorderBrush="Black" Background="#40FFFFFF" x:Name="track">
                                     <!-- slider knob -->
                                     <Border HorizontalAlignment="Left" VerticalAlignment="Center" x:Name="slider" 
                                             Grid.Column="0"
@@ -256,14 +256,14 @@
                                         </Border.RenderTransform>
                                         <Border.BorderBrush>
                                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                <GradientStop Color="#FFFFFFFF" Offset="0"/>
-                                                <GradientStop Color="#FF4490FF" Offset="1"/>
+                                                <GradientStop Color="#40FFFFFF" Offset="0"/>
+                                                <GradientStop Color="#40000000" Offset="1"/>
                                             </LinearGradientBrush>
                                         </Border.BorderBrush>
                                         <Border.Background>
                                             <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                                                <GradientStop Color="#FF6A6E39" Offset="1"/>
-                                                <GradientStop Color="#FFD1E2FF" Offset="0"/>
+                                                <GradientStop Color="#40FFFFFF" Offset="1"/>
+                                                <GradientStop Color="#40000000" Offset="0"/>
                                             </LinearGradientBrush>
                                         </Border.Background>
                                     </Border>
@@ -283,7 +283,7 @@
                                 <Trigger.EnterActions>
                                     <BeginStoryboard Storyboard="{StaticResource OnChecking}" x:Name="OnChecking_BeginStoryboard"/>
                                 </Trigger.EnterActions>
-                                <Setter Property="Background" Value="LightGreen" TargetName="track"/>
+                                <Setter Property="Background" Value="#60FFFFFF" TargetName="track"/>
                             </Trigger>
                             <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}"/>

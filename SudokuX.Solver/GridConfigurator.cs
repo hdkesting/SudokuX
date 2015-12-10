@@ -298,8 +298,21 @@ namespace SudokuX.Solver
                             SolverType.NakedTriple,
                             SolverType.HiddenTriple
                         }
+                    },
+                    { Difficulty.Harder, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.XWing
+                        }
                     }
-                }
+               }
             },
             { BoardSize.Board8Row, new Dictionary<Difficulty, List<SolverType>>
                 {
@@ -312,6 +325,19 @@ namespace SudokuX.Solver
                             SolverType.HiddenDouble,
                             SolverType.NakedTriple,
                             SolverType.HiddenTriple
+                        }
+                    },
+                    { Difficulty.Harder, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.XWing
                         }
                     }
                 }
@@ -327,6 +353,19 @@ namespace SudokuX.Solver
                             SolverType.HiddenDouble,
                             SolverType.NakedTriple,
                             SolverType.HiddenTriple
+                        }
+                    },
+                    { Difficulty.Harder, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.XWing
                         }
                     }
                 }
@@ -373,7 +412,7 @@ namespace SudokuX.Solver
 
 #if DEBUG
                 case BoardSize.Irregular12:
-                    return new Irregular12(generateBlocks);
+                    return new Irregular12(generateBlocks); // doesn't get a challenge!
 #endif
 
                 case BoardSize.Board8Column:
