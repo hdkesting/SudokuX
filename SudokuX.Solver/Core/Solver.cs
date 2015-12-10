@@ -200,6 +200,10 @@ namespace SudokuX.Solver.Core
             return new ProcessResult(score, val);
         }
 
+        /// <summary>
+        /// Processes the basic rule on the current grid.
+        /// </summary>
+        /// <returns></returns>
         public Validity ProcessBasicRule()
         {
             ISolverStrategy basic = new BasicRule();

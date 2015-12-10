@@ -9,6 +9,12 @@ namespace SudokuX.Solver.GridPatterns
     /// </summary>
     public class HorizontalMirrorPattern : IGridPattern
     {
+        /// <summary>
+        /// Get a list of positions according to the pattern.
+        /// </summary>
+        /// <param name="start">The start position.</param>
+        /// <param name="gridSize">Size of the grid.</param>
+        /// <returns></returns>
         public IEnumerable<Position> GetSymmetricPositions(Position start, int gridSize)
         {
             return new List<Position>

@@ -71,7 +71,7 @@ namespace SudokuX.UI.Controls
             _gameBoard.PropertyChanged += _gameBoard_PropertyChanged;
         }
 
-        async void _gameBoard_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        private async void _gameBoard_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IsFinished" && _gameBoard.IsFinished)
             {
@@ -83,7 +83,6 @@ namespace SudokuX.UI.Controls
                     fin(this, EventArgs.Empty);
                 }
 
-                await Task.Delay(600); // give "group filled" flash some time to finish
                 await _gameBoard.FlashAllGroups();
             }
         }

@@ -14,11 +14,22 @@ namespace SudokuX.Solver.SolverStrategies
     /// </summary>
     public class NakedQuad : ISolverStrategy
     {
+        /// <summary>
+        /// Gets the complexity-score of this solver.
+        /// </summary>
+        /// <value>
+        /// The complexity score.
+        /// </value>
         public float Complexity
         {
             get { return 8f; }
         }
 
+        /// <summary>
+        /// Processes the grid and returns any helpful conclusions.
+        /// </summary>
+        /// <param name="grid">The grid to process.</param>
+        /// <returns></returns>
         public IEnumerable<Conclusion> ProcessGrid(ISudokuGrid grid)
         {
             foreach (CellGroup group in grid.CellGroups)

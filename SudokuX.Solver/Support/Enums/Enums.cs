@@ -133,26 +133,95 @@
     /// </summary>
     public enum Difficulty
     {
+        /// <summary>
+        /// Easy
+        /// </summary>
         Easy,
+
+        /// <summary>
+        /// Normal, the default level
+        /// </summary>
         Normal,
+
+        /// <summary>
+        /// Harder
+        /// </summary>
         Harder
     }
 
+    /// <summary>
+    /// The type of the solver
+    /// </summary>
     public enum SolverType
     {
+        /// <summary>
+        /// An unknown solver
+        /// </summary>
         Unknown,
+
+        /// <summary>
+        /// The basic rule
+        /// </summary>
         Basic,
+
+        /// <summary>
+        /// The naked single strategy
+        /// </summary>
         NakedSingle,
+
+        /// <summary>
+        /// The hidden single strategy
+        /// </summary>
         HiddenSingle,
+
+        /// <summary>
+        /// The naked double strategy
+        /// </summary>
         NakedDouble,
+
+        /// <summary>
+        /// The hidden double strategy
+        /// </summary>
         HiddenDouble,
+
+        /// <summary>
+        /// The naked triple strategy
+        /// </summary>
         NakedTriple,
+
+        /// <summary>
+        /// The hidden triple strategy
+        /// </summary>
         HiddenTriple,
+
+        /// <summary>
+        /// The naked quad strategy
+        /// </summary>
         NakedQuad,
+
+        /// <summary>
+        /// The hidden quad strategy
+        /// </summary>
         HiddenQuad,
+
+        /// <summary>
+        /// The locked candidates strategy
+        /// </summary>
         LockedCandidates,
+
+        /// <summary>
+        /// Solving with colors strategy
+        /// </summary>
         SolveWithColors,
+
+        /// <summary>
+        /// The X-wing strategy
+        /// </summary>
         XWing,
+
+        /// <summary>
+        /// The XY-wing strategy
+        /// </summary>
         XYWing
     }
 }

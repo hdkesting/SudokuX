@@ -298,8 +298,21 @@ namespace SudokuX.Solver
                             SolverType.NakedTriple,
                             SolverType.HiddenTriple
                         }
+                    },
+                    { Difficulty.Harder, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.XWing
+                        }
                     }
-                }
+               }
             },
             { BoardSize.Board8Row, new Dictionary<Difficulty, List<SolverType>>
                 {
@@ -312,6 +325,19 @@ namespace SudokuX.Solver
                             SolverType.HiddenDouble,
                             SolverType.NakedTriple,
                             SolverType.HiddenTriple
+                        }
+                    },
+                    { Difficulty.Harder, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.XWing
                         }
                     }
                 }
@@ -327,6 +353,19 @@ namespace SudokuX.Solver
                             SolverType.HiddenDouble,
                             SolverType.NakedTriple,
                             SolverType.HiddenTriple
+                        }
+                    },
+                    { Difficulty.Harder, new List<SolverType>
+                        {
+                            SolverType.NakedSingle,
+                            SolverType.HiddenSingle,
+                            SolverType.LockedCandidates,
+                            SolverType.NakedDouble,
+                            SolverType.HiddenDouble,
+                            SolverType.NakedTriple,
+                            SolverType.HiddenTriple,
+                            SolverType.SolveWithColors,
+                            SolverType.XWing
                         }
                     }
                 }
@@ -373,7 +412,7 @@ namespace SudokuX.Solver
 
 #if DEBUG
                 case BoardSize.Irregular12:
-                    return new Irregular12(generateBlocks);
+                    return new Irregular12(generateBlocks); // doesn't get a challenge!
 #endif
 
                 case BoardSize.Board8Column:
@@ -442,6 +481,17 @@ namespace SudokuX.Solver
             throw new InvalidEnumArgumentException("size", (int)boardSize, typeof(BoardSize));
         }
 
+        /// <summary>
+        /// Gets all the grid solvers for these settings.
+        /// </summary>
+        /// <param name="boardSize">Size of the board.</param>
+        /// <param name="difficulty">The difficulty.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ComponentModel.InvalidEnumArgumentException">
+        /// boardSize
+        /// or
+        /// difficulty
+        /// </exception>
         public static IList<ISolverStrategy> GetGridSolvers(BoardSize boardSize, Difficulty difficulty)
         {
 
@@ -457,6 +507,13 @@ namespace SudokuX.Solver
             throw new InvalidEnumArgumentException("difficulty", (int)difficulty, typeof(Difficulty));
         }
 
+        /// <summary>
+        /// Gets an instance of the specified solver.
+        /// </summary>
+        /// <param name="solverType">Type of the solver.</param>
+        /// <returns></returns>
+        /// <exception cref="System.InvalidOperationException">Do not use the BasicRule directly, it's built-in.</exception>
+        /// <exception cref="System.ComponentModel.InvalidEnumArgumentException">solverType</exception>
         public static ISolverStrategy GetSolver(SolverType solverType)
         {
             switch(solverType)

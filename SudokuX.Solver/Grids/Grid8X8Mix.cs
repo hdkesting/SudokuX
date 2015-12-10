@@ -13,6 +13,9 @@ namespace SudokuX.Solver.Grids
     [System.Serializable]
     public class Grid8X8Mix : IrregularGrid
     {
+        /// <summary>
+        /// Initializes a new instance of the <see cref="Grid8X8Mix"/> class.
+        /// </summary>
         public Grid8X8Mix()
             : base(2,4, false)
         {
@@ -24,11 +27,21 @@ namespace SudokuX.Solver.Grids
         {
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this grid has special groups.
+        /// </summary>
+        /// <value>
+        /// <c>true</c> if this grid has special groups; otherwise, <c>false</c>.
+        /// </value>
         public override bool HasSpecialGroups
         {
             get { return false; }
         }
 
+        /// <summary>
+        /// Clones the board, preserving size and blocks.
+        /// </summary>
+        /// <returns></returns>
         public override ISudokuGrid CloneBoardAsChallenge()
         {
             var grid = new Grid8X8Mix(this);

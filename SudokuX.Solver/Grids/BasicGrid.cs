@@ -314,6 +314,10 @@ namespace SudokuX.Solver.Grids
         /// <returns></returns>
         public abstract string PrintGrid(int cellsize, Func<Cell, string> cellprinter);
 
+        /// <summary>
+        /// Converts the grid to a challenge string.
+        /// </summary>
+        /// <returns></returns>
         public abstract string ToChallengeString();
     }
 }

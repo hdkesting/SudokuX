@@ -1,6 +1,5 @@
 ﻿using Microsoft.VisualStudio.DebuggerVisualizers;
 using System;
-using System.Windows.Forms;
 
 namespace SudokuX.Solver.Visualizers
 {
@@ -18,6 +17,16 @@ namespace SudokuX.Solver.Visualizers
     /// </summary>
     public class GridVisualizer : DialogDebuggerVisualizer
     {
+        /// <summary>
+        /// Shows the specified grid.
+        /// </summary>
+        /// <param name="windowService">The window service.</param>
+        /// <param name="objectProvider">The object provider.</param>
+        /// <exception cref="System.ArgumentNullException">
+        /// windowService
+        /// or
+        /// objectProvider
+        /// </exception>
         protected override void Show(IDialogVisualizerService windowService, IVisualizerObjectProvider objectProvider)
         {
             if (windowService == null)
