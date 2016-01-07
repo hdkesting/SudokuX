@@ -26,12 +26,10 @@
             
             <DataTemplate x:Key="PencilValueTemplate">
                 <ItemsControl ItemsSource="{Binding}">
-                    <Viewbox VerticalAlignment="Stretch">
                         <TextBox Text="{Binding Path=Value}" Visibility="{Binding Path=Visible, Converter={StaticResource BoolToVisibility}}" Width="Auto"
-                                FontFamily="Segoe UI Light" Margin="1" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
-                                Background="Transparent" Foreground="DarkBlue" BorderBrush="Transparent" Opacity="0.8" FontSize="8pt"
+                                FontFamily="Segoe UI Semilight" HorizontalAlignment ="Center" VerticalContentAlignment ="Stretch" VerticalAlignment="Stretch"
+                                Background="Transparent" Foreground="Black" BorderBrush="Transparent" 
                                 ></TextBox>
-                    </Viewbox>
                 </ItemsControl>
             </DataTemplate>
             
@@ -115,13 +113,15 @@
                                         <SolidColorBrush Color="White" Opacity ="{Binding Path=Highlighted, Converter={StaticResource HighlightToOpacity}}"/>
                                     </Border.Background>
                                     <Grid>
-                                        <Viewbox Grid.Column="0" Grid.Row="0">
+                                        <Viewbox Grid.Column="0" Grid.Row="0" >
                                             <!-- gekozen of gegeven waarde -->
-                                            <TextBlock x:Name ="TextBlock" Focusable ="False" HorizontalAlignment ="Center" VerticalAlignment ="Center" FontWeight ="Bold" 
-                                                Width="Auto" Text ="{Binding Path=StringValue}" FontFamily="Segoe Script">
+                                            <TextBlock x:Name ="TextBlock" Focusable ="False" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
+                                                HorizontalAlignment ="Stretch" VerticalAlignment ="Stretch"
+                                                Text ="{Binding Path=StringValue}" 
+                                                FontFamily="Segoe UI Semibold">
                                                 <TextBlock.Effect>
                                                     <DropShadowEffect ShadowDepth="3"
-                                                        Color="Black"
+                                                        Color="WhiteSmoke"
                                                         Opacity="0.5"
                                                         BlurRadius="5"
                                                         />
@@ -129,7 +129,8 @@
                                             </TextBlock>
                                         </Viewbox>
                                         <!-- pencil marks -->
-                                        <ItemsControl  Grid.Column="0" Grid.Row="0" ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" 
+                                        <Viewbox Grid.Column="0" Grid.Row="0" >
+                                        <ItemsControl  ItemTemplate ="{StaticResource PencilRowTemplate}" ItemsSource ="{Binding Path=PencilRows}" 
                                                     x:Name ="PencilMarks" IsHitTestVisible="False" Visibility="Hidden">
                                             <ItemsControl.ItemsPanel>
                                                 <ItemsPanelTemplate>
@@ -137,6 +138,7 @@
                                                 </ItemsPanelTemplate>
                                             </ItemsControl.ItemsPanel>
                                         </ItemsControl>
+                                        </Viewbox>
                                     </Grid>
                                     </Border>
                             </Border>
