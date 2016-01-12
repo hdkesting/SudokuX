@@ -116,7 +116,6 @@
                                         <Viewbox Grid.Column="0" Grid.Row="0" >
                                             <!-- gekozen of gegeven waarde -->
                                             <TextBlock x:Name ="TextBlock" Focusable ="False" Width="{Binding RelativeSource={RelativeSource Self}, Path=ActualHeight}"
-                                                HorizontalAlignment ="Stretch" VerticalAlignment ="Stretch"
                                                 Text ="{Binding Path=StringValue}" 
                                                 FontFamily="Segoe UI Semibold">
                                                 <TextBlock.Effect>
