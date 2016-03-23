@@ -385,55 +385,124 @@ namespace SudokuX.UI
                 // backspace = undo
                 // F1 = help (webpage)
                 // other: pass through to board
-                if (e.Key == Key.Return || e.Key == Key.Tab)
+                switch(e.Key)
                 {
-                    if (ShowPencilmarks.IsVisible && ShowPencilmarks.IsChecked == true)
-                    {
-                        if (PenButton.IsChecked.GetValueOrDefault())
+                    case Key.Return:
+                    case Key.Tab:
+                        if (ShowPencilmarks.IsVisible && ShowPencilmarks.IsChecked == true)
                         {
-                            PencilButton.IsChecked = true;
-                            PenPencil_OnClick(PencilButton, null);
+                            if (PenButton.IsChecked.GetValueOrDefault())
+                            {
+                                PencilButton.IsChecked = true;
+                                PenPencil_OnClick(PencilButton, null);
+                            }
+                            else
+                            {
+                                PenButton.IsChecked = true;
+                                PenPencil_OnClick(PenButton, null);
+                            }
                         }
-                        else
-                        {
-                            PenButton.IsChecked = true;
-                            PenPencil_OnClick(PenButton, null);
-                        }
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Back)
-                {
-                    UndoButton_OnClick(null, null);
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.F1)
-                {
-                    ShowHelp();
-                    e.Handled = true;
-                }
-                else
-                {
-                    var key = e.Key.ToString();
-                    if (key != "D" && key.StartsWith("D"))
-                    {
-                        // regular digit (D0 .. D9)
-                        key = key.Substring(1);
-                    }
-                    else if (key.StartsWith("NumPad"))
-                    {
-                        // numpad digit (NumPad0 .. NumPad9)
-                        key = key.Substring("NumPad".Length);
-                    }
-
-                    if (HighlightButton(key))
-                    {
-                        _selectionMode = ValueSelectionMode.ButtonFirst;
                         e.Handled = true;
-                    }
+                        break;
+
+                    case Key.Back:
+                        UndoButton_OnClick(null, null);
+                        e.Handled = true;
+                        break;
+
+                    case Key.PageDown:
+                        SelectNextDigit();
+                        e.Handled = true;
+                        break;
+
+                    case Key.PageUp:
+                        SelectPreviousDigit();
+                        e.Handled = true;
+                        break;
+
+                    case Key.F1:
+                        ShowHelp();
+                        e.Handled = true;
+                        break;
+
+                    default:
+                        var key = e.Key.ToString();
+                        if (key != "D" && key.StartsWith("D"))
+                        {
+                            // regular digit (D0 .. D9)
+                            key = key.Substring(1);
+                        }
+                        else if (key.StartsWith("NumPad"))
+                        {
+                            // numpad digit (NumPad0 .. NumPad9)
+                            key = key.Substring("NumPad".Length);
+                        }
+
+                        if (HighlightButton(key))
+                        {
+                            _selectionMode = ValueSelectionMode.ButtonFirst;
+                            e.Handled = true;
+                        }
+                        break;
                 }
             }
         }
+
+        private void SelectNextDigit()
+        {
+            if (_isFinished) return;
+
+            _selectionMode = ValueSelectionMode.ButtonFirst;
+            var selected = _board.ValueCounts.FirstOrDefault(vc => vc.IsSelected);
+            if (selected == null)
+            {
+                // no value selected yet, get the first useful one
+                selected = _board.ValueCounts.First(vc => vc.Count > 0 && !String.IsNullOrWhiteSpace(vc.Value));
+            }
+            else
+            {
+                // get the first useful one after the selected one
+                selected = _board.ValueCounts
+                                            .SkipWhile(vc => vc.Value != selected.Value)
+                                            .Skip(1)
+                                            .FirstOrDefault(vc => vc.Count > 0 && !String.IsNullOrWhiteSpace(vc.Value));
+                if (selected == null)
+                {
+                    // nothing useful after it, so start at the beginning
+                    selected = _board.ValueCounts.First(vc => vc.Count > 0 && !String.IsNullOrWhiteSpace(vc.Value));
+                }
+            }
+
+            HighlightButton(selected.Value);
+        }
+
+        private void SelectPreviousDigit()
+        {
+            if (_isFinished) return;
+
+            _selectionMode = ValueSelectionMode.ButtonFirst;
+            var selected = _board.ValueCounts.FirstOrDefault(vc => vc.IsSelected);
+            if (selected == null)
+            {
+                // no value selected yet, get the last useful one
+                selected = _board.ValueCounts.Last(vc => vc.Count > 0 && !String.IsNullOrWhiteSpace(vc.Value));
+            }
+            else
+            {
+                // get the last useful one before the selected one
+                selected = _board.ValueCounts
+                                    .TakeWhile(vc => vc.Value != selected.Value)
+                                    .LastOrDefault(vc => vc.Count > 0 && !String.IsNullOrWhiteSpace(vc.Value));
+                if (selected == null)
+                {
+                    // nothing useful before, so get at the end
+                    selected = _board.ValueCounts.Last(vc => vc.Count > 0 && !String.IsNullOrWhiteSpace(vc.Value));
+                }
+            }
+
+            HighlightButton(selected.Value);
+        }
+
 
         private void BoardSize_Selected(object sender, RoutedEventArgs e)
         {
