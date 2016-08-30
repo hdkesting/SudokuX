@@ -8,22 +8,21 @@
 
     <Window.Background>
         <RadialGradientBrush GradientOrigin="0.5,0.5">
-            <GradientStop Color="#FF36381C" Offset="1.5"/>
-            <GradientStop Color="#FFC4CD6C" Offset="0"/>
+            <GradientStop Color="#FF36381C" Offset="1.5" />
+            <GradientStop Color="#FFC4CD6C" Offset="0" />
         </RadialGradientBrush>
-
     </Window.Background>
     <Window.Resources>
 
         <LinearGradientBrush x:Key="BgBrush1" StartPoint="0,0" EndPoint="0,1">
-            <GradientStop Offset="0" Color="#888888"/>
-            <GradientStop Offset="1" Color="#222222"/>
+            <GradientStop Offset="0" Color="#888888" />
+            <GradientStop Offset="1" Color="#222222" />
         </LinearGradientBrush>
 
-        <SolidColorBrush x:Key="BorderBrush1" Color="#333333"/>
+        <SolidColorBrush x:Key="BorderBrush1" Color="#333333" />
 
         <SolidColorBrush x:Key="CheckedBrush" Color="#80ffffff" />
-        
+
         <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="{x:Type RadioButton}">
             <Border
                 Name="Border"
@@ -37,25 +36,47 @@
                     Margin="{TemplateBinding Padding}"
                     VerticalAlignment="Center"
                     Content="{TemplateBinding Content}"
-                    TextBlock.FontWeight="Bold"
-                    />
+                    TextBlock.FontWeight="Bold" />
             </Border>
             <ControlTemplate.Triggers>
                 <Trigger Property="ToggleButton.IsMouseOver" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="#808080"/>
+                    <Setter TargetName="Border" Property="Background" Value="#808080" />
                 </Trigger>
                 <Trigger Property="IsChecked" Value="true">
-                    <Setter TargetName="Border" Property="Background" Value="{StaticResource CheckedBrush}"/>
+                    <Setter TargetName="Border" Property="Background" Value="{StaticResource CheckedBrush}" />
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+
+        <!-- http://stackoverflow.com/a/536559/121309 -->
+        <Style x:Key="Link" TargetType="Button">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="Cursor" Value="Hand" />
+            <Setter Property="Foreground" Value="Blue" />
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <TextBlock TextDecorations="Underline"
+                    Text="{TemplateBinding Content}"
+                    Background="{TemplateBinding Background}" />
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Foreground" Value="Red" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
     </Window.Resources>
     <DockPanel>
 
         <!-- title (top) -->
         <TextBlock DockPanel.Dock ="Top" HorizontalAlignment="Center" FontSize="48" Foreground="Azure" Text="Sūdoku X">
             <TextBlock.BitmapEffect>
-                <DropShadowBitmapEffect/>
+                <DropShadowBitmapEffect />
             </TextBlock.BitmapEffect>
         </TextBlock>
 
@@ -67,18 +88,18 @@
                         <TextBlock Foreground="Black" Text="{DynamicResource Board-Size}"></TextBlock>
 
                         <ComboBox IsEditable ="False" Background="#20FFFFFF" x:Name ="BoardSize" SelectionChanged="BoardSize_Selected">
-                            <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}"/>
+                            <ComboBoxItem Tag="4x4" Content="{DynamicResource Grid-4X4}" />
                             <ComboBoxItem Tag="6x6" Content="{DynamicResource Grid-6X6}" />
-                            <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}"/>
-                            <ComboBoxItem Tag="8x8R" Content="{DynamicResource Grid-8X8R}"/>
-                            <ComboBoxItem Tag="8x8C" Content="{DynamicResource Grid-8X8C}"/>
-                            <ComboBoxItem Tag="8x8M" Content="{DynamicResource Grid-8X8M}"/>
-                            <ComboBoxItem Tag="9x9" Content="{DynamicResource Grid-9X9}"/>
-                            <ComboBoxItem Tag="9Diag" Content="{DynamicResource Grid-9Diag}" IsSelected="True"/>
-                            <ComboBoxItem Tag="Hyp9" Content="{DynamicResource Grid-Hyp9}"/>
-                            <ComboBoxItem Tag="Irr9" Content="{DynamicResource Grid-Irr9}"/>
-                            <ComboBoxItem Tag="12x12" Content="{DynamicResource Grid-12X12}"/>
-                            <ComboBoxItem Tag="16x16" Content="{DynamicResource Grid-16X16}"/>
+                            <ComboBoxItem Tag="Irr6" Content="{DynamicResource Grid-Irr6}" />
+                            <ComboBoxItem Tag="8x8R" Content="{DynamicResource Grid-8X8R}" />
+                            <ComboBoxItem Tag="8x8C" Content="{DynamicResource Grid-8X8C}" />
+                            <ComboBoxItem Tag="8x8M" Content="{DynamicResource Grid-8X8M}" />
+                            <ComboBoxItem Tag="9x9" Content="{DynamicResource Grid-9X9}" />
+                            <ComboBoxItem Tag="9Diag" Content="{DynamicResource Grid-9Diag}" IsSelected="True" />
+                            <ComboBoxItem Tag="Hyp9" Content="{DynamicResource Grid-Hyp9}" />
+                            <ComboBoxItem Tag="Irr9" Content="{DynamicResource Grid-Irr9}" />
+                            <ComboBoxItem Tag="12x12" Content="{DynamicResource Grid-12X12}" />
+                            <ComboBoxItem Tag="16x16" Content="{DynamicResource Grid-16X16}" />
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Margin="5">
@@ -100,12 +121,13 @@
 
             <Border Margin="5" Padding="10" Background="#18FFFFFF">
                 <StackPanel>
-                   <StackPanel>
-                        <Button IsEnabled="False">Load Game</Button>
-                        <Button IsEnabled="False">Save Game</Button>
+                    <StackPanel>
                         <Button Click="QuitClicked" Content="{DynamicResource Quit}"></Button>
                     </StackPanel>
                 </StackPanel>
+            </Border>
+            <Border Margin="5" Padding="10" Background="#18FFFFFF">
+                <Button Content="New Windows10 app" Style="{StaticResource Link}" x:Name="Win10Button" Click="Win10Button_Click" />
             </Border>
         </StackPanel>
 
@@ -120,13 +142,13 @@
             <StackPanel.Resources>
                 <DataTemplate x:Key="ButtonTemplate">
                     <ItemsControl ItemsSource="{Binding}">
-                        <Button Tag="{Binding Path=Value}" Click="SelectButton_OnClick" >
+                        <Button Tag="{Binding Path=Value}" Click="SelectButton_OnClick">
                             <Border x:Name="Border"  BorderBrush="White" BorderThickness="3" CornerRadius="15" Margin="5" Width="40" Height="40">
                                 <Grid>
                                     <Grid.ColumnDefinitions>
                                         <ColumnDefinition Width="*"></ColumnDefinition>
                                     </Grid.ColumnDefinitions>
-                                    <TextBlock Focusable="False" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Value}" 
+                                    <TextBlock Focusable="False" TextAlignment="Center" VerticalAlignment="Center" Text="{Binding Path=Value}"
                                                FontFamily="Segoe Script" FontSize="16" FontWeight="Bold" Grid.Column="0"></TextBlock>
                                     <Grid Grid.Column="0" x:Name="Counter">
                                         <Grid.ColumnDefinitions>
@@ -149,7 +171,7 @@
                     </ItemsControl>
                     <DataTemplate.Triggers>
                         <DataTrigger Binding ="{Binding Count}" Value ="0">
-                            <Setter TargetName="Border" Property="BorderBrush" Value="Gray"/>
+                            <Setter TargetName="Border" Property="BorderBrush" Value="Gray" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsSelected}" Value="True">
                             <Setter TargetName="Border" Property="Background" Value="LightGreen"></Setter>
@@ -164,7 +186,7 @@
                     <ItemsControl ItemsSource ="{Binding}" ItemTemplate ="{StaticResource ButtonTemplate}">
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
-                                <UniformGrid Rows ="1"/>
+                                <UniformGrid Rows ="1" />
                             </ItemsPanelTemplate>
                         </ItemsControl.ItemsPanel>
                     </ItemsControl>
@@ -179,23 +201,26 @@
                 </ItemsControl.ItemsPanel>
             </ItemsControl>
 
-            <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2"><TextBlock Text="{DynamicResource UndoButtonText}"/></Button>
-            <Button x:Name="HintButton" Click="HintButton_Click" Margin="0,2"><TextBlock Text="{DynamicResource HintButtonText}" /></Button>
+            <Button x:Name="UndoButton" Click="UndoButton_OnClick" Margin="0, 2">
+                <TextBlock Text="{DynamicResource UndoButtonText}" />
+            </Button>
+            <Button x:Name="HintButton" Click="HintButton_Click" Margin="0,2">
+                <TextBlock Text="{DynamicResource HintButtonText}" />
+            </Button>
 
             <StackPanel>
-                <TextBlock Text="{DynamicResource Show-Pencilmarks}"/>
+                <TextBlock Text="{DynamicResource Show-Pencilmarks}" />
                 <CheckBox x:Name="ShowPencilmarks" Click="ShowPencilmarks_OnClick" Style="{DynamicResource ModernCheckBoxStyle}"
                                 Margin="3" VerticalContentAlignment="Center"></CheckBox>
             </StackPanel>
             <Border BorderThickness="0" BorderBrush="Black" Margin="0, 2" HorizontalAlignment="Stretch" x:Name="PenPencilSelection" Visibility="Hidden">
                 <StackPanel Orientation="Horizontal">
                     <RadioButton Tag="Pen" x:Name="PenButton" IsChecked="True" VerticalContentAlignment="Center" Content="{DynamicResource NumberTypePen}"
-                                 Click="PenPencil_OnClick" Template="{StaticResource ToggleButtonTemplate}" Padding="4,2"/>
+                                 Click="PenPencil_OnClick" Template="{StaticResource ToggleButtonTemplate}" Padding="4,2" />
                     <RadioButton Tag="Pencil" x:Name="PencilButton" VerticalContentAlignment="Center" Content="{DynamicResource NumberTypePencil}"
-                                 Click="PenPencil_OnClick" Template="{StaticResource ToggleButtonTemplate}" Padding="4,2"/>
+                                 Click="PenPencil_OnClick" Template="{StaticResource ToggleButtonTemplate}" Padding="4,2" />
                 </StackPanel>
             </Border>
         </StackPanel>
-
     </DockPanel>
 </Window>
