@@ -30,13 +30,14 @@
             	-webkit-quotes: "“" "”" "‘" "’";
 				quotes: "“" "”" "‘" "’";
 				background-color: palegoldenrod;
+				padding: 14px;
 			}
-	        blockquote::before {
+	        blockquote.quote::before {
 	            content: open-quote;
 	            font-size: 18pt;
 	            color: darkred;
 			}
-	        blockquote::after {
+	        blockquote.quote::after {
 	            content: close-quote;
 	            font-size: 18pt;
 	            color: darkred;
@@ -166,6 +167,9 @@
 					</ul>
 				</li>
 			</ul>
+		<blockquote>
+			Een nieuwe versie staat<br/> in de <a href="https://www.microsoft.com/store/apps/9NBLGGH697QJ">Windows 10 App Store</a>!
+		</blockquote>
 			</nav>
 		</section>
 		
@@ -194,7 +198,7 @@
 			</ol>
 		
 		<p><h3 id="inleiding-doel">Het bekende doel van een sudoku puzzel</h3>
-			<blockquote>Zorg ervoor dat in elke rij, elke kolom en elk blok alle mogelijke cijfers (of tekens) precies éénmaal voorkomen.</blockquote>
+			<blockquote class="quote">Zorg ervoor dat in elke rij, elke kolom en elk blok alle mogelijke cijfers (of tekens) precies éénmaal voorkomen.</blockquote>
 		</p>
 		</section>
 		
