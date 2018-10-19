@@ -2,6 +2,8 @@
 
 My first WPF program: a Sudoku game.
 
+The development is continued in another repo as UWP app. That app is published on the Microsoft Store: https://www.microsoft.com/store/apps/9NBLGGH697QJ
+
 It can create boards of different sizes:
 
 * 4x4
@@ -22,6 +24,4 @@ The challenges can have various symmetries, like:
 * both vertical and horizontal symmetry
 * rotational symmetry
 
-There are several levels of difficulty possible, although those are not yet fully implemented.
-
-For an installer and (dutch) documentation, go to http://hdkesting.blob.core.windows.net/sudoku/index.html
+There are several levels of difficulty possible.
